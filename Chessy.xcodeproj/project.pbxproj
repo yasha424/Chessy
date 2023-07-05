@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */; };
+		D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
+		D3141EC32A55DFB300D9D95A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3141EC22A55DFB300D9D95A /* Assets.xcassets */; };
+		D3141EC62A55DFB300D9D95A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3141EC52A55DFB300D9D95A /* Preview Assets.xcassets */; };
+		D3141ED02A55DFB400D9D95A /* ChessyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141ECF2A55DFB400D9D95A /* ChessyTests.swift */; };
+		D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141ED92A55DFB400D9D95A /* ChessyUITests.swift */; };
+		D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D3141ECC2A55DFB400D9D95A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3141EB32A55DFB100D9D95A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3141EBA2A55DFB100D9D95A;
+			remoteInfo = Chessy;
+		};
+		D3141ED62A55DFB400D9D95A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3141EB32A55DFB100D9D95A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3141EBA2A55DFB100D9D95A;
+			remoteInfo = Chessy;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D3141EBB2A55DFB100D9D95A /* Chessy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chessy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyApp.swift; sourceTree = "<group>"; };
+		D3141EC02A55DFB100D9D95A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D3141EC22A55DFB300D9D95A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D3141EC52A55DFB300D9D95A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D3141ECB2A55DFB400D9D95A /* ChessyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3141ECF2A55DFB400D9D95A /* ChessyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyTests.swift; sourceTree = "<group>"; };
+		D3141ED52A55DFB400D9D95A /* ChessyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3141ED92A55DFB400D9D95A /* ChessyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyUITests.swift; sourceTree = "<group>"; };
+		D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D3141EB82A55DFB100D9D95A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3141EC82A55DFB400D9D95A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3141ED22A55DFB400D9D95A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D3141EB22A55DFB100D9D95A = {
+			isa = PBXGroup;
+			children = (
+				D3141EBD2A55DFB100D9D95A /* Chessy */,
+				D3141ECE2A55DFB400D9D95A /* ChessyTests */,
+				D3141ED82A55DFB400D9D95A /* ChessyUITests */,
+				D3141EBC2A55DFB100D9D95A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D3141EBC2A55DFB100D9D95A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D3141EBB2A55DFB100D9D95A /* Chessy.app */,
+				D3141ECB2A55DFB400D9D95A /* ChessyTests.xctest */,
+				D3141ED52A55DFB400D9D95A /* ChessyUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
+			isa = PBXGroup;
+			children = (
+				D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */,
+				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
+				D3141EC22A55DFB300D9D95A /* Assets.xcassets */,
+				D3141EC42A55DFB300D9D95A /* Preview Content */,
+			);
+			path = Chessy;
+			sourceTree = "<group>";
+		};
+		D3141EC42A55DFB300D9D95A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D3141EC52A55DFB300D9D95A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D3141ECE2A55DFB400D9D95A /* ChessyTests */ = {
+			isa = PBXGroup;
+			children = (
+				D3141ECF2A55DFB400D9D95A /* ChessyTests.swift */,
+			);
+			path = ChessyTests;
+			sourceTree = "<group>";
+		};
+		D3141ED82A55DFB400D9D95A /* ChessyUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D3141ED92A55DFB400D9D95A /* ChessyUITests.swift */,
+				D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */,
+			);
+			path = ChessyUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D3141EBA2A55DFB100D9D95A /* Chessy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3141EDF2A55DFB400D9D95A /* Build configuration list for PBXNativeTarget "Chessy" */;
+			buildPhases = (
+				D3141EB72A55DFB100D9D95A /* Sources */,
+				D3141EB82A55DFB100D9D95A /* Frameworks */,
+				D3141EB92A55DFB100D9D95A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Chessy;
+			productName = Chessy;
+			productReference = D3141EBB2A55DFB100D9D95A /* Chessy.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D3141ECA2A55DFB400D9D95A /* ChessyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3141EE22A55DFB400D9D95A /* Build configuration list for PBXNativeTarget "ChessyTests" */;
+			buildPhases = (
+				D3141EC72A55DFB400D9D95A /* Sources */,
+				D3141EC82A55DFB400D9D95A /* Frameworks */,
+				D3141EC92A55DFB400D9D95A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3141ECD2A55DFB400D9D95A /* PBXTargetDependency */,
+			);
+			name = ChessyTests;
+			productName = ChessyTests;
+			productReference = D3141ECB2A55DFB400D9D95A /* ChessyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D3141ED42A55DFB400D9D95A /* ChessyUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3141EE52A55DFB400D9D95A /* Build configuration list for PBXNativeTarget "ChessyUITests" */;
+			buildPhases = (
+				D3141ED12A55DFB400D9D95A /* Sources */,
+				D3141ED22A55DFB400D9D95A /* Frameworks */,
+				D3141ED32A55DFB400D9D95A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3141ED72A55DFB400D9D95A /* PBXTargetDependency */,
+			);
+			name = ChessyUITests;
+			productName = ChessyUITests;
+			productReference = D3141ED52A55DFB400D9D95A /* ChessyUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D3141EB32A55DFB100D9D95A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					D3141EBA2A55DFB100D9D95A = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					D3141ECA2A55DFB400D9D95A = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = D3141EBA2A55DFB100D9D95A;
+					};
+					D3141ED42A55DFB400D9D95A = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = D3141EBA2A55DFB100D9D95A;
+					};
+				};
+			};
+			buildConfigurationList = D3141EB62A55DFB100D9D95A /* Build configuration list for PBXProject "Chessy" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D3141EB22A55DFB100D9D95A;
+			productRefGroup = D3141EBC2A55DFB100D9D95A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D3141EBA2A55DFB100D9D95A /* Chessy */,
+				D3141ECA2A55DFB400D9D95A /* ChessyTests */,
+				D3141ED42A55DFB400D9D95A /* ChessyUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D3141EB92A55DFB100D9D95A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3141EC62A55DFB300D9D95A /* Preview Assets.xcassets in Resources */,
+				D3141EC32A55DFB300D9D95A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3141EC92A55DFB400D9D95A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3141ED32A55DFB400D9D95A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D3141EB72A55DFB100D9D95A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */,
+				D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3141EC72A55DFB400D9D95A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3141ED02A55DFB400D9D95A /* ChessyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3141ED12A55DFB400D9D95A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */,
+				D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D3141ECD2A55DFB400D9D95A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3141EBA2A55DFB100D9D95A /* Chessy */;
+			targetProxy = D3141ECC2A55DFB400D9D95A /* PBXContainerItemProxy */;
+		};
+		D3141ED72A55DFB400D9D95A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3141EBA2A55DFB100D9D95A /* Chessy */;
+			targetProxy = D3141ED62A55DFB400D9D95A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D3141EDD2A55DFB400D9D95A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D3141EDE2A55DFB400D9D95A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D3141EE02A55DFB400D9D95A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D3141EE12A55DFB400D9D95A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D3141EE32A55DFB400D9D95A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chessy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Chessy";
+			};
+			name = Debug;
+		};
+		D3141EE42A55DFB400D9D95A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chessy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Chessy";
+			};
+			name = Release;
+		};
+		D3141EE62A55DFB400D9D95A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Chessy;
+			};
+			name = Debug;
+		};
+		D3141EE72A55DFB400D9D95A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Chessy;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D3141EB62A55DFB100D9D95A /* Build configuration list for PBXProject "Chessy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3141EDD2A55DFB400D9D95A /* Debug */,
+				D3141EDE2A55DFB400D9D95A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3141EDF2A55DFB400D9D95A /* Build configuration list for PBXNativeTarget "Chessy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3141EE02A55DFB400D9D95A /* Debug */,
+				D3141EE12A55DFB400D9D95A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3141EE22A55DFB400D9D95A /* Build configuration list for PBXNativeTarget "ChessyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3141EE32A55DFB400D9D95A /* Debug */,
+				D3141EE42A55DFB400D9D95A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3141EE52A55DFB400D9D95A /* Build configuration list for PBXNativeTarget "ChessyUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3141EE62A55DFB400D9D95A /* Debug */,
+				D3141EE72A55DFB400D9D95A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D3141EB32A55DFB100D9D95A /* Project object */;
+}
