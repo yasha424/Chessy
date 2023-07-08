@@ -14,6 +14,12 @@
 		D3141ED02A55DFB400D9D95A /* ChessyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141ECF2A55DFB400D9D95A /* ChessyTests.swift */; };
 		D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141ED92A55DFB400D9D95A /* ChessyUITests.swift */; };
 		D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */; };
+		D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
+		D3141EEA2A55E44200D9D95A /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
+		D3141EEC2A55E55900D9D95A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
+		D3141EED2A55E55C00D9D95A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
+		D3254D212A5A19130093ECC6 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* BoardView.swift */; };
+		D3254D222A5A19130093ECC6 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* BoardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,10 @@
 		D3141ED52A55DFB400D9D95A /* ChessyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3141ED92A55DFB400D9D95A /* ChessyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyUITests.swift; sourceTree = "<group>"; };
 		D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D3141EE82A55E43C00D9D95A /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
+		D3141EEB2A55E55900D9D95A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		D3254D202A5A19130093ECC6 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +104,14 @@
 		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
 			isa = PBXGroup;
 			children = (
+				D3254D1F2A5A18FC0093ECC6 /* View */,
+				D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */,
 				D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */,
 				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
 				D3141EC22A55DFB300D9D95A /* Assets.xcassets */,
 				D3141EC42A55DFB300D9D95A /* Preview Content */,
+				D3141EE82A55E43C00D9D95A /* Piece.swift */,
+				D3141EEB2A55E55900D9D95A /* Board.swift */,
 			);
 			path = Chessy;
 			sourceTree = "<group>";
@@ -125,6 +139,14 @@
 				D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */,
 			);
 			path = ChessyUITests;
+			sourceTree = "<group>";
+		};
+		D3254D1F2A5A18FC0093ECC6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D3254D202A5A19130093ECC6 /* BoardView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,6 +281,9 @@
 			files = (
 				D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */,
 				D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */,
+				D3254D212A5A19130093ECC6 /* BoardView.swift in Sources */,
+				D3141EEC2A55E55900D9D95A /* Board.swift in Sources */,
+				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +291,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3141EEA2A55E44200D9D95A /* Piece.swift in Sources */,
 				D3141ED02A55DFB400D9D95A /* ChessyTests.swift in Sources */,
+				D3141EED2A55E55C00D9D95A /* Board.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3254D222A5A19130093ECC6 /* BoardView.swift in Sources */,
 				D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */,
 				D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */,
 			);
@@ -347,7 +375,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -404,7 +432,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -419,6 +447,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
@@ -430,6 +459,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -437,6 +467,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -448,6 +482,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
@@ -459,6 +494,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,6 +502,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -10,27 +10,28 @@ import XCTest
 
 final class ChessyTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+    func testPawnMove() {
+        let board1 = Board()
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        XCTAssertTrue(board1.canMove(fromPosition: .b2, toPosition: .b4))
+        XCTAssertTrue(board1.canMove(fromPosition: .b2, toPosition: .b3))
+        XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .b5))
+        XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .a3))
+        XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .c3))
+        XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .b2))
+        XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .a4))
+        XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .c4))
     }
+    
+    func testIfPiecesExistBetween() {
+        let board = Board()
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        XCTAssertFalse(board.piecesExistBetween(fromPosition: .a2, toPosition: .a4))
+        XCTAssertFalse(board.piecesExistBetween(fromPosition: .a2, toPosition: .a7))
+        XCTAssertFalse(board.piecesExistBetween(fromPosition: .a2, toPosition: .f7))
+        
+        XCTAssertTrue(board.piecesExistBetween(fromPosition: .a1, toPosition: .a4))
+        XCTAssertTrue(board.piecesExistBetween(fromPosition: .a6, toPosition: .c8))
     }
 
 }
