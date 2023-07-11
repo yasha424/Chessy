@@ -20,6 +20,9 @@
 		D3141EED2A55E55C00D9D95A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
 		D3254D212A5A19130093ECC6 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* BoardView.swift */; };
 		D3254D222A5A19130093ECC6 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* BoardView.swift */; };
+		D3610A802A5AB3030046A585 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3610A7F2A5AB3030046A585 /* Colors.swift */; };
+		D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
+		D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +56,9 @@
 		D3141EE82A55E43C00D9D95A /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		D3141EEB2A55E55900D9D95A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		D3254D202A5A19130093ECC6 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		D3610A7F2A5AB3030046A585 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
+		D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,14 +109,14 @@
 		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
 			isa = PBXGroup;
 			children = (
+				D3EE189C2A5D8DA70096C9D4 /* Extension */,
+				D3EE189B2A5D8D9C0096C9D4 /* Chess */,
+				D3610A7E2A5AB2F00046A585 /* Constants */,
 				D3254D1F2A5A18FC0093ECC6 /* View */,
 				D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */,
 				D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */,
-				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
 				D3141EC22A55DFB300D9D95A /* Assets.xcassets */,
 				D3141EC42A55DFB300D9D95A /* Preview Content */,
-				D3141EE82A55E43C00D9D95A /* Piece.swift */,
-				D3141EEB2A55E55900D9D95A /* Board.swift */,
 			);
 			path = Chessy;
 			sourceTree = "<group>";
@@ -145,8 +150,34 @@
 			isa = PBXGroup;
 			children = (
 				D3254D202A5A19130093ECC6 /* BoardView.swift */,
+				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		D3610A7E2A5AB2F00046A585 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				D3610A7F2A5AB3030046A585 /* Colors.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		D3EE189B2A5D8D9C0096C9D4 /* Chess */ = {
+			isa = PBXGroup;
+			children = (
+				D3141EE82A55E43C00D9D95A /* Piece.swift */,
+				D3141EEB2A55E55900D9D95A /* Board.swift */,
+			);
+			path = Chess;
+			sourceTree = "<group>";
+		};
+		D3EE189C2A5D8DA70096C9D4 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,9 +311,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */,
+				D3610A802A5AB3030046A585 /* Colors.swift in Sources */,
 				D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */,
 				D3254D212A5A19130093ECC6 /* BoardView.swift in Sources */,
 				D3141EEC2A55E55900D9D95A /* Board.swift in Sources */,
+				D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */,
 				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +336,7 @@
 			files = (
 				D3254D222A5A19130093ECC6 /* BoardView.swift in Sources */,
 				D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */,
+				D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */,
 				D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

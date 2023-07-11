@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "5C7DF182-CC6B-4470-AE84-88BCFAFE3FF5"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0FFAF980-E63C-4F35-B12D-F2A519B6AA88"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chessy/Board.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
+            landmarkName = "isPositionThreatened(_:byColor:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0FFAF980-E63C-4F35-B12D-F2A519B6AA88 - 730d43fff8637ba2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Chessy.Position) -&gt; Swift.Bool in Chessy.Board.isPositionThreatened(_: Chessy.Position, byColor: Chessy.PieceColor) -&gt; Swift.Bool"
+                  moduleName = "Chessy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yasha/xcode-projects/Chessy/Chessy/Board.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "224">
+               </Location>
+               <Location
+                  uuid = "0FFAF980-E63C-4F35-B12D-F2A519B6AA88 - 730d43fff8637c64"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Chessy.Position) -&gt; Swift.Bool in Chessy.Board.isPositionThreatened(_: Chessy.Position, byColor: Chessy.PieceColor) -&gt; Swift.Bool"
+                  moduleName = "Chessy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yasha/xcode-projects/Chessy/Chessy/Board.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "273"
+                  endingLineNumber = "273"
+                  offsetFromSymbolStart = "1920">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9D662654-F064-4552-8713-D9DC72CCE2E7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chessy/Board.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
+            landmarkName = "canMove(fromPosition:toPosition:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9D662654-F064-4552-8713-D9DC72CCE2E7 - bf2a4ca3a6fdee48"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Chessy.Board.canMove(fromPosition: Chessy.Position, toPosition: Chessy.Position) -&gt; Swift.Bool"
+                  moduleName = "Chessy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yasha/xcode-projects/Chessy/Chessy/Board.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "190"
+                  endingLineNumber = "190"
+                  offsetFromSymbolStart = "7860">
+               </Location>
+               <Location
+                  uuid = "9D662654-F064-4552-8713-D9DC72CCE2E7 - bf2a4ca3a6fdee48"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Chessy.Board.canMove(fromPosition: Chessy.Position, toPosition: Chessy.Position) -&gt; Swift.Bool"
+                  moduleName = "Chessy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yasha/xcode-projects/Chessy/Chessy/Board.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "190"
+                  endingLineNumber = "190"
+                  offsetFromSymbolStart = "7616">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8985175E-C9E3-4DD9-8FA0-B1C88FA5E8BF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chessy/Board.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
+            landmarkName = "isEnPassantAllowed(fromPosition:toPosition:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
