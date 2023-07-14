@@ -26,7 +26,7 @@ struct Move: Equatable {
 class Board: Equatable, ObservableObject {
     
     @Published var pieces = [Piece?]()
-    @Published var history = [Move]()
+    var history = [Move]()
     var turn: PieceColor = .white
     
     init() {
@@ -114,7 +114,8 @@ class Board: Equatable, ObservableObject {
             case .king where abs(from.rawValue % 8 - to.rawValue % 8) > 1:
                 let kingSide = to.rawValue % 8 == 6
                 let rookPosition = Position(rawValue: to.rawValue / 8 * 8 + (kingSide ? 7 : 0))!
-                newBoard.pieces[kingSide ? from.rawValue + 1 : from.rawValue - 1] = self[rookPosition]
+                let newRookPosition = kingSide ? from.rawValue + 1 : from.rawValue - 1
+                newBoard.pieces[newRookPosition] = self[rookPosition]
                 newBoard.pieces[rookPosition.rawValue] = nil
                 newBoard.pieces[to.rawValue] = piece
             default:
@@ -169,7 +170,9 @@ class Board: Equatable, ObservableObject {
             switch piece.color {
             case .white:
                 if 8..<16 ~= from.rawValue {
-                    return (1...2 ~= deltaX && deltaY == 0 && self[to] == nil) ||
+                    return (deltaX == 1 && deltaY == 0 && self[to] == nil) ||
+                           (deltaX == 2 && deltaY == 0 && self[to] == nil &&
+                           !piecesExistBetween(fromPosition: from, toPosition: to)) ||
                            ([-1, 1].contains(deltaX) && deltaX == 1 && self[to]?.color == .black)
                 } else {
                     if deltaY == 0 {
@@ -180,7 +183,9 @@ class Board: Equatable, ObservableObject {
                 }
             case .black:
                 if 48..<56 ~= from.rawValue {
-                    return (-2 ... -1 ~= deltaX && deltaY == 0 && self[to] == nil) ||
+                    return (deltaX == -1 && deltaY == 0 && self[to] == nil) ||
+                           (deltaX == -2 && deltaY == 0 && self[to] == nil &&
+                           !piecesExistBetween(fromPosition: from, toPosition: to)) ||
                            ([-1, 1].contains(deltaX) && deltaX == -1 && self[to]?.color == .white)
                 } else {
                     if deltaY == 0 {
@@ -232,8 +237,9 @@ class Board: Equatable, ObservableObject {
         return false
     }
     
-    private func isKingInCheck(forColor color: PieceColor) -> Bool {
-        return isPieceThreatened(atPosittion: getKingPosition(forColor: color))
+    func isKingInCheck(forColor color: PieceColor) -> Bool {
+        return isPositionThreatened(getKingPosition(forColor: color),
+                                    byColor: color == .white ? .black : .white)
     }
     
     private func getKingPosition(forColor color: PieceColor) -> Position? {
@@ -247,15 +253,9 @@ class Board: Equatable, ObservableObject {
         })
     }
     
-    private func isPieceThreatened(atPosittion position: Position?) -> Bool {
+    func isPositionThreatened(_ position: Position?, byColor color: PieceColor) -> Bool {
         guard let position = position else { return false }
         
-        return Position.allCases.contains(where: {
-            canMove(fromPosition: $0, toPosition: position)
-        })
-    }
-    
-    func isPositionThreatened(_ position: Position, byColor color: PieceColor) -> Bool {
         return Position.allCases.contains { from in
             if let piece = getPiece(atPosition: from) {
                 guard piece.color == color else { return false }
@@ -281,27 +281,31 @@ class Board: Equatable, ObservableObject {
     }
     
     private func isCastleAllowed(fromPosition from: Position, toPosition to: Position) -> Bool {
-        guard let piece = self[from], piece.type == .king else { return false }
+        guard let piece = self[from],
+              piece.type == .king else { return false }
         
         let fromX = from.rawValue / 8, fromY = from.rawValue % 8
         let toX = to.rawValue / 8, toY = to.rawValue % 8
         
-        guard fromY == 4, [2, 6].contains(toY), !pieceHasMoved(atPosition: from) else {
-            return false
-        }
+        guard fromY == 4, [2, 6].contains(toY),
+              fromX == toX,
+              !pieceHasMoved(atPosition: from),
+              !piecesExistBetween(fromPosition: from, toPosition: to) else { return false }
 
         if piece.color == .white {
-            if fromX != 0 || toX != 0 { return false }
+            if piecesExistBetween(fromPosition: from, toPosition: toY == 6 ? .h1 : .a1) ||
+               fromX != 0 || toX != 0 { return false }
             
             if !pieceHasMoved(atPosition: Position(rawValue: toY == 6 ? 7 : 0)!) {
-                let positions: [Position] = toY == 6 ? [.f1, .g1] : [.d1, .c1]
+                let positions: [Position] = toY == 6 ? [.e1, .f1, .g1] : [.b1, .c1, .d1]
                 return !positions.contains(where: { isPositionThreatened($0, byColor: .black) })
             }
         } else {
-            if fromX != 7 || toX != 7 { return false }
+            if piecesExistBetween(fromPosition: from, toPosition: toY == 6 ? .h8 : .a8) ||
+               fromX != 7 || toX != 7 { return false }
             
             if !pieceHasMoved(atPosition: Position(rawValue: toY == 6 ? 63 : 56)!) {
-                let positions: [Position] = toY == 6 ? [.f8, .g8] : [.d8, .c8]
+                let positions: [Position] = toY == 6 ? [.e8, .f8, .g8] : [.b8, .c8, .d8]
                 return !positions.contains(where: { isPositionThreatened($0, byColor: .white) })
             }
         }
@@ -313,7 +317,17 @@ class Board: Equatable, ObservableObject {
     }
     
     func allMoves(fromPosition position: Position) -> [Position] {
-        Position.allCases.filter { canMove(fromPosition: position, toPosition: $0) }
+        guard let piece = self[position] else { return [] }
+
+        return Position.allCases.filter {
+            let newBoard = Board()
+            newBoard.pieces = pieces
+            newBoard.pieces[$0.rawValue] = newBoard.pieces[position.rawValue]
+            newBoard.pieces[position.rawValue] = nil
+
+            return canMove(fromPosition: position, toPosition: $0) &&
+                   !newBoard.isKingInCheck(forColor: piece.color)
+        }
     }
     
     func isEnPassantAllowed(fromPosition from: Position, toPosition to: Position) -> Bool {
@@ -340,6 +354,19 @@ class Board: Equatable, ObservableObject {
     }
     
     func isCheckmate() -> Bool {
-        return false
+        guard let kingPosition = getKingPosition(forColor: turn) else { return false }
+
+        return !Position.allCases.contains(where: {
+            canMove(fromPosition: kingPosition, toPosition: $0)
+        }) && !Position.allCases.contains(where: { position in
+            guard let piece = self[position] else { return false }
+                
+            if piece.color == turn {
+                return Position.allCases.contains(where: {
+                    canMove(fromPosition: position, toPosition: $0)
+                })
+            }
+            return false
+        })
     }
 }

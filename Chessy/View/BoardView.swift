@@ -49,22 +49,25 @@ struct BoardView: View {
                                         .resizable()
                                         .shadow(
                                             color: Color.green,
-                                            radius: canSelectPiece ? 3 : 0
+                                            radius: canSelectPiece ? 5 : 0
+                                        )
+                                        .shadow(
+                                            color: piece.type == .king ? Color.red : Color.clear,
+                                            radius: board.isKingInCheck(forColor: piece.color) ? 5 : 0
                                         )
                                 }
                                 if allowedMoves.contains(position) {
-//                                    GeometryReader { geometry in
                                         Image(systemName: "circle.fill")
                                             .foregroundColor(Color.green)
                                             .opacity(0.7)
-//                                            .frame(
-//                                                width: geometry.size.width * 4,
-//                                                height: geometry.size.height * 4
-//                                            )
-//                                    }
                                 }
                             }
                             .onTapGesture {
+//                                if board.isCheckmate() {
+//                                    print("checkmate")
+//                                    return
+//                                }
+                                
                                 if tapAtPosition == nil {
                                     tapAtPosition =
                                     board.canSelectPiece(atPosition: position) ? position : nil
@@ -73,9 +76,13 @@ struct BoardView: View {
                                 } else if board.canSelectPiece(atPosition: position) {
                                     tapAtPosition = position
                                 } else {
-                                    board.movePiece(fromPosition: tapAtPosition!, toPosition: position)
+                                    board.movePiece(
+                                        fromPosition: tapAtPosition!,
+                                        toPosition: position
+                                    )
                                     tapAtPosition = nil
                                 }
+                                
                                 if tapAtPosition != nil {
                                     allowedMoves = board.allMoves(fromPosition: position)
                                 } else {
