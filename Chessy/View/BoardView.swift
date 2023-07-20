@@ -7,93 +7,77 @@
 
 import SwiftUI
 
-struct BoardView: View {
+struct BoardView<ChessGame>: View where ChessGame: Game {
     
-    @ObservedObject var board: Board
-    @State var tapAtPosition: Position? = nil
-    @State var allowedMoves = [Position]()
+    @ObservedObject var game: ChessGame
+    @State private var selectedPosition: Position? = nil
+    @State private var allowedMoves = [Position]()
+    @State private var selectedRow: Int? = nil
+    @State private var draggedTo: Position? = nil
     
     var body: some View {
-        let color = [PieceColor.white: "white_", PieceColor.black: "black_"]
-        let type: [PieceType: String] = [
-            .pawn: "pawn",
-            .knight: "knight",
-            .bishop: "bishop",
-            .rook: "rook",
-            .queen: "queen",
-            .king: "king"
-        ]
-        
         VStack(spacing: 0) {
             ForEach(0..<8) { i in
                 HStack(spacing: 0) {
                     ForEach(0..<8) { j in
                         let position = Position(rawValue: (7 - i) * 8 + j)!
-                            ZStack {
-                                if i % 2 == j % 2 {
-                                    Colors.whiteSquare
-                                } else {
-                                    Colors.blackSquare
-                                }
-                                
-                                if let lastMove = board.history.last {
-                                    if [lastMove.from, lastMove.to].contains(position) {
-                                        Color.init(red: 0.3, green: 1.0, blue: 0.3, opacity: 0.3)
-                                    }
-                                }
-                                
-                                if let piece = board[position] {
-                                    let canSelectPiece = tapAtPosition == position &&
-                                    board.canSelectPiece(atPosition: position)
-                                    Image("\(color[piece.color]! + type[piece.type]!)")
-                                        .resizable()
-                                        .shadow(
-                                            color: Color.green,
-                                            radius: canSelectPiece ? 5 : 0
-                                        )
-                                        .shadow(
-                                            color: piece.type == .king ? Color.red : Color.clear,
-                                            radius: board.isKingInCheck(forColor: piece.color) ? 5 : 0
-                                        )
-                                }
-                                if allowedMoves.contains(position) {
-                                        Image(systemName: "circle.fill")
-                                            .foregroundColor(Color.green)
-                                            .opacity(0.7)
-                                }
-                            }
-                            .onTapGesture {
-//                                if board.isCheckmate() {
-//                                    print("checkmate")
-//                                    return
-//                                }
-                                
-                                if tapAtPosition == nil {
-                                    tapAtPosition =
-                                    board.canSelectPiece(atPosition: position) ? position : nil
-                                } else if tapAtPosition == position {
-                                    tapAtPosition = nil
-                                } else if board.canSelectPiece(atPosition: position) {
-                                    tapAtPosition = position
-                                } else {
-                                    board.movePiece(
-                                        fromPosition: tapAtPosition!,
-                                        toPosition: position
-                                    )
-                                    tapAtPosition = nil
-                                }
-                                
-                                if tapAtPosition != nil {
-                                    allowedMoves = board.allMoves(fromPosition: position)
-                                } else {
-                                    allowedMoves = []
-                                }
-                            }
-                            .aspectRatio(1, contentMode: .fit)
+                        CellView(
+                            game: game,
+                            selectedPosition: $selectedPosition,
+                            allowedMoves: $allowedMoves,
+                            selectedRow: $selectedRow,
+                            draggedTo: $draggedTo,
+                            i: i,
+                            j: j
+                        )
+                        .onTapGesture {
+                            Thread {
+                                tappedAtPosition(position)
+                            }.start()
+                        }
+                        .zIndex(selectedPosition == position ? 1 : 0)
                     }
                 }
+                .zIndex(selectedRow == i ? 1 : 0)
             }
         }
-        .border(.black)
+        .aspectRatio(1, contentMode: .fit)
+        .border(Color.black)
     }
+    
+    private func tappedAtPosition(_ position: Position) {
+        if let selectedPosition = selectedPosition {
+            if selectedPosition == position {
+                self.selectedPosition = nil
+                self.selectedRow = nil
+            } else if game.canSelectPiece(atPosition: position) {
+                self.selectedPosition = position
+                self.selectedRow = position.rawValue / 8
+            } else {
+                DispatchQueue.main.async {
+                    game.movePiece(
+                        fromPosition: selectedPosition,
+                        toPosition: position
+                    )
+                }
+                self.selectedPosition = nil
+                self.selectedRow = nil
+            }
+        } else {
+            if game.canSelectPiece(atPosition: position) {
+                selectedPosition = position
+                selectedRow = position.rawValue / 8
+            } else {
+                selectedPosition = nil
+                selectedRow = nil
+            }
+        }
+        
+        if selectedPosition != nil {
+            allowedMoves = game.allMoves(fromPosition: position)
+        } else {
+            allowedMoves = []
+        }
+    }
+    
 }

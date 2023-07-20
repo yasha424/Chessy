@@ -9,14 +9,21 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var board = Board()
+//    @State var board = Board()
+    @State var game = ClassicGame(board: Board())
     
     var body: some View {
-        BoardView(board: board)
+        BoardView(game: game)
             .onAppear {}
             .onShake {
-                board = Board()
+                game = ClassicGame(board: Board())
             }
+        
+        Button(action: {
+            game = ClassicGame(board: Board())
+        }, label: {
+            Text("Reload board")
+        })
     }
     
 }
