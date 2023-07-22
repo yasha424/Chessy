@@ -5,8 +5,6 @@
 //  Created by Yasha Serhiienko on 05.07.2023.
 //
 
-import SwiftUI
-
 enum PieceType: String {
     case pawn = "P"
     case bishop = "B"
@@ -38,14 +36,9 @@ enum PieceColor: String {
     case black = "B"
 }
 
-class Piece: Equatable, ObservableObject {
+struct Piece: Equatable {
     let color: PieceColor
     var type: PieceType
-    
-    init(color: PieceColor, type: PieceType) {
-        self.color = color
-        self.type = type
-    }
     
     static func == (lhs: Piece, rhs: Piece) -> Bool {
         return lhs.color == rhs.color && lhs.type == rhs.type

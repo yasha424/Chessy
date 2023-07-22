@@ -18,10 +18,11 @@
 		D3141EEA2A55E44200D9D95A /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
 		D3141EEC2A55E55900D9D95A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
 		D3141EED2A55E55C00D9D95A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
-		D3254D212A5A19130093ECC6 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* BoardView.swift */; };
-		D3254D222A5A19130093ECC6 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* BoardView.swift */; };
+		D3254D212A5A19130093ECC6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* GameView.swift */; };
+		D3254D222A5A19130093ECC6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3254D202A5A19130093ECC6 /* GameView.swift */; };
 		D3452B2C2A694172003A1F45 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3452B2B2A694172003A1F45 /* Game.swift */; };
 		D3610A802A5AB3030046A585 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3610A7F2A5AB3030046A585 /* Colors.swift */; };
+		D3611FBE2A6C161D00348F99 /* GlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3611FBD2A6C161D00348F99 /* GlassView.swift */; };
 		D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
 		D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
 		D3F404172A66A3A800C97C84 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404162A66A3A700C97C84 /* CellView.swift */; };
@@ -58,9 +59,10 @@
 		D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D3141EE82A55E43C00D9D95A /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		D3141EEB2A55E55900D9D95A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
-		D3254D202A5A19130093ECC6 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		D3254D202A5A19130093ECC6 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		D3452B2B2A694172003A1F45 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		D3610A7F2A5AB3030046A585 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		D3611FBD2A6C161D00348F99 /* GlassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassView.swift; sourceTree = "<group>"; };
 		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
 		D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		D3F404162A66A3A700C97C84 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
 			isa = PBXGroup;
 			children = (
+				D3611FBC2A6C15F700348F99 /* ViewModifier */,
 				D3EE189C2A5D8DA70096C9D4 /* Extension */,
 				D3EE189B2A5D8D9C0096C9D4 /* Chess */,
 				D3610A7E2A5AB2F00046A585 /* Constants */,
@@ -155,7 +158,7 @@
 		D3254D1F2A5A18FC0093ECC6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D3254D202A5A19130093ECC6 /* BoardView.swift */,
+				D3254D202A5A19130093ECC6 /* GameView.swift */,
 				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
 				D3F404162A66A3A700C97C84 /* CellView.swift */,
 			);
@@ -169,6 +172,14 @@
 				D3F404182A66FDA800C97C84 /* ImageNames.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		D3611FBC2A6C15F700348F99 /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				D3611FBD2A6C161D00348F99 /* GlassView.swift */,
+			);
+			path = ViewModifier;
 			sourceTree = "<group>";
 		};
 		D3EE189B2A5D8D9C0096C9D4 /* Chess */ = {
@@ -323,10 +334,11 @@
 				D3452B2C2A694172003A1F45 /* Game.swift in Sources */,
 				D3610A802A5AB3030046A585 /* Colors.swift in Sources */,
 				D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */,
-				D3254D212A5A19130093ECC6 /* BoardView.swift in Sources */,
+				D3254D212A5A19130093ECC6 /* GameView.swift in Sources */,
 				D3141EEC2A55E55900D9D95A /* Board.swift in Sources */,
 				D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */,
 				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
+				D3611FBE2A6C161D00348F99 /* GlassView.swift in Sources */,
 				D3F404172A66A3A800C97C84 /* CellView.swift in Sources */,
 				D3F404192A66FDA800C97C84 /* ImageNames.swift in Sources */,
 			);
@@ -346,7 +358,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3254D222A5A19130093ECC6 /* BoardView.swift in Sources */,
+				D3254D222A5A19130093ECC6 /* GameView.swift in Sources */,
 				D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */,
 				D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */,
 				D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */,
@@ -421,7 +433,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -479,7 +491,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -507,7 +519,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -543,7 +555,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

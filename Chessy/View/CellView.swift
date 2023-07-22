@@ -19,6 +19,7 @@ struct CellView<ChessGame>: View where ChessGame: Game {
 
     @State private var size: CGSize!
     @State var offset: CGSize = CGSize.zero
+    @State var isDragged: Bool = false
     
     @State var changes = 0
     let refreshRate = 4
@@ -34,28 +35,30 @@ struct CellView<ChessGame>: View where ChessGame: Game {
         DragGesture()
             .onChanged { gesture in
                 if game.canSelectPiece(atPosition: position) {
-                    if selectedPosition != position {
+                    if selectedPosition != position || !isDragged {
                         selectedPosition = position
                         allowedMoves = game.allMoves(fromPosition: position)
                         selectedRow = i
+                        isDragged = true
                     }
                     offset = gesture.translation
 
                     Thread {
                         if changes % refreshRate == 0 {
-                            draggedTo = getDraggedToPosition(offset: offset, size: size)
+                            draggedTo = computeDraggedPosition(offset: offset, size: size)
                         }
                         changes += 1
                     }.start()
                 }
             }
             .onEnded { _ in
-                selectedPosition = nil
                 allowedMoves = []
                 selectedRow = nil
                 
                 withAnimation(.linear(duration: 0.3)) {
                     offset = CGSize.zero
+                    selectedPosition = nil
+                    isDragged = false
                 }
                 
                 if let to = draggedTo {
@@ -70,51 +73,64 @@ struct CellView<ChessGame>: View where ChessGame: Game {
             ZStack {
                 if i % 2 == j % 2 {
                     Colors.whiteSquare
-                        .border(Color.green, width: draggedTo == position ? 3 : 0)
+                        .opacity(0.3)
                 } else {
                     Colors.blackSquare
-                        .border(Color.green, width: draggedTo == position ? 3 : 0)
+                        .opacity(0.3)
+                }
+                
+                if [game.history.last?.from, game.history.last?.to].contains(position) {
+                    Color.green.opacity(0.25)
+                }
+                
+                if draggedTo == position {
+                    Circle()
+                        .foregroundColor(.green)
+                        .opacity(0.5)
+                        .scaleEffect(x: 1.8, y: 1.8)
                 }
                 
                 if let piece = game.board[position] {
+                    
+                    if piece.type == .king && game.isKingInCheck(forColor: piece.color) {
+                        Circle()
+                            .blur(radius: 15)
+                            .foregroundColor(.red)
+                            .scaleEffect(CGSize(width: 0.7, height: 0.7))
+                    }
+                    
+                    let newOffset = CGSize(width: offset.width, height: offset.height - 50)
+                    
                     Image("\(ImageNames.color[piece.color]! + ImageNames.type[piece.type]!)")
                         .resizable()
+                        .scaleEffect(x: piece.type == .pawn ? 0.6 : 0.7, y: 0.7)
+                        .scaleEffect(x: isDragged ? 1.75 : 1, y: isDragged ? 1.75 : 1)
                         .shadow(
                             color: Color.green,
                             radius: selectedPosition == position ? 5 : 0
                         )
-                        .shadow(
-                            color: piece.type == .king ? Color.red : Color.clear,
-                            radius: game.isKingInCheck(forColor: piece.color) ? 10 : 0
-                        )
-                        .offset(selectedPosition == position ? offset : CGSize.zero)
+                        .offset(isDragged ? newOffset : CGSize.zero)
                         .gesture(dragGesture)
-                } else {
-                    Spacer()
-                        .aspectRatio(1, contentMode: .fit)
                 }
                 
                 if allowedMoves.contains(position) {
-                    Image("green.circle")
-                        .resizable()
-//                        .opacity(0.9)
-                        .aspectRatio(1, contentMode: .fill)
+                    Circle()
+                        .foregroundColor(.green)
+                        .opacity(0.9)
+                        .scaleEffect(CGSize(width: 0.2, height: 0.2))
                 }
             }
-            .aspectRatio(1, contentMode: .fit)
             .onAppear {
                 size = geometry.size
             }
         }
     }
     
-    private func getDraggedToPosition(offset: CGSize, size: CGSize) -> Position? {
-        let deltaX = offset.height / size.height
-        let deltaY = offset.width / size.width
+    private func computeDraggedPosition(offset: CGSize, size: CGSize) -> Position? {
+        let deltaX = Int((offset.height / size.height).rounded())
+        let deltaY = Int((offset.width / size.width).rounded())
 
-        return Position(
-            rawValue: (7 - i - Int(deltaX.rounded())) * 8 + j + Int(deltaY.rounded())
-        )
+        return Position(rawValue: (7 - i - deltaX) * 8 + j + deltaY)
     }
     
 }

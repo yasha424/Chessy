@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-protocol Game: ObservableObject {
+protocol Game: ObservableObject, Equatable {
     var board: Board { get }
+    var history: [Move] { get }
+    var turn: PieceColor { get }
     
     func canSelectPiece(atPosition: Position) -> Bool
     func allMoves(fromPosition: Position) -> [Position]
@@ -16,16 +18,52 @@ protocol Game: ObservableObject {
     func isKingInCheck(forColor: PieceColor) -> Bool
 }
 
+struct Move: Equatable {
+    let from: Position
+    let to: Position
+}
+
 class ClassicGame: Game {
 
-    @Published var board: Board
+    @Published private(set) var board: Board
  
-    var history = [Move]()
-    var turn: PieceColor = .white
+    private(set) var history = [Move]()
+    private(set) var turn: PieceColor = .white
 
     
     init(board: Board) {
         self.board = board
+    }
+    
+    init(fromFen fen: String) {
+        let splittedFen = fen.split(separator: " ")
+        
+        guard splittedFen.count == 6 else {
+            self.board = Board()
+            return
+        }
+        
+        self.board = Board(fromFen: String(splittedFen[0]))
+        self.turn = splittedFen[1] == "b" ? .black : .white
+
+        if splittedFen[3] != "-",
+           let enPassantTargetSquare = Position.fromString("\(splittedFen[3])") {
+            let targetSquareX = enPassantTargetSquare.rawValue / 8
+            let targetSquareY = enPassantTargetSquare.rawValue % 8
+            
+            if 2...5 ~= targetSquareX {
+                let turn = self.turn == .white ? -1 : 1
+                if let from = Position.fromCoordinates(x: targetSquareX - turn, y: targetSquareY),
+                   let to = Position.fromCoordinates(x: targetSquareX + turn, y: targetSquareY) {
+                    history.append(Move(from: from, to: to))
+                }
+            }
+        }
+        
+    }
+    
+    static func == (lhs: ClassicGame, rhs: ClassicGame) -> Bool {
+        return lhs.history == rhs.history && lhs.board == rhs.board && lhs.turn == rhs.turn
     }
     
     private func canMove(fromPosition from: Position, toPosition to: Position) -> Bool {
@@ -97,7 +135,6 @@ class ClassicGame: Game {
               let piece = board[from],
               turn == piece.color else { return }
         
-//        let otherPiece = board[to]
         let newGame = ClassicGame(board: board)
         newGame.history = history
         
@@ -105,7 +142,9 @@ class ClassicGame: Game {
             switch piece.type {
             case .pawn where isEnPassantAllowed(fromPosition: from, toPosition: to):
                 let otherPiecePositionX = to.rawValue / 8 - (to.rawValue / 8 - from.rawValue / 8)
-                newGame.board.pieces[otherPiecePositionX * 8 + (to.rawValue % 8)] = nil
+                let piecePosition = otherPiecePositionX * 8 + (to.rawValue % 8)
+                newGame.board.removePiece(atPosition: Position(rawValue: piecePosition) ?? .a1)
+//                newGame.board.pieces[otherPiecePositionX * 8 + (to.rawValue % 8)] = nil
             case .king where abs(from.rawValue % 8 - to.rawValue % 8) > 1:
                 let isKingSide = to.rawValue % 8 == 6
                 let rookPosition = Position(rawValue: to.rawValue / 8 * 8 + (isKingSide ? 7 : 0))!
@@ -122,11 +161,11 @@ class ClassicGame: Game {
             switch newGame.board.pieces[to.rawValue]!.color { // promotion
             case .white:
                 if piece.type == .pawn && to.rawValue / 8 == 7 {
-                    newGame.board.pieces[to.rawValue] = Piece(color: .white, type: .queen)
+                    newGame.board.promotePawn(atPosition: to, promoteTo: .queen)
                 }
             case .black:
                 if piece.type == .pawn && to.rawValue / 8 == 0 {
-                    newGame.board.pieces[to.rawValue] = Piece(color: .black, type: .queen)
+                    newGame.board.promotePawn(atPosition: to, promoteTo: .queen)
                 }
             }
             
@@ -220,7 +259,7 @@ class ClassicGame: Game {
     }
     
     private func pieceHasMoved(atPosition position: Position) -> Bool {
-        return history.contains(where: { $0.from == position })
+        return history.contains(where: { $0.from == position || $0.to == position })
     }
 
     private func isPositionThreatened(_ position: Position?, byColor color: PieceColor) -> Bool {

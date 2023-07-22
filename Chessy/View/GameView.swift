@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BoardView<ChessGame>: View where ChessGame: Game {
+struct GameView<ChessGame>: View where ChessGame: Game {
     
     @ObservedObject var game: ChessGame
     @State private var selectedPosition: Position? = nil
@@ -42,7 +42,6 @@ struct BoardView<ChessGame>: View where ChessGame: Game {
             }
         }
         .aspectRatio(1, contentMode: .fit)
-        .border(Color.black)
     }
     
     private func tappedAtPosition(_ position: Position) {
@@ -52,7 +51,7 @@ struct BoardView<ChessGame>: View where ChessGame: Game {
                 self.selectedRow = nil
             } else if game.canSelectPiece(atPosition: position) {
                 self.selectedPosition = position
-                self.selectedRow = position.rawValue / 8
+                self.selectedRow = 7 - position.rawValue / 8
             } else {
                 DispatchQueue.main.async {
                     game.movePiece(
@@ -66,7 +65,7 @@ struct BoardView<ChessGame>: View where ChessGame: Game {
         } else {
             if game.canSelectPiece(atPosition: position) {
                 selectedPosition = position
-                selectedRow = position.rawValue / 8
+                selectedRow = 7 - position.rawValue / 8
             } else {
                 selectedPosition = nil
                 selectedRow = nil
@@ -78,6 +77,14 @@ struct BoardView<ChessGame>: View where ChessGame: Game {
         } else {
             allowedMoves = []
         }
+    }
+    
+    mutating func updateGame(with newGame: ChessGame) {
+        selectedPosition = nil
+        allowedMoves = []
+        selectedRow = nil
+        draggedTo = nil
+        game = newGame
     }
     
 }

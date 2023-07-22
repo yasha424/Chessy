@@ -14,41 +14,90 @@ enum Position: Int, CaseIterable {
     case a6; case b6; case c6; case d6; case e6; case f6; case g6; case h6
     case a7; case b7; case c7; case d7; case e7; case f7; case g7; case h7
     case a8; case b8; case c8; case d8; case e8; case f8; case g8; case h8
-}
-
-struct Move: Equatable {
-    let from: Position
-    let to: Position
-//    let capturedPiece: Piece?
+    
+    static func fromCoordinates(x: Int, y: Int) -> Position? {
+        return Position(rawValue: x * 8 + y)
+    }
+    
+    static func fromString(_ value: String) -> Position? {
+        return Position.allCases.first { "\($0)" == value }
+    }
 }
 
 struct Board: Equatable {
     
-    var pieces = [Piece?]()
+    private(set) var pieces: [Piece?] = Array(repeating: nil, count: 64)
     
     init() {
+        defaultSetup()
+    }
+    
+    init(fromFen fen: String) {
+        let rows = fen.split(separator: "/")
+
+        guard rows.count == 8 else {
+            defaultSetup()
+            return
+        }
+
+        for i in 0..<8 {
+            var count = 0
+            for piece in rows[7 - i] {
+                if let emptyCells = Int("\(piece)") {
+                    count += emptyCells
+                    
+                    guard count <= 8 else {
+                        defaultSetup()
+                        return
+                    }
+                    
+                    for j in 0..<emptyCells {
+                        pieces[i * 8 + count - emptyCells + j] = nil
+                    }
+                } else {
+                    count += 1
+
+                    guard count <= 8 else {
+                        defaultSetup()
+                        return
+                    }
+
+                    pieces[i * 8 + count - 1] = (Piece(
+                        color: piece.isUppercase ? .white : .black,
+                        type: PieceType(rawValue: "\(piece.uppercased())") ?? .pawn
+                    ))
+                }
+            }
+            guard count == 8 else {
+                defaultSetup()
+                return
+            }
+        }
+    }
+    
+    private mutating func defaultSetup() {
         let pieceTypes: [PieceType] = [
             .rook, .knight, .bishop, .queen, .king, .bishop, .knight, .rook
         ]
 
         // white setup
-        for i in 0..<8 {
-            pieces.append(Piece(color: .white, type: pieceTypes[i]))
+        (0..<8).forEach { i in
+            pieces[i] = Piece(color: .white, type: pieceTypes[i])
         }
-        (8..<16).forEach { _ in
-            pieces.append(Piece(color: .white, type: .pawn))
-        }
-
-        (16..<48).forEach { _ in
-            pieces.append(nil)
+        (8..<16).forEach { i in
+            pieces[i] = Piece(color: .white, type: .pawn)
         }
         
-        // black setup
-        (48..<56).forEach { _ in
-            pieces.append(Piece(color: .black, type: .pawn))
+        (16..<48).forEach { i in
+            pieces[i] = nil
         }
-        for i in 56..<64 {
-            pieces.append(Piece(color: .black, type: pieceTypes[i - 56]))
+
+        // black setup
+        (48..<56).forEach { i in
+            pieces[i] = Piece(color: .black, type: .pawn)
+        }
+        (56..<64).forEach { i in
+            pieces[i] = Piece(color: .black, type: pieceTypes[i - 56])
         }
     }
     
@@ -83,4 +132,24 @@ struct Board: Equatable {
         pieces[from.rawValue] = nil
     }
     
+    mutating func removePiece(atPosition position: Position) {
+        pieces[position.rawValue] = nil
+    }
+    
+    mutating func promotePawn(atPosition position: Position, promoteTo type: PieceType) {
+        guard let piece = pieces[position.rawValue],
+              piece.type == .pawn,
+              type != .pawn, type != .king else {
+            return
+        }
+        
+        let positionX = position.rawValue / 8
+        
+        guard (positionX == 7 && piece.color == .white) ||
+              (positionX == 0 && piece.color == .black) else {
+            return
+        }
+        
+        pieces[position.rawValue] = Piece(color: piece.color, type: type)
+    }
 }

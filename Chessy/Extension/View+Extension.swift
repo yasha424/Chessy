@@ -37,4 +37,8 @@ extension View {
     func onShake(perform action: @escaping () -> Void) -> some View {
         self.modifier(DeviceShakeViewModifier(action: action))
     }
+        
+    func glassView() -> some View {
+        return modifier(GlassView())
+    }
 }
