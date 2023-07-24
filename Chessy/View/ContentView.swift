@@ -13,6 +13,8 @@ struct ContentView: View {
     @State var fenString = ""
     @FocusState var isInputActive: Bool
     
+    @Environment(\.verticalSizeClass) var sizeClass
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -44,33 +46,33 @@ struct ContentView: View {
                         gameView.updateGame(with: ClassicGame(board: Board()))
                     }
                     .frame(alignment: .center)
-                    .glassView()
-                    .padding()
                 
                 Spacer()
                 
-                TextField("Input FEN", text: $fenString)
-                    .padding()
-                    .frame(height: 50)
-                    .glassView()
-                    .padding()
-                    .onSubmit {
-                        gameView.updateGame(with: ClassicGame(fromFen: fenString))
-                    }
-                    .autocorrectionDisabled()
-                    .focused($isInputActive)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            Button("Cancel") {
-                                isInputActive = false
-                            }
-                            Spacer()
-                            Button("Done") {
-                                isInputActive = false
-                                gameView.updateGame(with: ClassicGame(fromFen: fenString))
+                if sizeClass == .regular {
+                    TextField("Input FEN", text: $fenString)
+                        .padding()
+                        .frame(height: 40)
+                        .glassView()
+                        .padding([.leading, .trailing])
+                        .onSubmit {
+                            gameView.updateGame(with: ClassicGame(fromFen: fenString))
+                        }
+                        .autocorrectionDisabled()
+                        .focused($isInputActive)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Button("Cancel") {
+                                    isInputActive = false
+                                }
+                                Spacer()
+                                Button("Done") {
+                                    isInputActive = false
+                                    gameView.updateGame(with: ClassicGame(fromFen: fenString))
+                                }
                             }
                         }
-                    }
+                }
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .padding([.top, .bottom])

@@ -22,7 +22,7 @@ struct CellView<ChessGame>: View where ChessGame: Game {
     @State var isDragged: Bool = false
     
     @State var changes = 0
-    let refreshRate = 4
+    let refreshRate = 3
 
     var position: Position {
         Position(rawValue: (7 - i) * 8 + j)!
@@ -86,7 +86,7 @@ struct CellView<ChessGame>: View where ChessGame: Game {
                 if draggedTo == position {
                     Circle()
                         .foregroundColor(.green)
-                        .opacity(0.5)
+                        .opacity(0.3)
                         .scaleEffect(x: 1.8, y: 1.8)
                 }
                 
@@ -99,7 +99,10 @@ struct CellView<ChessGame>: View where ChessGame: Game {
                             .scaleEffect(CGSize(width: 0.7, height: 0.7))
                     }
                     
-                    let newOffset = CGSize(width: offset.width, height: offset.height - 50)
+                    let newOffset = CGSize(
+                        width: offset.width,
+                        height: offset.height - geometry.size.height
+                    )
                     
                     Image("\(ImageNames.color[piece.color]! + ImageNames.type[piece.type]!)")
                         .resizable()
@@ -111,6 +114,7 @@ struct CellView<ChessGame>: View where ChessGame: Game {
                         )
                         .offset(isDragged ? newOffset : CGSize.zero)
                         .gesture(dragGesture)
+                        .rotationEffect(Angle(degrees: game.turn == .white ? 0 : 180))
                 }
                 
                 if allowedMoves.contains(position) {
@@ -119,6 +123,9 @@ struct CellView<ChessGame>: View where ChessGame: Game {
                         .opacity(0.9)
                         .scaleEffect(CGSize(width: 0.2, height: 0.2))
                 }
+            }
+            .onChange(of: geometry.size) { _ in
+                size = geometry.size
             }
             .onAppear {
                 size = geometry.size
@@ -130,7 +137,11 @@ struct CellView<ChessGame>: View where ChessGame: Game {
         let deltaX = Int((offset.height / size.height).rounded())
         let deltaY = Int((offset.width / size.width).rounded())
 
-        return Position(rawValue: (7 - i - deltaX) * 8 + j + deltaY)
+        if game.turn == .white {
+            return Position(rawValue: (7 - i - deltaX) * 8 + j + deltaY)
+        } else {
+            return Position(rawValue: (7 - i + deltaX) * 8 + j - deltaY)
+        }
     }
     
 }

@@ -7,15 +7,19 @@
 
 import SwiftUI
 
-protocol Game: ObservableObject, Equatable {
+protocol Game: ObservableObject, Equatable, GameTimerDelegate {
     var board: Board { get }
     var history: [Move] { get }
     var turn: PieceColor { get }
+    var timer: GameTimer { get }
+    var whiteTime: Int? { get }
+    var blackTime: Int? { get }
     
     func canSelectPiece(atPosition: Position) -> Bool
     func allMoves(fromPosition: Position) -> [Position]
     func movePiece(fromPosition: Position, toPosition: Position) -> Void
     func isKingInCheck(forColor: PieceColor) -> Bool
+    func addTime(for color: PieceColor) -> Void
 }
 
 struct Move: Equatable {
@@ -29,10 +33,19 @@ class ClassicGame: Game {
  
     private(set) var history = [Move]()
     private(set) var turn: PieceColor = .white
-
     
+    private(set) var timer = GameTimer(seconds: 30)
+
+    @Published private(set) var whiteTime: Int?
+    @Published private(set) var blackTime: Int?
+        
     init(board: Board) {
         self.board = board
+
+        whiteTime = timer.whiteSeconds
+        blackTime = timer.blackSeconds
+
+        timer.delegate = self
     }
     
     init(fromFen fen: String) {
@@ -59,7 +72,10 @@ class ClassicGame: Game {
                 }
             }
         }
-        
+
+        timer.delegate = self
+        whiteTime = timer.whiteSeconds
+        blackTime = timer.blackSeconds
     }
     
     static func == (lhs: ClassicGame, rhs: ClassicGame) -> Bool {
@@ -170,6 +186,11 @@ class ClassicGame: Game {
             }
             
             if !newGame.isKingInCheck(forColor: piece.color) {
+                if history.isEmpty {
+                    timer.start()
+                }
+                timer.toggle()
+                
                 self.board = newGame.board
                 self.history.append(Move(from: from, to: to))
                 self.turn = turn == .white ? .black : .white
@@ -321,4 +342,30 @@ class ClassicGame: Game {
         return board[position]?.color == turn
     }
 
+}
+
+extension ClassicGame: GameTimerDelegate {
+    func didUpdateTime(with time: Int, for color: PieceColor) {
+        switch color {
+        case .white:
+            if time / 10 < whiteTime! {
+                whiteTime = time / 10
+            }
+        case .black:
+            if time / 10 < blackTime! {
+                blackTime = time / 10
+            }
+        }
+    }
+    
+    func addTime(for color: PieceColor) {
+        switch color {
+        case .white:
+            timer.add(seconds: 15, for: .white)
+            whiteTime = timer.whiteSeconds
+        case .black:
+            timer.add(seconds: 15, for: .black)
+            blackTime = timer.blackSeconds
+        }
+    }
 }

@@ -23,6 +23,9 @@
 		D3452B2C2A694172003A1F45 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3452B2B2A694172003A1F45 /* Game.swift */; };
 		D3610A802A5AB3030046A585 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3610A7F2A5AB3030046A585 /* Colors.swift */; };
 		D3611FBE2A6C161D00348F99 /* GlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3611FBD2A6C161D00348F99 /* GlassView.swift */; };
+		D3788FC62A6E8E2B0008DE41 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC52A6E8E2B0008DE41 /* TimerView.swift */; };
+		D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC72A6E8FC40008DE41 /* BoardView.swift */; };
+		D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */; };
 		D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
 		D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
 		D3F404172A66A3A800C97C84 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404162A66A3A700C97C84 /* CellView.swift */; };
@@ -63,6 +66,10 @@
 		D3452B2B2A694172003A1F45 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		D3610A7F2A5AB3030046A585 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D3611FBD2A6C161D00348F99 /* GlassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassView.swift; sourceTree = "<group>"; };
+		D3788FC52A6E8E2B0008DE41 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		D3788FC72A6E8FC40008DE41 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
+		D3972CA22A6DE9210050E6FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
 		D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		D3F404162A66A3A700C97C84 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -117,6 +124,7 @@
 		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
 			isa = PBXGroup;
 			children = (
+				D3972CA22A6DE9210050E6FA /* Info.plist */,
 				D3611FBC2A6C15F700348F99 /* ViewModifier */,
 				D3EE189C2A5D8DA70096C9D4 /* Extension */,
 				D3EE189B2A5D8D9C0096C9D4 /* Chess */,
@@ -161,6 +169,8 @@
 				D3254D202A5A19130093ECC6 /* GameView.swift */,
 				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
 				D3F404162A66A3A700C97C84 /* CellView.swift */,
+				D3788FC52A6E8E2B0008DE41 /* TimerView.swift */,
+				D3788FC72A6E8FC40008DE41 /* BoardView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -188,6 +198,7 @@
 				D3141EE82A55E43C00D9D95A /* Piece.swift */,
 				D3141EEB2A55E55900D9D95A /* Board.swift */,
 				D3452B2B2A694172003A1F45 /* Game.swift */,
+				D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */,
 			);
 			path = Chess;
 			sourceTree = "<group>";
@@ -333,8 +344,11 @@
 				D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */,
 				D3452B2C2A694172003A1F45 /* Game.swift in Sources */,
 				D3610A802A5AB3030046A585 /* Colors.swift in Sources */,
+				D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */,
 				D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */,
+				D3788FC62A6E8E2B0008DE41 /* TimerView.swift in Sources */,
 				D3254D212A5A19130093ECC6 /* GameView.swift in Sources */,
+				D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */,
 				D3141EEC2A55E55900D9D95A /* Board.swift in Sources */,
 				D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */,
 				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
@@ -507,12 +521,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
 				DEVELOPMENT_TEAM = V6FC2DVK94;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Chessy/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -543,12 +560,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
 				DEVELOPMENT_TEAM = V6FC2DVK94;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Chessy/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
