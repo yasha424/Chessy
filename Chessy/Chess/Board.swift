@@ -15,6 +15,14 @@ enum Position: Int, CaseIterable {
     case a7; case b7; case c7; case d7; case e7; case f7; case g7; case h7
     case a8; case b8; case c8; case d8; case e8; case f8; case g8; case h8
     
+    var x: Int {
+        self.rawValue / 8
+    }
+    
+    var y: Int {
+        return self.rawValue % 8
+    }
+    
     static func fromCoordinates(x: Int, y: Int) -> Position? {
         return Position(rawValue: x * 8 + y)
     }
@@ -62,10 +70,7 @@ struct Board: Equatable {
                         return
                     }
 
-                    pieces[i * 8 + count - 1] = (Piece(
-                        color: piece.isUppercase ? .white : .black,
-                        type: PieceType(rawValue: "\(piece.uppercased())") ?? .pawn
-                    ))
+                    pieces[i * 8 + count - 1] = (Piece(fromFenCharacter: piece))
                 }
             }
             guard count == 8 else {
@@ -148,10 +153,8 @@ struct Board: Equatable {
             return
         }
         
-        let positionX = position.rawValue / 8
-        
-        guard (positionX == 7 && piece.color == .white) ||
-              (positionX == 0 && piece.color == .black) else {
+        guard (position.x == 7 && piece.color == .white) ||
+                (position.x == 0 && piece.color == .black) else {
             return
         }
         

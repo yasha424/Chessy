@@ -39,34 +39,61 @@ struct ContentView: View {
                 .blur(radius: 5)
 
             VStack {
-                HStack {
+                if sizeClass == .compact {
+                    HStack {
+                        Spacer()
+
+                        VStack {
+                            Button {
+                                gameView.undoLastMove()
+                            } label: {
+                                Image(systemName: "arrow.uturn.left")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .aspectRatio(contentMode: .fit)
+                                    .padding(8)
+                            }
+                            .frame(width: 40, height: 40)
+                            .glassView()
+                            .padding(.top)
+                            
+                            Spacer()
+                        }
+                        
+                        gameView
+                            .onShake {
+                                gameView.updateGame(with: ClassicGame(board: Board()))
+                            }
+                        
+                        Spacer()
+                    }
+                } else {
+                    HStack {
+                        Spacer()
+                        
+                        Button {
+                            gameView.undoLastMove()
+                        } label: {
+                            Image(systemName: "arrow.uturn.left")
+                                .resizable()
+                                .foregroundColor(.white)
+                                .aspectRatio(contentMode: .fit)
+                                .padding(8)
+                        }
+                        .frame(width: 40, height: 40)
+                        .glassView()
+                        .padding([.trailing, .leading, .bottom])
+                    }
+
                     Spacer()
                     
-                    Button {
-                        gameView.undoLastMove()
-                    } label: {
-                        Image(systemName: "arrow.uturn.backward.circle")
-                            .resizable()
-                            .foregroundColor(.white)
-                            .aspectRatio(contentMode: .fit)
-                            .padding(8)
-                    }
-                    .frame(width: 40, height: 40)
-                    .glassView()
-                    .padding([.trailing, .leading, .bottom])
-                }
+                    gameView
+                        .onShake {
+                            gameView.updateGame(with: ClassicGame(board: Board()))
+                        }
+                    
+                    Spacer()
 
-                Spacer()
-                
-                gameView
-                    .onShake {
-                        gameView.updateGame(with: ClassicGame(board: Board()))
-                    }
-                    .frame(alignment: .center)
-                
-                Spacer()
-                
-                if sizeClass == .regular {
                     TextField("Input FEN", text: $fenString)
                         .padding()
                         .frame(height: 40)

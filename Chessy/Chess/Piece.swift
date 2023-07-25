@@ -34,6 +34,10 @@ enum PieceType: String {
 enum PieceColor: String {
     case white = "W"
     case black = "B"
+    
+    var opposite: PieceColor {
+        self == .white ? .black : .white
+    }
 }
 
 struct Piece: Equatable {
@@ -42,5 +46,15 @@ struct Piece: Equatable {
     
     static func == (lhs: Piece, rhs: Piece) -> Bool {
         return lhs.color == rhs.color && lhs.type == rhs.type
+    }
+    
+    init(color: PieceColor, type: PieceType) {
+        self.color = color
+        self.type = type
+    }
+
+    init(fromFenCharacter fen: Character) {
+        self.color = fen.isUppercase ? .white : .black
+        self.type = PieceType(rawValue: fen.uppercased()) ?? .pawn
     }
 }

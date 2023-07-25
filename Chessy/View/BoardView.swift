@@ -47,7 +47,9 @@ struct BoardView<ChessGame>: View where ChessGame: Game {
         .padding()
     }
 
-    func reset() {
+    
+    mutating func updateGame(with newGame: ChessGame) {
+        self.game = newGame
         selectedPosition = nil
         allowedMoves = []
         selectedRow = nil
@@ -86,6 +88,15 @@ struct BoardView<ChessGame>: View where ChessGame: Game {
             allowedMoves = game.allMoves(fromPosition: position)
         } else {
             allowedMoves = []
+        }
+        
+        switch game.state {
+        case .checkmate(let color):
+            print((color == .white ? "White" : "Black") + " is being checkmated")
+        case .stalemate:
+            print("Stalemate")
+        case .inProgress:
+            break
         }
     }
     

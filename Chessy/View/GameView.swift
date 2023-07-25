@@ -29,7 +29,7 @@ struct GameView<ChessGame>: View where ChessGame: Game {
                     }
                 }
             
-                BoardView(game: game)
+                boardView
 
                 if game.timer != nil {
                     HStack {
@@ -40,7 +40,7 @@ struct GameView<ChessGame>: View where ChessGame: Game {
                 }
             } else {
                 HStack {
-                    BoardView(game: game)
+                    boardView
                     
                     if game.timer != nil {
                         VStack {
@@ -59,7 +59,7 @@ struct GameView<ChessGame>: View where ChessGame: Game {
     
     mutating func updateGame(with newGame: ChessGame) {
         game = newGame
-        boardView.reset()
+        boardView.updateGame(with: newGame)
     }
     
     func undoLastMove() {

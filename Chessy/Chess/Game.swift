@@ -11,6 +11,7 @@ protocol Game: ObservableObject, Equatable, GameTimerDelegate {
     var board: Board { get }
     var history: [Move] { get }
     var turn: PieceColor { get }
+    var state: GameState { get }
     
     var timer: GameTimer? { get }
     var whiteTime: Int? { get }
@@ -22,6 +23,12 @@ protocol Game: ObservableObject, Equatable, GameTimerDelegate {
     func isKingInCheck(forColor: PieceColor) -> Bool
     func addTime(for color: PieceColor) -> Void
     func undoLastMove() -> Void
+}
+
+enum GameState: Equatable {
+    case checkmate(color: PieceColor)
+    case stalemate(color: PieceColor)
+    case inProgress
 }
 
 enum CastleSide: String {
@@ -38,43 +45,40 @@ struct Move: Equatable {
     var pawnPromotedTo: PieceType? = nil
     var capturedPiece: Piece? = nil
     var capturedByEnPassant: Bool = false
+    var timeLeft: Int? = nil
 }
 
 class ClassicGame: Game {
-
+    
     @Published private(set) var board: Board
- 
+    
     private(set) var history = [Move]()
     private(set) var turn: PieceColor = .white
     
     private(set) var timer: GameTimer?
     @Published private(set) var whiteTime: Int?
     @Published private(set) var blackTime: Int?
-        
+    var state: GameState {
+        return getState()
+    }
+    
     init(board: Board) {
         self.board = board
-
-        timer = GameTimer(seconds: 30)
-        whiteTime = timer?.whiteSeconds
-        blackTime = timer?.blackSeconds
-        timer?.delegate = self
+        
+        setupTimer(seconds: 30)
     }
     
     init(fromFen fen: String) {
-        timer = GameTimer(seconds: 30)
-        whiteTime = timer?.whiteSeconds
-        blackTime = timer?.blackSeconds
         
         let splittedFen = fen.split(separator: " ")
         
         guard splittedFen.count == 6 else {
             self.board = Board()
-            timer?.delegate = self
+            setupTimer(seconds: 30)
             return
         }
         
         self.board = Board(fromFen: String(splittedFen[0]))
-        timer?.delegate = self
         self.turn = splittedFen[1] == "b" ? .black : .white
 
         if splittedFen[3] != "-",
@@ -82,13 +86,40 @@ class ClassicGame: Game {
             let targetSquareX = enPassantTargetSquare.rawValue / 8
             let targetSquareY = enPassantTargetSquare.rawValue % 8
             
-            if 2...5 ~= targetSquareX {
+            if [2, 5].contains(targetSquareX) {
                 let turn = self.turn == .white ? -1 : 1
                 if let from = Position.fromCoordinates(x: targetSquareX - turn, y: targetSquareY),
                    let to = Position.fromCoordinates(x: targetSquareX + turn, y: targetSquareY),
                    let piece = board[to] {
-                    history.append(Move(from: from, to: to, piece: piece))
+                    history.append(Move(from: from, to: to, piece: piece, timeLeft: 30))
                 }
+            }
+        }
+        
+        setupTimer(seconds: 30)
+        timer?.start()
+        if self.turn == .black {
+            timer?.toggle()
+        }
+    }
+    
+    func setupTimer(seconds: Int) {
+        timer = GameTimer(seconds: seconds)
+        whiteTime = timer?.whiteSeconds
+        blackTime = timer?.blackSeconds
+        timer?.delegate = self
+    }
+    
+    func getState() -> GameState {
+        let allMoves = allMoves(for: turn)
+        
+        if !allMoves.isEmpty {
+            return .inProgress
+        } else {
+            if isKingInCheck(forColor: turn) {
+                return .checkmate(color: turn)
+            } else {
+                return .stalemate(color: turn)
             }
         }
     }
@@ -223,7 +254,8 @@ class ClassicGame: Game {
                     castling: castling,
                     pawnPromotedTo: promotionTo,
                     capturedPiece: capturedPiece,
-                    capturedByEnPassant: capturedByEnPassant
+                    capturedByEnPassant: capturedByEnPassant,
+                    timeLeft: self.turn == .white ? whiteTime : blackTime
                 )
                 self.history.append(move)
                 self.turn = turn == .white ? .black : .white
@@ -235,7 +267,13 @@ class ClassicGame: Game {
     func undoLastMove() {
         guard let move = history.last else { return }
         
+        if move.pawnPromotedTo != nil {
+            self.board.removePiece(atPosition: move.to)
+            self.board.addPiece(move.piece, atPosition: move.to)
+        }
+        
         self.board.movePiece(fromPosition: move.to, toPosition: move.from)
+        
         if let capturedPiece = move.capturedPiece {
             if move.capturedByEnPassant {
                 let position = move.to.rawValue - (move.piece.color == .white ? 8 : -8)
@@ -256,6 +294,9 @@ class ClassicGame: Game {
         
         self.history.removeLast()
         self.turn = turn == .white ? .black : .white
+        timer?.set(seconds: move.timeLeft ?? 0, for: move.piece.color)
+        timer?.start()
+        timer?.toggle()
     }
     
     private func isEnPassantAllowed(fromPosition from: Position, toPosition to: Position) -> Bool {
@@ -397,6 +438,26 @@ class ClassicGame: Game {
         }
     }
     
+    func allMoves(for color: PieceColor) -> [Move] {
+        var moves = [Move]()
+        
+        Position.allCases.forEach { from in
+            if let piece = board[from],
+               piece.color == color {
+                allMoves(fromPosition: from).forEach({ to in
+                    let newGame = ClassicGame(board: board)
+                    newGame.board.movePiece(fromPosition: from, toPosition: to)
+                    if canMove(fromPosition: from, toPosition: to) &&
+                       !newGame.isKingInCheck(forColor: piece.color) {
+                        moves.append(Move(from: from, to: to, piece: piece))
+                    }
+                })
+            }
+        }
+        
+        return moves
+    }
+    
     func canSelectPiece(atPosition position: Position) -> Bool {
         return board[position]?.color == turn
     }
@@ -409,11 +470,11 @@ extension ClassicGame: GameTimerDelegate {
         
         switch color {
         case .white:
-            if time / 10 < whiteTime! {
+            if time / 10 != whiteTime! {
                 whiteTime = time / 10
             }
         case .black:
-            if time / 10 < blackTime! {
+            if time / 10 != blackTime! {
                 blackTime = time / 10
             }
         }

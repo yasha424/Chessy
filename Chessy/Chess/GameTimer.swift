@@ -18,6 +18,8 @@ class GameTimer: ObservableObject {
 
     private var timer = Timer()
     private var activeColor: PieceColor
+    private var isStarted = false
+    
     var delegate: GameTimerDelegate?
     
     var whiteMinutes: Int {
@@ -57,6 +59,9 @@ class GameTimer: ObservableObject {
     }
     
     func start() {
+        guard !isStarted else { return }
+        
+        isStarted = true
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             switch self.activeColor {
             case .white:
@@ -64,12 +69,14 @@ class GameTimer: ObservableObject {
                     self.update(for: .white)
                 } else {
                     self.timer.invalidate()
+                    self.isStarted = false
                 }
             case .black:
                 if self.blackTime > 0 {
                     self.update(for: .black)
                 } else {
                     self.timer.invalidate()
+                    self.isStarted = false
                 }
             }
         }
