@@ -28,7 +28,7 @@
 		D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */; };
 		D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
 		D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
-		D3F404172A66A3A800C97C84 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404162A66A3A700C97C84 /* CellView.swift */; };
+		D3F404172A66A3A800C97C84 /* SquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404162A66A3A700C97C84 /* SquareView.swift */; };
 		D3F404192A66FDA800C97C84 /* ImageNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404182A66FDA800C97C84 /* ImageNames.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,7 +72,7 @@
 		D3972CA22A6DE9210050E6FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
 		D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
-		D3F404162A66A3A700C97C84 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		D3F404162A66A3A700C97C84 /* SquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareView.swift; sourceTree = "<group>"; };
 		D3F404182A66FDA800C97C84 /* ImageNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNames.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,7 +168,7 @@
 			children = (
 				D3254D202A5A19130093ECC6 /* GameView.swift */,
 				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
-				D3F404162A66A3A700C97C84 /* CellView.swift */,
+				D3F404162A66A3A700C97C84 /* SquareView.swift */,
 				D3788FC52A6E8E2B0008DE41 /* TimerView.swift */,
 				D3788FC72A6E8FC40008DE41 /* BoardView.swift */,
 			);
@@ -353,7 +353,7 @@
 				D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */,
 				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
 				D3611FBE2A6C161D00348F99 /* GlassView.swift in Sources */,
-				D3F404172A66A3A800C97C84 /* CellView.swift in Sources */,
+				D3F404172A66A3A800C97C84 /* SquareView.swift in Sources */,
 				D3F404192A66FDA800C97C84 /* ImageNames.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

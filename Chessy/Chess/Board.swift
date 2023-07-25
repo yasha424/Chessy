@@ -136,6 +136,11 @@ struct Board: Equatable {
         pieces[position.rawValue] = nil
     }
     
+    mutating func addPiece(_ piece: Piece, atPosition position: Position) {
+        guard pieces[position.rawValue] == nil else { return }
+        pieces[position.rawValue] = piece
+    }
+    
     mutating func promotePawn(atPosition position: Position, promoteTo type: PieceType) {
         guard let piece = pieces[position.rawValue],
               piece.type == .pawn,

@@ -39,6 +39,23 @@ struct ContentView: View {
                 .blur(radius: 5)
 
             VStack {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        gameView.undoLastMove()
+                    } label: {
+                        Image(systemName: "arrow.uturn.backward.circle")
+                            .resizable()
+                            .foregroundColor(.white)
+                            .aspectRatio(contentMode: .fit)
+                            .padding(8)
+                    }
+                    .frame(width: 40, height: 40)
+                    .glassView()
+                    .padding([.trailing, .leading, .bottom])
+                }
+
                 Spacer()
                 
                 gameView

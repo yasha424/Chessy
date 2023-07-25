@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CellView<ChessGame>: View where ChessGame: Game {
+struct SquareView<ChessGame>: View where ChessGame: Game {
 
     @ObservedObject var game: ChessGame
     @Binding var selectedPosition: Position?
@@ -114,7 +114,7 @@ struct CellView<ChessGame>: View where ChessGame: Game {
                         )
                         .offset(isDragged ? newOffset : CGSize.zero)
                         .gesture(dragGesture)
-                        .rotationEffect(Angle(degrees: game.turn == .white ? 0 : 180))
+//                        .rotationEffect(Angle(degrees: game.turn == .white ? 0 : 180))
                 }
                 
                 if allowedMoves.contains(position) {
@@ -137,11 +137,11 @@ struct CellView<ChessGame>: View where ChessGame: Game {
         let deltaX = Int((offset.height / size.height).rounded())
         let deltaY = Int((offset.width / size.width).rounded())
 
-        if game.turn == .white {
+//        if game.turn == .white {
             return Position(rawValue: (7 - i - deltaX) * 8 + j + deltaY)
-        } else {
-            return Position(rawValue: (7 - i + deltaX) * 8 + j - deltaY)
-        }
+//        } else {
+//            return Position(rawValue: (7 - i + deltaX) * 8 + j - deltaY)
+//        }
     }
     
 }

@@ -21,29 +21,35 @@ struct GameView<ChessGame>: View where ChessGame: Game {
     var body: some View {
         VStack {
             if sizeClass == .regular {
-                HStack {
-                    Spacer()
-                    TimerView(game: game, color: .black)
-                        .padding([.top, .trailing])
+                if game.timer != nil {
+                    HStack {
+                        Spacer()
+                        TimerView(game: game, color: .black)
+                            .padding([.top, .trailing])
+                    }
                 }
             
                 BoardView(game: game)
 
-                HStack {
-                    Spacer()
-                    TimerView(game: game, color: .white)
-                        .padding([.bottom, .trailing])
+                if game.timer != nil {
+                    HStack {
+                        Spacer()
+                        TimerView(game: game, color: .white)
+                            .padding([.bottom, .trailing])
+                    }
                 }
             } else {
                 HStack {
                     BoardView(game: game)
                     
-                    VStack {
-                        TimerView(game: game, color: .black)
-                            .padding(.top)
-                        Spacer()
-                        TimerView(game: game, color: .white)
-                            .padding(.bottom)
+                    if game.timer != nil {
+                        VStack {
+                            TimerView(game: game, color: .black)
+                                .padding(.top)
+                            Spacer()
+                            TimerView(game: game, color: .white)
+                                .padding(.bottom)
+                        }
                     }
                 }
             }
@@ -54,6 +60,10 @@ struct GameView<ChessGame>: View where ChessGame: Game {
     mutating func updateGame(with newGame: ChessGame) {
         game = newGame
         boardView.reset()
+    }
+    
+    func undoLastMove() {
+        game.undoLastMove()
     }
     
 }

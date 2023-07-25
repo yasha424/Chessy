@@ -11,7 +11,8 @@ protocol Game: ObservableObject, Equatable, GameTimerDelegate {
     var board: Board { get }
     var history: [Move] { get }
     var turn: PieceColor { get }
-    var timer: GameTimer { get }
+    
+    var timer: GameTimer? { get }
     var whiteTime: Int? { get }
     var blackTime: Int? { get }
     
@@ -20,11 +21,23 @@ protocol Game: ObservableObject, Equatable, GameTimerDelegate {
     func movePiece(fromPosition: Position, toPosition: Position) -> Void
     func isKingInCheck(forColor: PieceColor) -> Bool
     func addTime(for color: PieceColor) -> Void
+    func undoLastMove() -> Void
+}
+
+enum CastleSide: String {
+    case kingSide = "O-O"
+    case queenSide = "O-O-O"
 }
 
 struct Move: Equatable {
     let from: Position
     let to: Position
+    
+    let piece: Piece
+    var castling: CastleSide? = nil
+    var pawnPromotedTo: PieceType? = nil
+    var capturedPiece: Piece? = nil
+    var capturedByEnPassant: Bool = false
 }
 
 class ClassicGame: Game {
@@ -34,29 +47,34 @@ class ClassicGame: Game {
     private(set) var history = [Move]()
     private(set) var turn: PieceColor = .white
     
-    private(set) var timer = GameTimer(seconds: 30)
-
+    private(set) var timer: GameTimer?
     @Published private(set) var whiteTime: Int?
     @Published private(set) var blackTime: Int?
         
     init(board: Board) {
         self.board = board
 
-        whiteTime = timer.whiteSeconds
-        blackTime = timer.blackSeconds
-
-        timer.delegate = self
+        timer = GameTimer(seconds: 30)
+        whiteTime = timer?.whiteSeconds
+        blackTime = timer?.blackSeconds
+        timer?.delegate = self
     }
     
     init(fromFen fen: String) {
+        timer = GameTimer(seconds: 30)
+        whiteTime = timer?.whiteSeconds
+        blackTime = timer?.blackSeconds
+        
         let splittedFen = fen.split(separator: " ")
         
         guard splittedFen.count == 6 else {
             self.board = Board()
+            timer?.delegate = self
             return
         }
         
         self.board = Board(fromFen: String(splittedFen[0]))
+        timer?.delegate = self
         self.turn = splittedFen[1] == "b" ? .black : .white
 
         if splittedFen[3] != "-",
@@ -67,15 +85,12 @@ class ClassicGame: Game {
             if 2...5 ~= targetSquareX {
                 let turn = self.turn == .white ? -1 : 1
                 if let from = Position.fromCoordinates(x: targetSquareX - turn, y: targetSquareY),
-                   let to = Position.fromCoordinates(x: targetSquareX + turn, y: targetSquareY) {
-                    history.append(Move(from: from, to: to))
+                   let to = Position.fromCoordinates(x: targetSquareX + turn, y: targetSquareY),
+                   let piece = board[to] {
+                    history.append(Move(from: from, to: to, piece: piece))
                 }
             }
         }
-
-        timer.delegate = self
-        whiteTime = timer.whiteSeconds
-        blackTime = timer.blackSeconds
     }
     
     static func == (lhs: ClassicGame, rhs: ClassicGame) -> Bool {
@@ -153,14 +168,21 @@ class ClassicGame: Game {
         
         let newGame = ClassicGame(board: board)
         newGame.history = history
+        var castling: CastleSide? = nil
+        var capturedByEnPassant = false
+        var capturedPiece: Piece? = nil
         
         if canMove(fromPosition: from, toPosition: to) {
+            capturedPiece = board[to]
+            newGame.board.movePiece(fromPosition: from, toPosition: to)
+
             switch piece.type {
             case .pawn where isEnPassantAllowed(fromPosition: from, toPosition: to):
                 let otherPiecePositionX = to.rawValue / 8 - (to.rawValue / 8 - from.rawValue / 8)
-                let piecePosition = otherPiecePositionX * 8 + (to.rawValue % 8)
-                newGame.board.removePiece(atPosition: Position(rawValue: piecePosition) ?? .a1)
-//                newGame.board.pieces[otherPiecePositionX * 8 + (to.rawValue % 8)] = nil
+                let otherPiecePosition = otherPiecePositionX * 8 + (to.rawValue % 8)
+                capturedPiece = board[otherPiecePosition]
+                capturedByEnPassant = true
+                newGame.board.removePiece(atPosition: Position(rawValue: otherPiecePosition) ?? .a1)
             case .king where abs(from.rawValue % 8 - to.rawValue % 8) > 1:
                 let isKingSide = to.rawValue % 8 == 6
                 let rookPosition = Position(rawValue: to.rawValue / 8 * 8 + (isKingSide ? 7 : 0))!
@@ -168,35 +190,72 @@ class ClassicGame: Game {
                     rawValue: isKingSide ? from.rawValue + 1 : from.rawValue - 1
                 )
                 newGame.board.movePiece(fromPosition: rookPosition, toPosition: newRookPosition!)
+                castling = isKingSide ? .kingSide : .queenSide
             default:
                 break
             }
-
-            newGame.board.movePiece(fromPosition: from, toPosition: to)
             
+            var promotionTo: PieceType? = nil
             switch newGame.board.pieces[to.rawValue]!.color { // promotion
             case .white:
                 if piece.type == .pawn && to.rawValue / 8 == 7 {
                     newGame.board.promotePawn(atPosition: to, promoteTo: .queen)
+                    promotionTo = .queen
                 }
             case .black:
                 if piece.type == .pawn && to.rawValue / 8 == 0 {
                     newGame.board.promotePawn(atPosition: to, promoteTo: .queen)
+                    promotionTo = .queen
                 }
             }
             
             if !newGame.isKingInCheck(forColor: piece.color) {
                 if history.isEmpty {
-                    timer.start()
+                    timer?.start()
                 }
-                timer.toggle()
+                timer?.toggle()
                 
                 self.board = newGame.board
-                self.history.append(Move(from: from, to: to))
+                let move = Move(
+                    from: from,
+                    to: to,
+                    piece: piece,
+                    castling: castling,
+                    pawnPromotedTo: promotionTo,
+                    capturedPiece: capturedPiece,
+                    capturedByEnPassant: capturedByEnPassant
+                )
+                self.history.append(move)
                 self.turn = turn == .white ? .black : .white
             }
         }
         
+    }
+    
+    func undoLastMove() {
+        guard let move = history.last else { return }
+        
+        self.board.movePiece(fromPosition: move.to, toPosition: move.from)
+        if let capturedPiece = move.capturedPiece {
+            if move.capturedByEnPassant {
+                let position = move.to.rawValue - (move.piece.color == .white ? 8 : -8)
+                self.board.addPiece(capturedPiece, atPosition: Position(rawValue: position) ?? .a1)
+            } else {
+                self.board.addPiece(capturedPiece, atPosition: move.to)
+            }
+        } else if let castleSide = move.castling {
+            let rookPosition = Position(
+                rawValue: move.to.rawValue / 8 * 8 + (castleSide == .kingSide ? 5 : 3)
+            )!
+            let newRookPosition = Position(
+                rawValue: move.to.rawValue / 8 * 8 + (castleSide == .kingSide ? 7 : 0)
+            )!
+
+            self.board.movePiece(fromPosition: rookPosition, toPosition: newRookPosition)
+        }
+        
+        self.history.removeLast()
+        self.turn = turn == .white ? .black : .white
     }
     
     private func isEnPassantAllowed(fromPosition from: Position, toPosition to: Position) -> Bool {
@@ -346,6 +405,8 @@ class ClassicGame: Game {
 
 extension ClassicGame: GameTimerDelegate {
     func didUpdateTime(with time: Int, for color: PieceColor) {
+        guard whiteTime != nil, blackTime != nil else { return }
+        
         switch color {
         case .white:
             if time / 10 < whiteTime! {
@@ -361,11 +422,11 @@ extension ClassicGame: GameTimerDelegate {
     func addTime(for color: PieceColor) {
         switch color {
         case .white:
-            timer.add(seconds: 15, for: .white)
-            whiteTime = timer.whiteSeconds
+            timer?.add(seconds: 15, for: .white)
+            whiteTime = timer?.whiteSeconds
         case .black:
-            timer.add(seconds: 15, for: .black)
-            blackTime = timer.blackSeconds
+            timer?.add(seconds: 15, for: .black)
+            blackTime = timer?.blackSeconds
         }
     }
 }

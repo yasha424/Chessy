@@ -22,7 +22,7 @@ struct BoardView<ChessGame>: View where ChessGame: Game {
                 HStack(spacing: 0) {
                     ForEach(0..<8) { j in
                         let position = Position(rawValue: (7 - i) * 8 + j)!
-                        CellView(
+                        SquareView(
                             game: game,
                             selectedPosition: $selectedPosition,
                             allowedMoves: $allowedMoves,
