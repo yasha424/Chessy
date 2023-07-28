@@ -1,4 +1,4 @@
-
+//
 //  ContentView.swift
 //  Chessy
 //
@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State var gameView = GameView(game: ClassicGame(board: Board()))
     @State var fenString = ""
-    @FocusState var isInputActive: Bool
-    
+
     @Environment(\.verticalSizeClass) var sizeClass
-    
+
     var body: some View {
         ZStack {
             LinearGradient(
@@ -39,88 +37,20 @@ struct ContentView: View {
                 .blur(radius: 5)
 
             VStack {
-                if sizeClass == .compact {
-                    HStack {
-                        Spacer()
+                Spacer()
 
-                        VStack {
-                            Button {
-                                gameView.undoLastMove()
-                            } label: {
-                                Image(systemName: "arrow.uturn.left")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .aspectRatio(contentMode: .fit)
-                                    .padding(8)
-                            }
-                            .frame(width: 40, height: 40)
-                            .glassView()
-                            .padding(.top)
-                            
-                            Spacer()
-                        }
-                        
-                        gameView
-                            .onShake {
-                                gameView.updateGame(with: ClassicGame(board: Board()))
-                            }
-                        
-                        Spacer()
-                    }
-                } else {
-                    HStack {
-                        Spacer()
-                        
-                        Button {
-                            gameView.undoLastMove()
-                        } label: {
-                            Image(systemName: "arrow.uturn.left")
-                                .resizable()
-                                .foregroundColor(.white)
-                                .aspectRatio(contentMode: .fit)
-                                .padding(8)
-                        }
-                        .frame(width: 40, height: 40)
-                        .glassView()
-                        .padding([.trailing, .leading, .bottom])
+                gameView
+                    .onShake {
+                        gameView.updateGame(with: ClassicGame(board: Board()))
                     }
 
-                    Spacer()
-                    
-                    gameView
-                        .onShake {
-                            gameView.updateGame(with: ClassicGame(board: Board()))
-                        }
-                    
-                    Spacer()
+                Spacer()
 
-                    TextField("Input FEN", text: $fenString)
-                        .padding()
-                        .frame(height: 40)
-                        .glassView()
-                        .padding([.leading, .trailing])
-                        .onSubmit {
-                            gameView.updateGame(with: ClassicGame(fromFen: fenString))
-                        }
-                        .autocorrectionDisabled()
-                        .focused($isInputActive)
-                        .toolbar {
-                            ToolbarItemGroup(placement: .keyboard) {
-                                Button("Cancel") {
-                                    isInputActive = false
-                                }
-                                Spacer()
-                                Button("Done") {
-                                    isInputActive = false
-                                    gameView.updateGame(with: ClassicGame(fromFen: fenString))
-                                }
-                            }
-                        }
+                if sizeClass == .regular {
+                    FenInputView(gameView: $gameView)
+                        .padding(.bottom)
                 }
             }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
-            .padding([.top, .bottom])
         }
     }
-    
 }

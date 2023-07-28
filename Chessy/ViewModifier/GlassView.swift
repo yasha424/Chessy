@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GlassView : ViewModifier {
+struct GlassView: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(.ultraThinMaterial)

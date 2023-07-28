@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D3107AF52A7280B700EB1032 /* ClassicGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3107AF42A7280B700EB1032 /* ClassicGame.swift */; };
 		D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */; };
 		D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
 		D3141EC32A55DFB300D9D95A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3141EC22A55DFB300D9D95A /* Assets.xcassets */; };
@@ -25,6 +26,8 @@
 		D3611FBE2A6C161D00348F99 /* GlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3611FBD2A6C161D00348F99 /* GlassView.swift */; };
 		D3788FC62A6E8E2B0008DE41 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC52A6E8E2B0008DE41 /* TimerView.swift */; };
 		D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC72A6E8FC40008DE41 /* BoardView.swift */; };
+		D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3865A872A70873600529C41 /* UndoButtonView.swift */; };
+		D3865A8A2A71281000529C41 /* FenInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3865A892A71280F00529C41 /* FenInputView.swift */; };
 		D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */; };
 		D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
 		D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
@@ -50,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D3107AF42A7280B700EB1032 /* ClassicGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicGame.swift; sourceTree = "<group>"; };
 		D3141EBB2A55DFB100D9D95A /* Chessy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chessy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyApp.swift; sourceTree = "<group>"; };
 		D3141EC02A55DFB100D9D95A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -68,6 +72,8 @@
 		D3611FBD2A6C161D00348F99 /* GlassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassView.swift; sourceTree = "<group>"; };
 		D3788FC52A6E8E2B0008DE41 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		D3788FC72A6E8FC40008DE41 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		D3865A872A70873600529C41 /* UndoButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoButtonView.swift; sourceTree = "<group>"; };
+		D3865A892A71280F00529C41 /* FenInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FenInputView.swift; sourceTree = "<group>"; };
 		D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
 		D3972CA22A6DE9210050E6FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
@@ -101,6 +107,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D3107AF32A72809200EB1032 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D3EE189B2A5D8D9C0096C9D4 /* Chess */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		D3141EB22A55DFB100D9D95A = {
 			isa = PBXGroup;
 			children = (
@@ -124,10 +138,10 @@
 		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
 			isa = PBXGroup;
 			children = (
+				D3107AF32A72809200EB1032 /* Model */,
 				D3972CA22A6DE9210050E6FA /* Info.plist */,
 				D3611FBC2A6C15F700348F99 /* ViewModifier */,
 				D3EE189C2A5D8DA70096C9D4 /* Extension */,
-				D3EE189B2A5D8D9C0096C9D4 /* Chess */,
 				D3610A7E2A5AB2F00046A585 /* Constants */,
 				D3254D1F2A5A18FC0093ECC6 /* View */,
 				D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */,
@@ -171,6 +185,8 @@
 				D3F404162A66A3A700C97C84 /* SquareView.swift */,
 				D3788FC52A6E8E2B0008DE41 /* TimerView.swift */,
 				D3788FC72A6E8FC40008DE41 /* BoardView.swift */,
+				D3865A872A70873600529C41 /* UndoButtonView.swift */,
+				D3865A892A71280F00529C41 /* FenInputView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -199,6 +215,7 @@
 				D3141EEB2A55E55900D9D95A /* Board.swift */,
 				D3452B2B2A694172003A1F45 /* Game.swift */,
 				D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */,
+				D3107AF42A7280B700EB1032 /* ClassicGame.swift */,
 			);
 			path = Chess;
 			sourceTree = "<group>";
@@ -221,6 +238,7 @@
 				D3141EB72A55DFB100D9D95A /* Sources */,
 				D3141EB82A55DFB100D9D95A /* Frameworks */,
 				D3141EB92A55DFB100D9D95A /* Resources */,
+				D3107AF62A7281EF00EB1032 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -336,12 +354,35 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D3107AF62A7281EF00EB1032 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint \nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D3141EB72A55DFB100D9D95A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */,
+				D3865A8A2A71281000529C41 /* FenInputView.swift in Sources */,
 				D3452B2C2A694172003A1F45 /* Game.swift in Sources */,
 				D3610A802A5AB3030046A585 /* Colors.swift in Sources */,
 				D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */,
@@ -351,6 +392,8 @@
 				D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */,
 				D3141EEC2A55E55900D9D95A /* Board.swift in Sources */,
 				D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */,
+				D3107AF52A7280B700EB1032 /* ClassicGame.swift in Sources */,
+				D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */,
 				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
 				D3611FBE2A6C161D00348F99 /* GlassView.swift in Sources */,
 				D3F404172A66A3A800C97C84 /* SquareView.swift in Sources */,
@@ -432,7 +475,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -495,7 +538,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -521,7 +564,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
@@ -544,6 +587,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -560,7 +604,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Chessy/Preview Content\"";
@@ -583,6 +627,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

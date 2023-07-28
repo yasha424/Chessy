@@ -5,14 +5,16 @@
 //  Created by Yasha Serhiienko on 05.07.2023.
 //
 
-enum PieceType: String {
+import Foundation
+
+enum PieceType: String, Identifiable {
     case pawn = "P"
     case bishop = "B"
     case knight = "N"
     case rook = "R"
     case queen = "Q"
     case king = "K"
-    
+
     var value: Int {
         switch self {
         case .pawn:
@@ -29,12 +31,16 @@ enum PieceType: String {
             return -1
         }
     }
+
+    var id: String {
+        rawValue
+    }
 }
 
 enum PieceColor: String {
     case white = "W"
     case black = "B"
-    
+
     var opposite: PieceColor {
         self == .white ? .black : .white
     }
@@ -43,11 +49,11 @@ enum PieceColor: String {
 struct Piece: Equatable {
     let color: PieceColor
     var type: PieceType
-    
+
     static func == (lhs: Piece, rhs: Piece) -> Bool {
         return lhs.color == rhs.color && lhs.type == rhs.type
     }
-    
+
     init(color: PieceColor, type: PieceType) {
         self.color = color
         self.type = type

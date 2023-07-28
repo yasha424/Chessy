@@ -22,14 +22,14 @@ final class ChessyTests: XCTestCase {
         XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .a4))
         XCTAssertFalse(board1.canMove(fromPosition: .b2, toPosition: .c4))
     }
-    
+
     func testIfPiecesExistBetween() {
         let board = Board()
 
         XCTAssertFalse(board.piecesExistBetween(fromPosition: .a2, toPosition: .a4))
         XCTAssertFalse(board.piecesExistBetween(fromPosition: .a2, toPosition: .a7))
         XCTAssertFalse(board.piecesExistBetween(fromPosition: .a2, toPosition: .f7))
-        
+
         XCTAssertTrue(board.piecesExistBetween(fromPosition: .a1, toPosition: .a4))
         XCTAssertTrue(board.piecesExistBetween(fromPosition: .a6, toPosition: .c8))
     }

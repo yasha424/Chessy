@@ -14,32 +14,42 @@ enum Position: Int, CaseIterable {
     case a6; case b6; case c6; case d6; case e6; case f6; case g6; case h6
     case a7; case b7; case c7; case d7; case e7; case f7; case g7; case h7
     case a8; case b8; case c8; case d8; case e8; case f8; case g8; case h8
-    
-    var x: Int {
-        self.rawValue / 8
-    }
-    
-    var y: Int {
-        return self.rawValue % 8
-    }
-    
+
+    var x: Int { rawValue / 8 }
+    var y: Int { rawValue % 8 }
+
     static func fromCoordinates(x: Int, y: Int) -> Position? {
-        return Position(rawValue: x * 8 + y)
+        Position(rawValue: x * 8 + y)
     }
-    
+
     static func fromString(_ value: String) -> Position? {
-        return Position.allCases.first { "\($0)" == value }
+        Position.allCases.first { value == "\($0)" }
+    }
+
+    static func - (lhs: Position, rhs: Position) -> Position? {
+        return Position(rawValue: lhs.rawValue - rhs.rawValue)
+    }
+
+    static func - (lhs: Position, rhs: Int) -> Position? {
+        return Position(rawValue: lhs.rawValue - rhs)
+    }
+
+    static func + (lhs: Position, rhs: Position) -> Position? {
+        return Position(rawValue: lhs.rawValue + rhs.rawValue)
+    }
+
+    static func + (lhs: Position, rhs: Int) -> Position? {
+        return Position(rawValue: lhs.rawValue + rhs)
     }
 }
 
 struct Board: Equatable {
-    
     private(set) var pieces: [Piece?] = Array(repeating: nil, count: 64)
-    
+
     init() {
         defaultSetup()
     }
-    
+
     init(fromFen fen: String) {
         let rows = fen.split(separator: "/")
 
@@ -53,12 +63,12 @@ struct Board: Equatable {
             for piece in rows[7 - i] {
                 if let emptyCells = Int("\(piece)") {
                     count += emptyCells
-                    
+
                     guard count <= 8 else {
                         defaultSetup()
                         return
                     }
-                    
+
                     for j in 0..<emptyCells {
                         pieces[i * 8 + count - emptyCells + j] = nil
                     }
@@ -70,7 +80,7 @@ struct Board: Equatable {
                         return
                     }
 
-                    pieces[i * 8 + count - 1] = (Piece(fromFenCharacter: piece))
+                    pieces[i * 8 + count - 1] = Piece(fromFenCharacter: piece)
                 }
             }
             guard count == 8 else {
@@ -79,7 +89,7 @@ struct Board: Equatable {
             }
         }
     }
-    
+
     private mutating func defaultSetup() {
         let pieceTypes: [PieceType] = [
             .rook, .knight, .bishop, .queen, .king, .bishop, .knight, .rook
@@ -92,7 +102,7 @@ struct Board: Equatable {
         (8..<16).forEach { i in
             pieces[i] = Piece(color: .white, type: .pawn)
         }
-        
+
         (16..<48).forEach { i in
             pieces[i] = nil
         }
@@ -105,59 +115,55 @@ struct Board: Equatable {
             pieces[i] = Piece(color: .black, type: pieceTypes[i - 56])
         }
     }
-    
+
     subscript(i: Position) -> Piece? {
         return pieces[i.rawValue]
     }
-    
+
     subscript(i: Int) -> Piece? {
         return pieces[i]
     }
-    
+
     subscript(x: Int, y: Int) -> Piece? {
         guard x < 8, y < 8 else { return nil }
         return pieces[x * 8 + y]
     }
-    
+
     static func == (lhs: Board, rhs: Board) -> Bool {
         guard lhs.pieces.count == 64, rhs.pieces.count == 64 else { return false }
-        
-        for i in 0..<64 {
-            if lhs.pieces[i] != rhs.pieces[i] { return false }
+
+        for i in 0..<64 where lhs.pieces[i] != rhs.pieces[i] {
+            return false
         }
-        
+
         return true
     }
-    
+
     mutating func movePiece(fromPosition from: Position, toPosition to: Position) {
         guard from != to,
               let piece = self[from] else { return }
-        
+
         pieces[to.rawValue] = piece
         pieces[from.rawValue] = nil
     }
-    
+
     mutating func removePiece(atPosition position: Position) {
         pieces[position.rawValue] = nil
     }
-    
+
     mutating func addPiece(_ piece: Piece, atPosition position: Position) {
         guard pieces[position.rawValue] == nil else { return }
         pieces[position.rawValue] = piece
     }
-    
+
     mutating func promotePawn(atPosition position: Position, promoteTo type: PieceType) {
         guard let piece = pieces[position.rawValue],
               piece.type == .pawn,
-              type != .pawn, type != .king else {
-            return
-        }
-        
+              type != .pawn, type != .king else { return }
+
         guard (position.x == 7 && piece.color == .white) ||
-                (position.x == 0 && piece.color == .black) else {
-            return
-        }
-        
+              (position.x == 0 && piece.color == .black) else { return }
+
         pieces[position.rawValue] = Piece(color: piece.color, type: type)
     }
 }

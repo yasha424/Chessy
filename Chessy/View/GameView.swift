@@ -8,19 +8,37 @@
 import SwiftUI
 
 struct GameView<ChessGame>: View where ChessGame: Game {
-    
     @ObservedObject var game: ChessGame
     private var boardView: BoardView<ChessGame>
     @Environment(\.verticalSizeClass) var sizeClass
-    
+
     init(game: ChessGame) {
         self.game = game
         self.boardView = BoardView(game: game)
     }
-    
+
     var body: some View {
-        VStack {
-            if sizeClass == .regular {
+        if sizeClass == .regular {
+            VStack {
+                HStack {
+                    switch game.state {
+                    case .checkmate(let color):
+                        Text((color == .black ? "White" : "Black") + " has won by checkmate!")
+                            .padding([.trailing, .leading])
+                    case .stalemate:
+                        Text("Stalemate!")
+                            .padding([.trailing, .leading])
+                    default:
+                        EmptyView()
+                    }
+                }
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 40)
+                .glassView()
+                .animation(.easeInOut, value: game.state)
+
+                Spacer()
+
                 if game.timer != nil {
                     HStack {
                         Spacer()
@@ -28,20 +46,34 @@ struct GameView<ChessGame>: View where ChessGame: Game {
                             .padding([.top, .trailing])
                     }
                 }
-            
+
                 boardView
 
-                if game.timer != nil {
-                    HStack {
-                        Spacer()
+                HStack {
+                    UndoButtonView(game: game)
+                        .padding([.bottom, .leading])
+                    Spacer()
+                    if game.timer != nil {
                         TimerView(game: game, color: .white)
                             .padding([.bottom, .trailing])
                     }
                 }
-            } else {
+
+                Spacer()
+
+            }
+        } else {
+            ZStack {
                 HStack {
+                    VStack {
+                        Spacer()
+
+                        UndoButtonView(game: game)
+                            .padding(.bottom)
+                    }
+
                     boardView
-                    
+
                     if game.timer != nil {
                         VStack {
                             TimerView(game: game, color: .black)
@@ -52,18 +84,39 @@ struct GameView<ChessGame>: View where ChessGame: Game {
                         }
                     }
                 }
+
+                VStack {
+                    HStack {
+                        switch game.state {
+                        case .checkmate(let color):
+                            Text((color == .black ? "White" : "Black") + " has won by checkmate!")
+                                .padding([.trailing, .leading])
+                        case .stalemate:
+                            Text("Stalemate!")
+                                .padding([.trailing, .leading])
+                        default:
+                            EmptyView()
+                        }
+                    }
+                    .transition(.move(edge: .top))
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 40)
+                    .glassView()
+                    .animation(.easeInOut, value: game.state)
+
+                    Spacer()
+                }
             }
         }
     }
-    
-    
+
     mutating func updateGame(with newGame: ChessGame) {
         game = newGame
         boardView.updateGame(with: newGame)
     }
-    
+
     func undoLastMove() {
         game.undoLastMove()
     }
-    
+
 }
