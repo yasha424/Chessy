@@ -8,49 +8,82 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var gameView = GameView(game: ClassicGame(board: Board()))
-    @State var fenString = ""
+
+    @StateObject var gameVM = GameViewModel(game: ClassicGame(board: Board()))
+
+    @State var fenInputView: FenInputView<ClassicGame>!
 
     @Environment(\.verticalSizeClass) var sizeClass
 
+//    init() {
+//        self.fenInputView = FenInputView(gameVM: gameVM)
+//    }
+
     var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [.blue, .yellow],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea(.all)
+        TabView {
+            ZStack {
+                LinearGradient(
+                    colors: [.blue, .yellow],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea(.all)
 
-            Circle()
-                .foregroundColor(.purple)
-                .frame(width: 400, height: 400, alignment: .center)
-                .offset(x: -50, y: -250)
-                .opacity(0.6)
-                .blur(radius: 5)
+                VStack {
+                    Spacer()
 
-            Circle()
-                .foregroundColor(.red)
-                .frame(width: 300, height: 300, alignment: .center)
-                .offset(x: 200, y: -200)
-                .opacity(0.6)
-                .blur(radius: 5)
+                    GameView(gameVM: gameVM)
+                        .onShake {
+                            gameVM.updateGame(with: ClassicGame(board: Board()))
+                        }
+                        .padding()
 
-            VStack {
-                Spacer()
+                    Spacer()
 
-                gameView
-                    .onShake {
-                        gameView.updateGame(with: ClassicGame(board: Board()))
+                    if sizeClass == .regular {
+                        fenInputView
+//                        TextField("Input FEN", text: $fenString)
+//                            .padding([.leading, .trailing])
+//                            .frame(height: 40)
+//                            .glassView()
+                            .padding([.leading, .trailing, .bottom])
+//                            .onSubmit {
+//                                gameVM.updateGame(with: ClassicGame(fromFen: fenString))
+//                            }
+//                            .autocorrectionDisabled()
+//                            .focused($isInputActive)
+//                            .toolbar {
+//                                ToolbarItemGroup(placement: .keyboard) {
+//                                    Button("Cancel") {
+//                                        isInputActive.toggle()
+//                                    }
+//                                    Spacer()
+//                                    Button("Done") {
+//                                        isInputActive.toggle()
+//                                        gameVM.updateGame(with: ClassicGame(fromFen: fenString))
+//                                    }
+//                                }
+//                            }
                     }
-
-                Spacer()
-
-                if sizeClass == .regular {
-                    FenInputView(gameView: $gameView)
-                        .padding(.bottom)
                 }
             }
+            .tabItem {
+                Label("1v1", systemImage: "figure.roll")
+            }
+
+            BoardView(gameVM: gameVM)
+                .tabItem {
+                    Label {
+                        Text("Puzzles")
+                    } icon: {
+                        Image(systemName: "brain.head.profile")
+                            .foregroundColor(.white)
+                    }
+                }
         }
+        .onAppear {
+            fenInputView = FenInputView(gameVM: gameVM)
+        }
+        .tint(Color.white)
     }
 }

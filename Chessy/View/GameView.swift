@@ -7,55 +7,60 @@
 
 import SwiftUI
 
-struct GameView<ChessGame>: View where ChessGame: Game {
-    @ObservedObject var game: ChessGame
-    private var boardView: BoardView<ChessGame>
+struct GameView<ChessGame: Game>: View {
+    @ObservedObject var gameVM: GameViewModel<ChessGame>
     @Environment(\.verticalSizeClass) var sizeClass
-
-    init(game: ChessGame) {
-        self.game = game
-        self.boardView = BoardView(game: game)
-    }
 
     var body: some View {
         if sizeClass == .regular {
             VStack {
                 HStack {
-                    switch game.state {
+                    switch gameVM.state {
                     case .checkmate(let color):
-                        Text((color == .black ? "White" : "Black") + " has won by checkmate!")
-                            .padding([.trailing, .leading])
+                        HStack {
+                            Text((color == .black ? "White" : "Black") + " has won by checkmate!")
+                                .padding([.leading, .trailing])
+                                .frame(height: 40)
+                                .glassView()
+                                .padding()
+                        }
+                            .transition(.move(edge: .top))
                     case .stalemate:
-                        Text("Stalemate!")
-                            .padding([.trailing, .leading])
+                        HStack {
+                            Text("Stalemate!")
+                                .padding([.leading, .trailing])
+                                .frame(height: 40)
+                                .glassView()
+                                .padding()
+                        }
+                        .transition(.move(edge: .top))
                     default:
                         EmptyView()
                     }
                 }
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 40)
-                .glassView()
-                .animation(.easeInOut, value: game.state)
+                .animation(.spring(), value: gameVM.state)
 
                 Spacer()
 
-                if game.timer != nil {
+                if gameVM.hasTimer {
                     HStack {
                         Spacer()
-                        TimerView(game: game, color: .black)
-                            .padding([.top, .trailing])
+                        TimerView(gameVM: gameVM, color: .black)
                     }
                 }
 
-                boardView
+                BoardView(gameVM: gameVM)
+                    .padding([.top, .bottom])
 
                 HStack {
-                    UndoButtonView(game: game)
-                        .padding([.bottom, .leading])
+                    UndoButtonView(gameVM: gameVM)
+
                     Spacer()
-                    if game.timer != nil {
-                        TimerView(game: game, color: .white)
-                            .padding([.bottom, .trailing])
+
+                    if gameVM.hasTimer {
+                        TimerView(gameVM: gameVM, color: .white)
                     }
                 }
 
@@ -68,18 +73,18 @@ struct GameView<ChessGame>: View where ChessGame: Game {
                     VStack {
                         Spacer()
 
-                        UndoButtonView(game: game)
+                        UndoButtonView(gameVM: gameVM)
                             .padding(.bottom)
                     }
 
-                    boardView
+                    BoardView(gameVM: gameVM)
 
-                    if game.timer != nil {
+                    if gameVM.hasTimer {
                         VStack {
-                            TimerView(game: game, color: .black)
+                            TimerView(gameVM: gameVM, color: .black)
                                 .padding(.top)
                             Spacer()
-                            TimerView(game: game, color: .white)
+                            TimerView(gameVM: gameVM, color: .white)
                                 .padding(.bottom)
                         }
                     }
@@ -87,7 +92,7 @@ struct GameView<ChessGame>: View where ChessGame: Game {
 
                 VStack {
                     HStack {
-                        switch game.state {
+                        switch gameVM.state {
                         case .checkmate(let color):
                             Text((color == .black ? "White" : "Black") + " has won by checkmate!")
                                 .padding([.trailing, .leading])
@@ -102,21 +107,11 @@ struct GameView<ChessGame>: View where ChessGame: Game {
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 40)
                     .glassView()
-                    .animation(.easeInOut, value: game.state)
+                    .animation(.spring(response: 0.3, dampingFraction: 1), value: gameVM.state)
 
                     Spacer()
                 }
             }
         }
     }
-
-    mutating func updateGame(with newGame: ChessGame) {
-        game = newGame
-        boardView.updateGame(with: newGame)
-    }
-
-    func undoLastMove() {
-        game.undoLastMove()
-    }
-
 }

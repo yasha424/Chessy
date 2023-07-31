@@ -5,9 +5,11 @@
 //  Created by Yasha Serhiienko on 20.07.2023.
 //
 
-import SwiftUI
+protocol GameDelegate: AnyObject {
+    func didUpdateTime(with time: Int, for color: PieceColor)
+}
 
-protocol Game: ObservableObject, Equatable, GameTimerDelegate {
+protocol Game: Equatable, GameTimerDelegate {
     var board: Board { get }
     var history: [Move] { get }
     var turn: PieceColor { get }
@@ -15,6 +17,7 @@ protocol Game: ObservableObject, Equatable, GameTimerDelegate {
     var canPromotePawnAtPosition: Position? { get }
 
     var timer: GameTimer? { get }
+    var delegate: GameDelegate? { get set }
     var whiteTime: Int? { get }
     var blackTime: Int? { get }
 

@@ -5,17 +5,16 @@
 //  Created by Yasha Serhiienko on 27.07.2023.
 //
 
-import Foundation
-
 class ClassicGame: Game {
 
-    @Published private(set) var board: Board
+    private(set) var board: Board
     private(set) var history = [Move]()
     private(set) var turn: PieceColor = .white
-    private(set) var timer: GameTimer?
+    weak var delegate: GameDelegate?
 
-    @Published private(set) var whiteTime: Int?
-    @Published private(set) var blackTime: Int?
+    private(set) var timer: GameTimer?
+    private(set) var whiteTime: Int?
+    private(set) var blackTime: Int?
 
     var state: GameState = .inProgress
     private(set) var canPromotePawnAtPosition: Position?
@@ -195,10 +194,11 @@ class ClassicGame: Game {
 
         canPromotePawnAtPosition = game.getPawnPromotePosition()
         if canPromotePawnAtPosition == nil {
+            game.turn = turn.opposite
             timer?.add(seconds: 3, for: turn)
             timer?.start()
 
-            turn = turn.opposite
+            turn = game.turn
             updateStateAndTimer(game: game)
         }
 
@@ -232,7 +232,10 @@ class ClassicGame: Game {
     func promotePawn(to type: PieceType) {
         if let pawnPosition = canPromotePawnAtPosition {
             board.promotePawn(atPosition: pawnPosition, promoteTo: type)
-            canPromotePawnAtPosition = nil
+            canPromotePawnAtPosition = getPawnPromotePosition()
+            if canPromotePawnAtPosition != nil {
+                return
+            }
             timer?.add(seconds: 3, for: turn)
             turn = turn.opposite
             updateStateAndTimer(game: self)
@@ -268,6 +271,10 @@ class ClassicGame: Game {
         if canPromotePawnAtPosition != nil {
             board.movePiece(fromPosition: move.to, toPosition: move.from)
             canPromotePawnAtPosition = nil
+
+            if let capturedPiece = move.capturedPiece {
+                board.addPiece(capturedPiece, atPosition: move.to)
+            }
             history.removeLast()
             return
         }
@@ -302,8 +309,8 @@ class ClassicGame: Game {
 
         history.removeLast()
         canPromotePawnAtPosition = nil
-        state = getState()
         turn = turn.opposite
+        state = getState()
         timer?.set(seconds: move.timeLeft ?? 0, for: move.piece.color)
         timer?.start()
     }
@@ -473,6 +480,8 @@ extension ClassicGame {
                 blackTime = time / 10
             }
         }
+
+        delegate?.didUpdateTime(with: time, for: color)
     }
 
 }

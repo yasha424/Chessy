@@ -8,14 +8,10 @@
 import SwiftUI
 
 struct SquareView<ChessGame: Game>: View {
-    @ObservedObject var game: ChessGame
-    @Binding var selectedPosition: Position?
-    @Binding var allowedMoves: [Position]
-    @Binding var selectedRow: Int?
-    @Binding var draggedTo: Position?
+    @ObservedObject var gameVM: GameViewModel<ChessGame>
+    let position: Position
+
     @State var selected = false
-//    let i: Int
-//    let j: Int
 
     @Environment(\.horizontalSizeClass) var sizeClass
 
@@ -28,48 +24,39 @@ struct SquareView<ChessGame: Game>: View {
     @State var changes = 0
     let refreshRate = 3
 
-    let position: Position
-//    var position: Position {
-//        Position(rawValue: (7 - i) * 8 + j)!
-//    }
-//    var id: Int {
-//        i * 8 + j
-//    }
-
     var dragGesture: some Gesture {
         DragGesture()
             .onChanged { gesture in
-                if game.canSelectPiece(atPosition: position) {
-                    if selectedPosition != position || !isDragged {
-                        selectedPosition = position
-                        allowedMoves = game.allMoves(fromPosition: position)
-                        selectedRow = position.x
-                        isDragged = true
+                if gameVM.canSelectPiece(atPosition: position) {
+                    if gameVM.selectedPosition != position || !isDragged {
+                        gameVM.selectPosition(position)
+                        gameVM.selectedRow = 7 - position.x
+                        withAnimation(.linear(duration: 0.1)) {
+                            isDragged = true
+                        }
                     }
+
                     offset = gesture.translation
 
-                    Thread {
-                        if changes % refreshRate == 0 {
-                            draggedTo = computeDraggedPosition(offset: offset, size: size)
-                        }
-                        changes += 1
-                    }.start()
+                    if changes % refreshRate == 0 {
+                        gameVM.draggedTo = computeDraggedPosition(offset: offset, size: size)
+                    }
+                    changes += 1
                 }
             }
             .onEnded { _ in
-                allowedMoves = []
-                selectedRow = nil
-
-                withAnimation(.spring(duration: 0.3)) {
+                withAnimation(.spring(response: 0.3)) {
                     offset = CGSize.zero
-                    selectedPosition = nil
                     isDragged = false
                 }
 
-                if let to = draggedTo {
-                    game.movePiece(fromPosition: position, toPosition: to)
+                gameVM.deselectPosition()
+                gameVM.selectedRow = nil
+
+                if let to = gameVM.draggedTo {
+                    gameVM.movePiece(fromPosition: position, toPosition: to)
                 }
-                draggedTo = nil
+                gameVM.draggedTo = nil
             }
     }
 
@@ -84,20 +71,21 @@ struct SquareView<ChessGame: Game>: View {
                         .opacity(0.3)
                 }
 
-                if [game.history.last?.from, game.history.last?.to].contains(position) {
+                if [gameVM.lastMove?.from,
+                    gameVM.lastMove?.to].contains(position) {
                     Color.green.opacity(0.25)
                 }
 
-                if draggedTo == position {
+                if gameVM.draggedTo == position {
                     Circle()
                         .foregroundColor(.green)
                         .opacity(0.3)
                         .scaleEffect(x: 1.8, y: 1.8)
                 }
 
-                if let piece = game.board[position] {
+                if let piece = gameVM.getPiece(atPosition: position) {
 
-                    if piece.type == .king && game.isKingInCheck(forColor: piece.color) {
+                    if piece.type == .king && gameVM.isKingInCheck(forColor: piece.color) {
                         Circle()
                             .blur(radius: 15)
                             .foregroundColor(.red)
@@ -111,27 +99,28 @@ struct SquareView<ChessGame: Game>: View {
 
                     Image(ImageNames.color[piece.color]! + ImageNames.type[piece.type]!)
                         .resizable()
-                        .scaleEffect(x: piece.type == .pawn ? 0.6 : 0.7, y: 0.7)
-                        .scaleEffect(x: isDragged ? 1.75 : 1, y: isDragged ? 1.75 : 1)
+                        .aspectRatio(contentMode: .fit)
+                        .padding(geometry.size.width / 8)
+                        .scaleEffect(x: isDragged ? 2 : 1, y: isDragged ? 2 : 1)
                         .shadow(
                             color: Color.green,
-                            radius: selectedPosition == position ? 5 : 0
+                            radius: gameVM.selectedPosition == position ? 5 : 0
                         )
                         .offset(isDragged ? newOffset : CGSize.zero)
                         .gesture(dragGesture)
                         .rotationEffect(Angle(
-                            degrees: sizeClass == .compact || game.turn == .white ? 0 : 180
+                            degrees: sizeClass == .compact || gameVM.turn == .white ? 0 : 180
                         ))
                         .offset(tapOffset)
                         .onAppear {
                             performAnimation(withSize: geometry.size)
                         }
-                        .onChange(of: game.history) { _ in
+                        .onChange(of: gameVM.animatedMove) { _ in
                             performAnimation(withSize: geometry.size)
                         }
                 }
 
-                if allowedMoves.contains(position) {
+                if gameVM.allowedMoves.contains(position) {
                     Circle()
                         .foregroundColor(.green)
                         .opacity(0.9)
@@ -148,15 +137,15 @@ struct SquareView<ChessGame: Game>: View {
     }
 
     private func performAnimation(withSize size: CGSize) {
-        if let lastMove = game.history.last,
-           lastMove.to == position {
-            let deltaX = position.x - lastMove.from.x
-            let deltaY = position.y - lastMove.from.y
+        if let move = gameVM.animatedMove,
+           move.to == position {
+            let deltaX = position.x - move.from.x
+            let deltaY = position.y - move.from.y
             tapOffset = CGSize(
                 width: size.width * CGFloat(-deltaY),
                 height: size.height * CGFloat(deltaX)
             )
-            withAnimation(.spring(duration: 0.25)) {
+            withAnimation(.spring(response: 0.3)) {
                 tapOffset.width = 0
                 tapOffset.height = 0
             }
@@ -169,15 +158,15 @@ struct SquareView<ChessGame: Game>: View {
         let deltaX = Int((offset.height / size.height).rounded())
         let deltaY = Int((offset.width / size.width).rounded())
 
-        if sizeClass == .compact || game.turn == .white {
-            return Position(rawValue: (7 - position.x - deltaX) * 8 + position.y + deltaY)
+        if sizeClass == .compact || gameVM.turn == .white {
+            return Position(rawValue: (position.x - deltaX) * 8 + position.y + deltaY)
         } else {
-            return Position(rawValue: (7 - position.x + deltaX) * 8 + position.y - deltaY)
+            return Position(rawValue: (position.x + deltaX) * 8 + position.y - deltaY)
         }
     }
 
     func getOffset() -> CGSize {
-        if let lastMove = game.history.last,
+        if let lastMove = gameVM.lastMove,
            lastMove.to == position {
             let deltaX = position.x - lastMove.from.x
             let deltaY = position.y - lastMove.from.y

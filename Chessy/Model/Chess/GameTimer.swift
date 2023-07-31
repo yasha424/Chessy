@@ -5,7 +5,7 @@
 //  Created by Yasha Serhiienko on 23.07.2023.
 //
 
-import SwiftUI
+import Foundation
 
 protocol GameTimerDelegate: AnyObject {
     func didUpdateTime(with time: Int, for color: PieceColor)
@@ -13,7 +13,7 @@ protocol GameTimerDelegate: AnyObject {
     var turn: PieceColor { get }
 }
 
-class GameTimer: ObservableObject {
+class GameTimer {
     private var whiteTime: Int
     private var blackTime: Int
 
@@ -21,7 +21,7 @@ class GameTimer: ObservableObject {
     private var activeColor: PieceColor
     private var isStarted = false
 
-    var delegate: GameTimerDelegate?
+    weak var delegate: GameTimerDelegate?
 
     var whiteMinutes: Int { whiteTime / 600 }
     var whiteSeconds: Int { whiteTime / 10 }

@@ -5,8 +5,6 @@
 //  Created by Yasha Serhiienko on 05.07.2023.
 //
 
-import Foundation
-
 enum PieceType: String, Identifiable {
     case pawn = "P"
     case bishop = "B"

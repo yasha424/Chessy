@@ -7,16 +7,24 @@
 
 import SwiftUI
 
-struct UndoButtonView<ChessGame>: View where ChessGame: Game {
-    let game: ChessGame
-    @State var rotations = 0
+struct UndoButtonView<ChessGame: Game>: View {
+    let gameVM: GameViewModel<ChessGame>
+    @State private var rotations = 0.0
+    @GestureState var press = false
+    @State private var timer: Timer?
     @Environment(\.horizontalSizeClass) var sizeClass
 
     var body: some View {
         Button {
-            game.undoLastMove()
-            withAnimation(.easeInOut) {
-                rotations += 1
+            if let isValid = timer?.isValid, isValid {
+                timer?.invalidate()
+            } else {
+                if gameVM.lastMove != nil {
+                    gameVM.undoLastMove()
+                    withAnimation(.spring(response: 0.3, dampingFraction: 1)) {
+                        rotations += 1
+                    }
+                }
             }
         } label: {
             Image(systemName: "arrow.counterclockwise")
@@ -25,9 +33,22 @@ struct UndoButtonView<ChessGame>: View where ChessGame: Game {
                 .aspectRatio(contentMode: .fit)
                 .padding(8)
                 .rotationEffect(Angle(
-                    degrees: -360 * Double(rotations)
+                    degrees: -360 * rotations
                 ))
         }
+        .simultaneousGesture(
+            LongPressGesture(minimumDuration: 0.75)
+                .onEnded { _ in
+                    timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+                        if gameVM.lastMove != nil {
+                            gameVM.undoLastMove()
+                            withAnimation(.spring(response: 0.3, dampingFraction: 1)) {
+                                rotations += 1
+                            }
+                        }
+                    }
+                }
+        )
         .frame(width: 40, height: 40)
         .glassView()
     }
