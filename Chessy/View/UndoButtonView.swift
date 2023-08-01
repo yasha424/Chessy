@@ -12,7 +12,7 @@ struct UndoButtonView<ChessGame: Game>: View {
     @State private var rotations = 0.0
     @GestureState var press = false
     @State private var timer: Timer?
-    @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.shouldRotate) var shouldRotate: Bool
 
     var body: some View {
         Button {
@@ -29,11 +29,11 @@ struct UndoButtonView<ChessGame: Game>: View {
         } label: {
             Image(systemName: "arrow.counterclockwise")
                 .resizable()
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
                 .aspectRatio(contentMode: .fit)
                 .padding(8)
                 .rotationEffect(Angle(
-                    degrees: -360 * rotations
+                    degrees: -360 * rotations + (shouldRotate && gameVM.turn == .black ? 180 : 0)
                 ))
         }
         .simultaneousGesture(

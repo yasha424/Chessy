@@ -198,8 +198,8 @@ class ClassicGame: Game {
             timer?.add(seconds: 3, for: turn)
             timer?.start()
 
-            turn = game.turn
             updateStateAndTimer(game: game)
+            turn = game.turn
         }
 
         history.append(Move(

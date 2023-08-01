@@ -10,7 +10,9 @@ import SwiftUI
 struct TimerView<ChessGame: Game>: View {
     @ObservedObject var gameVM: GameViewModel<ChessGame>
     let color: PieceColor
+
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.shouldRotate) var shouldRotate: Bool
 
     var body: some View {
         let time = (color == .white ? gameVM.whiteTime : gameVM.blackTime) ?? 0
@@ -18,11 +20,11 @@ struct TimerView<ChessGame: Game>: View {
             Text("\(time / 60):\(time % 60 < 10 ? "0\(time % 60)" : "\(time % 60)")")
                 .frame(height: 40)
                 .font(.title.monospaced())
-                .rotationEffect(Angle(
-                    degrees: sizeClass == .compact || gameVM.turn == .white ? 0 : 180
-                ))
                 .padding([.leading, .trailing], 8)
         }
+        .rotationEffect(Angle(
+            degrees: shouldRotate && gameVM.turn == .black ? 180 : 0
+        ))
         .glassView()
         .onTapGesture {
             gameVM.addTime(for: color)

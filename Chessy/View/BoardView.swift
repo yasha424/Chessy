@@ -11,6 +11,8 @@ struct BoardView<ChessGame: Game>: View {
     @ObservedObject var gameVM: GameViewModel<ChessGame>
     @Environment(\.horizontalSizeClass) var sizeClass
 
+    @Environment(\.shouldRotate) var shouldRotate: Bool
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -41,6 +43,8 @@ struct BoardView<ChessGame: Game>: View {
                     HStack {
                         let pieceTypes: [PieceType] = [.queen, .rook, .bishop, .knight]
 
+                        Spacer()
+
                         ForEach(pieceTypes) { type in
                             Button {
                                 gameVM.promotePawn(to: type)
@@ -48,21 +52,21 @@ struct BoardView<ChessGame: Game>: View {
                                 if let piece = gameVM.getPiece(atPosition: position),
                                    let colorName = ImageNames.color[piece.color],
                                    let typeName = ImageNames.type[type] {
-                                   let rotationDegrees = sizeClass == .compact ||
-                                        gameVM.turn == .white ? 0.0 : 180.0
+                                    let rotationDegrees = (gameVM.turn == .black &&
+                                                           shouldRotate) ? 180.0 : 0.0
                                     Image(colorName + typeName)
                                         .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .padding()
+                                        .padding(8)
                                         .rotationEffect(Angle(
                                             degrees: rotationDegrees
                                         ))
                                 }
                             }
                             .aspectRatio(1, contentMode: .fit)
-                            .frame(maxWidth: 80, maxHeight: 80)
+                            .frame(minWidth: 20, maxWidth: 60, minHeight: 20, maxHeight: 60)
                             .glassView()
-                            .padding()
+
+                            Spacer()
                         }
                     }
 

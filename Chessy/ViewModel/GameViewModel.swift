@@ -7,6 +7,7 @@
 
 import Combine
 import Dispatch
+import CoreGraphics
 
 class GameViewModel<ChessGame: Game>: ObservableObject {
 
@@ -57,6 +58,8 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
             self.turn = self.game.turn
             self.lastMove = self.game.history.last
             self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
+            self.selectedPosition = nil
+            self.allowedMoves = []
         }
     }
 
@@ -129,6 +132,20 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
         DispatchQueue.main.async {
             self.selectedPosition = nil
             self.allowedMoves = []
+            self.draggedTo = nil
+        }
+    }
+
+    func computeDraggedPosition(location: CGPoint, size: CGSize) {
+        let deltaX = Int(((location.y - size.height / 2) / size.height).rounded())
+        let deltaY = Int(((location.x - size.width / 2) / size.width).rounded())
+
+        DispatchQueue.main.async {
+            if let position = self.selectedPosition {
+                self.draggedTo = Position(rawValue: (position.x - deltaX) * 8 + position.y + deltaY)
+            } else {
+                self.draggedTo = nil
+            }
         }
     }
 

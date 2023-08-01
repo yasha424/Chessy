@@ -8,46 +8,54 @@
 import SwiftUI
 
 struct SquareView<ChessGame: Game>: View {
+
     @ObservedObject var gameVM: GameViewModel<ChessGame>
     let position: Position
 
-    @State var selected = false
-
-    @Environment(\.horizontalSizeClass) var sizeClass
-
+    @State private var tapOffset = CGSize.zero
     @State private var size: CGSize!
-    @State var offset: CGSize = CGSize.zero
-    @State var isDragged: Bool = false
+    @State private var isDragged: Bool = false
+    @State private var gestureLocation: CGPoint = CGPoint.zero
 
-    @State var tapOffset = CGSize.zero
+    @State private var changes = 0
+    private let refreshRate = 3
 
-    @State var changes = 0
-    let refreshRate = 3
+    @Environment(\.shouldRotate) var shouldRotate
+    @Environment(\.horizontalSizeClass) var sizeClass
 
     var dragGesture: some Gesture {
         DragGesture()
             .onChanged { gesture in
                 if gameVM.canSelectPiece(atPosition: position) {
                     if gameVM.selectedPosition != position || !isDragged {
+                        isDragged = true
                         gameVM.selectPosition(position)
                         gameVM.selectedRow = 7 - position.x
-                        withAnimation(.linear(duration: 0.1)) {
-                            isDragged = true
-                        }
                     }
 
-                    offset = gesture.translation
+                    if shouldRotate && gameVM.turn == .black {
+                        gestureLocation = CGPoint(
+                            x: -gesture.location.x + size.width,
+                            y: -(gesture.location.y - size.height)
+                        )
+                    } else {
+                        gestureLocation = CGPoint(
+                            x: gesture.location.x,
+                            y: (gesture.location.y - size.height)
+                        )
+                    }
 
                     if changes % refreshRate == 0 {
-                        gameVM.draggedTo = computeDraggedPosition(offset: offset, size: size)
+                        gameVM.computeDraggedPosition(location: gesture.location, size: size)
                     }
                     changes += 1
                 }
             }
             .onEnded { _ in
+                isDragged = false
+
                 withAnimation(.spring(response: 0.3)) {
-                    offset = CGSize.zero
-                    isDragged = false
+                    gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
                 }
 
                 gameVM.deselectPosition()
@@ -79,7 +87,7 @@ struct SquareView<ChessGame: Game>: View {
                 if gameVM.draggedTo == position {
                     Circle()
                         .foregroundColor(.green)
-                        .opacity(0.3)
+                        .opacity(0.5)
                         .scaleEffect(x: 1.8, y: 1.8)
                 }
 
@@ -92,10 +100,16 @@ struct SquareView<ChessGame: Game>: View {
                             .scaleEffect(CGSize(width: 0.7, height: 0.7))
                     }
 
-                    let newOffset = CGSize(
-                        width: offset.width,
-                        height: offset.height - geometry.size.height
-                    )
+                    if isDragged {
+                        Image(ImageNames.color[piece.color]! + ImageNames.type[piece.type]!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(geometry.size.width / 8)
+                            .rotationEffect(Angle(
+                                degrees: shouldRotate && gameVM.turn == .black ? 180 : 0
+                            ))
+                            .opacity(0.3)
+                    }
 
                     Image(ImageNames.color[piece.color]! + ImageNames.type[piece.type]!)
                         .resizable()
@@ -106,10 +120,9 @@ struct SquareView<ChessGame: Game>: View {
                             color: Color.green,
                             radius: gameVM.selectedPosition == position ? 5 : 0
                         )
-                        .offset(isDragged ? newOffset : CGSize.zero)
-                        .gesture(dragGesture)
+                        .position(gestureLocation)
                         .rotationEffect(Angle(
-                            degrees: sizeClass == .compact || gameVM.turn == .white ? 0 : 180
+                            degrees: shouldRotate && gameVM.turn == .black ? 180 : 0
                         ))
                         .offset(tapOffset)
                         .onAppear {
@@ -118,6 +131,7 @@ struct SquareView<ChessGame: Game>: View {
                         .onChange(of: gameVM.animatedMove) { _ in
                             performAnimation(withSize: geometry.size)
                         }
+                        .animation(.spring(response: 0.1), value: isDragged)
                 }
 
                 if gameVM.allowedMoves.contains(position) {
@@ -127,11 +141,14 @@ struct SquareView<ChessGame: Game>: View {
                         .scaleEffect(CGSize(width: 0.2, height: 0.2))
                 }
             }
+            .gesture(dragGesture)
             .onChange(of: geometry.size) { _ in
                 size = geometry.size
+                gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
             }
             .onAppear {
                 size = geometry.size
+                gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
             }
         }
     }
@@ -151,17 +168,6 @@ struct SquareView<ChessGame: Game>: View {
             }
         } else {
             tapOffset = CGSize.zero
-        }
-    }
-
-    private func computeDraggedPosition(offset: CGSize, size: CGSize) -> Position? {
-        let deltaX = Int((offset.height / size.height).rounded())
-        let deltaY = Int((offset.width / size.width).rounded())
-
-        if sizeClass == .compact || gameVM.turn == .white {
-            return Position(rawValue: (position.x - deltaX) * 8 + position.y + deltaY)
-        } else {
-            return Position(rawValue: (position.x + deltaX) * 8 + position.y - deltaY)
         }
     }
 

@@ -15,9 +15,7 @@ struct ContentView: View {
 
     @Environment(\.verticalSizeClass) var sizeClass
 
-//    init() {
-//        self.fenInputView = FenInputView(gameVM: gameVM)
-//    }
+    @State var shouldRotate = false
 
     var body: some View {
         TabView {
@@ -27,7 +25,7 @@ struct ContentView: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-                .ignoresSafeArea(.all)
+                .ignoresSafeArea()
 
                 VStack {
                     Spacer()
@@ -36,54 +34,47 @@ struct ContentView: View {
                         .onShake {
                             gameVM.updateGame(with: ClassicGame(board: Board()))
                         }
-                        .padding()
+                        .padding([.leading, .trailing, .bottom])
+
+                    Spacer()
+
+                    HStack {
+                        Spacer()
+                        HStack {
+                            Text("Rotating")
+                                .foregroundColor(.primary)
+                                .font(.title3)
+                            Toggle("", isOn: $shouldRotate)
+                                .labelsHidden()
+                        }
+                        .padding([.leading, .trailing])
+                        .frame(height: 40)
+                        .glassView()
+                        .tint(.primary.opacity(0.5))
+                    }
+                    .padding([.leading, .trailing, .vertical])
 
                     Spacer()
 
                     if sizeClass == .regular {
                         fenInputView
-//                        TextField("Input FEN", text: $fenString)
-//                            .padding([.leading, .trailing])
-//                            .frame(height: 40)
-//                            .glassView()
-                            .padding([.leading, .trailing, .bottom])
-//                            .onSubmit {
-//                                gameVM.updateGame(with: ClassicGame(fromFen: fenString))
-//                            }
-//                            .autocorrectionDisabled()
-//                            .focused($isInputActive)
-//                            .toolbar {
-//                                ToolbarItemGroup(placement: .keyboard) {
-//                                    Button("Cancel") {
-//                                        isInputActive.toggle()
-//                                    }
-//                                    Spacer()
-//                                    Button("Done") {
-//                                        isInputActive.toggle()
-//                                        gameVM.updateGame(with: ClassicGame(fromFen: fenString))
-//                                    }
-//                                }
-//                            }
+                            .padding()
                     }
                 }
             }
+            .ignoresSafeArea(edges: .top)
             .tabItem {
                 Label("1v1", systemImage: "figure.roll")
             }
 
-            BoardView(gameVM: gameVM)
-                .tabItem {
-                    Label {
-                        Text("Puzzles")
-                    } icon: {
-                        Image(systemName: "brain.head.profile")
-                            .foregroundColor(.white)
-                    }
-                }
+            PuzzleView()
         }
+        .environment(\.shouldRotate, shouldRotate)
         .onAppear {
             fenInputView = FenInputView(gameVM: gameVM)
+
+            UITabBar.appearance().backgroundColor = UIColor.systemBackground.withAlphaComponent(0.3)
         }
-        .tint(Color.white)
+        .tint(.primary)
     }
 }
