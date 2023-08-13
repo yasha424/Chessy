@@ -130,8 +130,8 @@ struct SquareView<ChessGame: Game>: View {
                 if gameVM.allowedMoves.contains(position) {
                     if piece != nil {
                         CapturePieceShape()
-                            .stroke(.red, style: StrokeStyle(lineWidth: 3, lineJoin: .miter))
-                            .padding(1.5)
+                            .stroke(.red, style: StrokeStyle(lineWidth: 2, lineJoin: .miter))
+                            .padding(1)
                             .opacity(0.8)
                     } else {
                         Circle()

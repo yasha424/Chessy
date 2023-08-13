@@ -20,7 +20,12 @@ struct ContentView: View {
             singlePlayerGameView
                 .environmentObject(gameVM)
                 .tabItem {
-                    Label("1v1", systemImage: "figure.roll")
+                    Label {
+                        Text("1v1")
+                    } icon: {
+                        Image(systemName: "play.circle")
+                    }
+
                 }
 
             PuzzleView()
