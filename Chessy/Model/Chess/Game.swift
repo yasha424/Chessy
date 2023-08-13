@@ -45,7 +45,7 @@ struct Move: Equatable {
     let from: Position
     let to: Position
 
-    let piece: Piece
+    let piece: Piece?
     var castling: CastleSide?
     var pawnPromotedTo: PieceType?
     var capturedPiece: Piece?
@@ -53,7 +53,21 @@ struct Move: Equatable {
     var timeLeft: Int?
 }
 
+extension Move {
+    init(fromString value: String) {
+        let index = value.index(value.startIndex, offsetBy: 2)
+
+        self.from = Position.fromString("\(value.prefix(upTo: index))") ?? .a1
+        self.to = Position.fromString("\(value.suffix(from: index))") ?? .a1
+        self.piece = nil
+    }
+}
+
 extension Game {
+
+    var fen: String {
+        getFen()
+    }
 
     func canSelectPiece(atPosition position: Position) -> Bool {
         return board[position]?.color == turn
@@ -69,4 +83,84 @@ extension Game {
         timer?.start()
     }
 
+    func pieceHasMoved(atPosition position: Position) -> Bool {
+        return history.contains(where: { $0.from == position || $0.to == position })
+    }
+
+    private func getFen() -> String {
+        var fen = ""
+
+        for i in 0..<8 {
+            var emptySquares = 0
+            for j in 0..<8 {
+                if let piece = board[(7 - i) * 8 + j] {
+                    fen += emptySquares > 0 ? "\(emptySquares)" : ""
+                    emptySquares = 0
+                    if piece.color == .black {
+                        fen += piece.type.rawValue.lowercased()
+                    } else {
+                        fen += piece.type.rawValue
+                    }
+                } else {
+                    emptySquares += 1
+                }
+            }
+            fen += emptySquares > 0 ? "\(emptySquares)/" : "/"
+        }
+
+        fen.removeLast()
+        fen += turn == .white ? " w " : " b "
+        fen += getCastlingSidesInString()
+        if let lastMove = history.last, let piece = lastMove.piece, piece.type == .pawn {
+            if piece.color == .white {
+                if lastMove.to.x - lastMove.from.x == 2 {
+                    if let position = Position.fromCoordinates(x: 2, y: lastMove.to.y) {
+                        fen += " \(position)"
+                    }
+                }
+            } else {
+                if lastMove.to.x - lastMove.from.x == -2 {
+                    if let position = Position.fromCoordinates(x: 5, y: lastMove.to.y) {
+                        fen += " \(position)"
+                    }
+                }
+            }
+        } else {
+            fen += " -"
+        }
+
+        fen += " 0 0"
+
+        return fen
+    }
+
+    private func getCastlingSidesInString() -> String {
+        let whiteKing = Piece(color: .white, type: .king),
+            blackKing = Piece(color: .black, type: .king)
+        let castlingMoves = [
+            Move(from: .e1, to: .g1, piece: whiteKing, castling: .kingSide),
+            Move(from: .e1, to: .b1, piece: whiteKing, castling: .queenSide),
+            Move(from: .e8, to: .g8, piece: blackKing, castling: .kingSide),
+            Move(from: .e8, to: .b8, piece: blackKing, castling: .queenSide)
+        ]
+
+        var castlingSides = ""
+        var castleIsAllowed = false
+        for move in castlingMoves where !pieceHasMoved(atPosition: move.from) {
+            let rookPosition = Position.fromCoordinates(
+                x: move.from.x,
+                y: move.castling == .kingSide ? 7 : 0
+            )
+            if let position = rookPosition, !pieceHasMoved(atPosition: position) {
+                castleIsAllowed = true
+                if move.castling == .kingSide {
+                    castlingSides += move.piece?.color == .white ? "K" : "k"
+                } else {
+                    castlingSides += move.piece?.color == .white ? "Q" : "q"
+                }
+            }
+        }
+        castlingSides += castleIsAllowed ? "" : "-"
+        return castlingSides
+    }
 }

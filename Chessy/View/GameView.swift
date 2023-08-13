@@ -9,24 +9,12 @@ import SwiftUI
 
 struct GameView<ChessGame: Game>: View {
 
-    @ObservedObject var gameVM: GameViewModel<ChessGame>
-    @Environment(\.verticalSizeClass) var sizeClass
+    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
 
-    private let boardView: BoardView<ChessGame>!
-    private let blackTimerView: TimerView<ChessGame>!
-    private let whiteTimerView: TimerView<ChessGame>!
-    private let undoButtonView: UndoButtonView<ChessGame>!
-
-    @Environment(\.shouldRotate) var shouldRotate: Bool
-
-    init(gameVM: GameViewModel<ChessGame>) {
-        self.gameVM = gameVM
-
-        self.boardView = BoardView(gameVM: gameVM)
-        self.blackTimerView = TimerView(gameVM: gameVM, color: .black)
-        self.whiteTimerView = TimerView(gameVM: gameVM, color: .white)
-        self.undoButtonView = UndoButtonView(gameVM: gameVM)
-    }
+    let boardView = BoardView<ChessGame>()
+    let blackTimerView = TimerView<ChessGame>(color: .black)
+    let whiteTimerView = TimerView<ChessGame>(color: .white)
+    let undoButtonView = UndoButtonView<ChessGame>()
 
     var body: some View {
         ZStack {
@@ -37,14 +25,12 @@ struct GameView<ChessGame: Game>: View {
                         .padding([.leading, .trailing])
                         .frame(height: 40)
                         .glassView()
-                        .padding(.top, 40)
                         .transition(.move(edge: .top))
                 case .stalemate:
                     Text("Stalemate!")
                         .padding([.leading, .trailing])
                         .frame(height: 40)
                         .glassView()
-                        .padding(.top, 40)
                         .transition(.move(edge: .top))
                 default:
                     EmptyView()
@@ -55,7 +41,6 @@ struct GameView<ChessGame: Game>: View {
             .zIndex(3.0)
             .animation(.spring(response: 0.3), value: gameVM.state)
 
-            if sizeClass == .regular {
                 VStack {
                     Spacer()
 
@@ -81,29 +66,6 @@ struct GameView<ChessGame: Game>: View {
 
                     Spacer()
                 }
-                .padding(.top)
-            } else {
-                HStack {
-                    VStack {
-                        Spacer()
-
-                        undoButtonView
-                    }
-
-                    boardView.padding(.horizontal)
-
-                    if gameVM.hasTimer {
-                        VStack {
-                            blackTimerView
-
-                            Spacer()
-
-                            whiteTimerView
-                        }
-                    }
-                }
-                .padding(.top)
-            }
         }
     }
 }

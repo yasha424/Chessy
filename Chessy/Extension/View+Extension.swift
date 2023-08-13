@@ -40,7 +40,7 @@ extension View {
         self.modifier(DeviceShakeViewModifier(action: action))
     }
 
-    func glassView() -> some View {
-        return modifier(GlassView())
+    func glassView(cornerRadius: CGFloat = 14) -> some View {
+        return modifier(GlassView(cornerRadius: cornerRadius))
     }
 }

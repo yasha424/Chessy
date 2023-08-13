@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct UndoButtonView<ChessGame: Game>: View {
-    let gameVM: GameViewModel<ChessGame>
+    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
     @State private var rotations = 0.0
     @GestureState var press = false
     @State private var timer: Timer?
-    @Environment(\.shouldRotate) var shouldRotate: Bool
+    @AppStorage("shouldRotate") var shouldRotate: Bool = false
 
     var body: some View {
         Button {

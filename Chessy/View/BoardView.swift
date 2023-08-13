@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct BoardView<ChessGame: Game>: View {
-    @ObservedObject var gameVM: GameViewModel<ChessGame>
-    @Environment(\.horizontalSizeClass) var sizeClass
 
-    @Environment(\.shouldRotate) var shouldRotate: Bool
+    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
+
+    @AppStorage("shouldRotate") var shouldRotate: Bool = false
 
     var body: some View {
         ZStack {
@@ -21,18 +21,20 @@ struct BoardView<ChessGame: Game>: View {
                         ForEach(0..<8) { j in
                             let position = Position(rawValue: (7 - i) * 8 + j)!
 
-                            SquareView(gameVM: gameVM, position: position)
-                                .onTapGesture {
-                                    Thread {
-                                        tappedAtPosition(position)
-                                    }.start()
-                                }
-                                .zIndex(gameVM.selectedPosition == position ? 2 : 0)
+                            SquareView<ChessGame>(
+                                piece: gameVM.getPiece(atPosition: position),
+                                position: position
+                            )
+                            .zIndex(gameVM.selectedPosition == position ? 2 :
+                                        (gameVM.lastMove?.to == position ? 1 : 0))
                         }
                     }
-                    .zIndex(gameVM.selectedRow == i ? 1 : 0)
+                    .zIndex(gameVM.selectedPosition?.x == 7 - i ? 2 :
+                                gameVM.lastMove?.to.x == 7 - i ? 1 : 0)
                 }
             }
+            .glassView(cornerRadius: 0)
+            .padding()
 
             if let position = gameVM.canPromotePawnAtPosition {
                 Color.black.opacity(0.3)
@@ -63,7 +65,7 @@ struct BoardView<ChessGame: Game>: View {
                                 }
                             }
                             .aspectRatio(1, contentMode: .fit)
-                            .frame(minWidth: 20, maxWidth: 60, minHeight: 20, maxHeight: 60)
+                            .frame(minWidth: 20, maxWidth: 80, minHeight: 20, maxHeight: 80)
                             .glassView()
 
                             Spacer()
@@ -76,34 +78,6 @@ struct BoardView<ChessGame: Game>: View {
         }
         .aspectRatio(1, contentMode: .fit)
         .glassView()
-    }
-
-    private func tappedAtPosition(_ position: Position) {
-        if let selectedPosition = gameVM.selectedPosition {
-            if selectedPosition == position {
-                gameVM.deselectPosition()
-                gameVM.selectedRow = nil
-            } else if gameVM.canSelectPiece(atPosition: position) {
-                gameVM.selectPosition(position)
-                gameVM.selectedRow = 7 - position.rawValue / 8
-            } else {
-                gameVM.movePiece(
-                    fromPosition: selectedPosition,
-                    toPosition: position,
-                    isAnimated: true
-                )
-                gameVM.deselectPosition()
-                gameVM.selectedRow = nil
-            }
-        } else {
-            if gameVM.canSelectPiece(atPosition: position) {
-                gameVM.selectPosition(position)
-                gameVM.selectedRow = 7 - position.rawValue / 8
-            } else {
-                gameVM.deselectPosition()
-                gameVM.selectedRow = nil
-            }
-        }
     }
 
 }

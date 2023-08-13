@@ -7,7 +7,7 @@
 
 class ClassicGame: Game {
 
-    private(set) var board: Board
+    internal var board: Board
     private(set) var history = [Move]()
     private(set) var turn: PieceColor = .white
     weak var delegate: GameDelegate?
@@ -16,7 +16,7 @@ class ClassicGame: Game {
     private(set) var whiteTime: Int?
     private(set) var blackTime: Int?
 
-    var state: GameState = .inProgress
+    private(set) var state: GameState = .inProgress
     private(set) var canPromotePawnAtPosition: Position?
 
     init(board: Board) {
@@ -281,7 +281,9 @@ class ClassicGame: Game {
 
         if move.pawnPromotedTo != nil {
             board.removePiece(atPosition: move.to)
-            board.addPiece(move.piece, atPosition: move.to)
+            if let piece = move.piece {
+                board.addPiece(piece, atPosition: move.to)
+            }
         }
 
         board.movePiece(fromPosition: move.to, toPosition: move.from)
@@ -289,7 +291,7 @@ class ClassicGame: Game {
         if let capturedPiece = move.capturedPiece {
             if move.capturedByEnPassant {
                 if let position = Position(
-                    rawValue: move.to.rawValue - (move.piece.color == .white ? 8 : -8)
+                    rawValue: move.to.rawValue - (turn.opposite == .white ? 8 : -8)
                 ) {
                     board.addPiece(capturedPiece, atPosition: position)
                 }
@@ -311,7 +313,7 @@ class ClassicGame: Game {
         canPromotePawnAtPosition = nil
         turn = turn.opposite
         state = getState()
-        timer?.set(seconds: move.timeLeft ?? 0, for: move.piece.color)
+        timer?.set(seconds: move.timeLeft ?? 0, for: turn)
         timer?.start()
     }
 
@@ -382,10 +384,6 @@ class ClassicGame: Game {
             }
         }
         return false
-    }
-
-    private func pieceHasMoved(atPosition position: Position) -> Bool {
-        return history.contains(where: { $0.from == position || $0.to == position })
     }
 
     private func isPositionThreatened(_ position: Position?, byColor color: PieceColor) -> Bool {

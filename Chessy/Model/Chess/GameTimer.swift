@@ -11,6 +11,7 @@ protocol GameTimerDelegate: AnyObject {
     func didUpdateTime(with time: Int, for color: PieceColor)
 
     var turn: PieceColor { get }
+    var state: GameState { get }
 }
 
 class GameTimer {
@@ -54,7 +55,7 @@ class GameTimer {
     }
 
     func start() {
-        guard !isStarted else { return }
+        guard !isStarted, delegate?.state == .inProgress else { return }
 
         isStarted = true
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in

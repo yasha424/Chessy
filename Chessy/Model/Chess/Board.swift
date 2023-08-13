@@ -17,6 +17,12 @@ enum Position: Int, CaseIterable {
 
     var x: Int { rawValue / 8 }
     var y: Int { rawValue % 8 }
+    var file: String {
+        "\("\(self)".first!)"
+    }
+    var rank: String {
+        "\(x + 1)"
+    }
 
     static func fromCoordinates(x: Int, y: Int) -> Position? {
         Position(rawValue: x * 8 + y)
