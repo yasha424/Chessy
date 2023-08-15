@@ -9,7 +9,7 @@
 ## Description
 This project is simple chess application in glassmorphism style for iOS where you can play locally with human opponent (bots, puzzles and online games are in todo list), below you can see some UI images of app running on iPhone 14 Pro (iOS 16.4).
 
-<img src="./resources/app1.png" alt="app screen 1" width="200px"> <img src="./resources/app2.png" alt="app screen 2" width="200px"> <img src="./resources/app3.png" alt="app screen 3" width="200px">
+<img src="./resources/app1.png" alt="app screen 1" width="250px"> <img src="./resources/app2.png" alt="app screen 2" width="250px"> <img src="./resources/app3.png" alt="app screen 3" width="250px">
 
 
 ## General info

@@ -24,6 +24,9 @@
 		D329450B2A7A59CA00F98BF9 /* PuzzleGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D329450A2A7A59CA00F98BF9 /* PuzzleGame.swift */; };
 		D3386F9A2A78610F00E6C35F /* FenInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3386F992A78610F00E6C35F /* FenInputView.swift */; };
 		D3452B2C2A694172003A1F45 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3452B2B2A694172003A1F45 /* Game.swift */; };
+		D35DA9AF2A8B7BBF00CBC5B4 /* move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9AE2A8B7BBF00CBC5B4 /* move.mp3 */; };
+		D35DA9B22A8B7D6600CBC5B4 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35DA9B12A8B7D6600CBC5B4 /* AudioPlayerService.swift */; };
+		D35DA9B42A8B7F1C00CBC5B4 /* capture.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9B32A8B7F1C00CBC5B4 /* capture.mp3 */; };
 		D35EEDEB2A894241006A9B1D /* SinglePlayerGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */; };
 		D3610A802A5AB3030046A585 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3610A7F2A5AB3030046A585 /* Colors.swift */; };
 		D3611FBE2A6C161D00348F99 /* GlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3611FBD2A6C161D00348F99 /* GlassView.swift */; };
@@ -129,6 +132,9 @@
 		D329450A2A7A59CA00F98BF9 /* PuzzleGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGame.swift; sourceTree = "<group>"; };
 		D3386F992A78610F00E6C35F /* FenInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FenInputView.swift; sourceTree = "<group>"; };
 		D3452B2B2A694172003A1F45 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		D35DA9AE2A8B7BBF00CBC5B4 /* move.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = move.mp3; sourceTree = "<group>"; };
+		D35DA9B12A8B7D6600CBC5B4 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
+		D35DA9B32A8B7F1C00CBC5B4 /* capture.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = capture.mp3; sourceTree = "<group>"; };
 		D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePlayerGameView.swift; sourceTree = "<group>"; };
 		D3610A7F2A5AB3030046A585 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D3611FBD2A6C161D00348F99 /* GlassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassView.swift; sourceTree = "<group>"; };
@@ -208,6 +214,8 @@
 		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
 			isa = PBXGroup;
 			children = (
+				D35DA9B02A8B7D5300CBC5B4 /* Service */,
+				D35DA9AB2A8B7A5A00CBC5B4 /* Resource */,
 				D3D7C9F72A86EA1300D39644 /* Shape */,
 				D3F87F282A76938F00CAF3E3 /* ViewModel */,
 				D3107AF32A72809200EB1032 /* Model */,
@@ -265,6 +273,23 @@
 				D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		D35DA9AB2A8B7A5A00CBC5B4 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				D35DA9B32A8B7F1C00CBC5B4 /* capture.mp3 */,
+				D35DA9AE2A8B7BBF00CBC5B4 /* move.mp3 */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		D35DA9B02A8B7D5300CBC5B4 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				D35DA9B12A8B7D6600CBC5B4 /* AudioPlayerService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		D3610A7E2A5AB2F00046A585 /* Constants */ = {
@@ -428,6 +453,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3141EC62A55DFB300D9D95A /* Preview Assets.xcassets in Resources */,
+				D35DA9B42A8B7F1C00CBC5B4 /* capture.mp3 in Resources */,
+				D35DA9AF2A8B7BBF00CBC5B4 /* move.mp3 in Resources */,
 				D3141EC32A55DFB300D9D95A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +513,7 @@
 				D3141EBF2A55DFB100D9D95A /* ChessyApp.swift in Sources */,
 				D3788FC62A6E8E2B0008DE41 /* TimerView.swift in Sources */,
 				D32945092A7A592800F98BF9 /* Puzzle.swift in Sources */,
+				D35DA9B22A8B7D6600CBC5B4 /* AudioPlayerService.swift in Sources */,
 				D3254D212A5A19130093ECC6 /* GameView.swift in Sources */,
 				D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */,
 				D369D20F2A79806300F9BC56 /* PuzzleListViewItem.swift in Sources */,

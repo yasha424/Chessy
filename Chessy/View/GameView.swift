@@ -41,31 +41,27 @@ struct GameView<ChessGame: Game>: View {
             .zIndex(3.0)
             .animation(.spring(response: 0.3), value: gameVM.state)
 
-                VStack {
+            VStack {
+                if gameVM.hasTimer {
+                    HStack {
+                        Spacer()
+
+                        blackTimerView
+                    }
+                }
+
+                boardView.padding(.vertical, 8)
+
+                HStack {
+                    undoButtonView
+
                     Spacer()
 
                     if gameVM.hasTimer {
-                        HStack {
-                            Spacer()
-
-                            blackTimerView
-                        }
+                        whiteTimerView
                     }
-
-                    boardView.padding(.vertical)
-
-                    HStack {
-                        undoButtonView
-
-                        Spacer()
-
-                        if gameVM.hasTimer {
-                            whiteTimerView
-                        }
-                    }
-
-                    Spacer()
                 }
+            }
         }
     }
 }

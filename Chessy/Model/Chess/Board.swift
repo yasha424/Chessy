@@ -147,9 +147,9 @@ struct Board: Equatable {
 
     mutating func movePiece(fromPosition from: Position, toPosition to: Position) {
         guard from != to,
-              let piece = self[from] else { return }
+              self[from] != nil else { return }
 
-        pieces[to.rawValue] = piece
+        pieces.swapAt(from.rawValue, to.rawValue)
         pieces[from.rawValue] = nil
     }
 

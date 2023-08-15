@@ -8,6 +8,7 @@
 import Combine
 import Dispatch
 import CoreGraphics
+import AVFoundation
 
 class GameViewModel<ChessGame: Game>: ObservableObject {
 
@@ -28,6 +29,7 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
     private(set) var hasTimer: Bool
     @Published private(set) var whiteTime: Int?
     @Published private(set) var blackTime: Int?
+    private let audioPlayerService: AudioPlayerService
 
     init(game: ChessGame) {
         self.game = game
@@ -35,10 +37,14 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
         self.state = game.state
         self.turn = game.turn
         self.fen = game.fen
-        self.game.delegate = self
         self.whiteTime = game.whiteTime
         self.blackTime = game.blackTime
         self.canPromotePawnAtPosition = game.canPromotePawnAtPosition
+        self.audioPlayerService = AudioPlayerService(
+            moveSoundUrl: Bundle.main.url(forResource: "move", withExtension: "mp3"),
+            captureSoundUrl: Bundle.main.url(forResource: "capture", withExtension: "mp3")
+        )
+        self.game.delegate = self
     }
 
     func undoLastMove() {
@@ -110,6 +116,7 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
     }
 
     func movePiece(fromPosition from: Position, toPosition to: Position, isAnimated: Bool = false) {
+        guard allowedMoves.contains(to) else { return }
         DispatchQueue.main.async {
             self.game.movePiece(fromPosition: from, toPosition: to)
             self.state = self.game.state
@@ -117,29 +124,29 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
             self.kingInCheckForColor = self.game.isKingInCheck(
                 forColor: self.turn) ? self.turn : nil
             self.lastMove = self.game.history.last
+            self.audioPlayerService.playSound(capture: self.lastMove?.capturedPiece != nil)
             self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
             self.fen = self.game.fen
-            if isAnimated {
-                if let move = self.lastMove {
-                    self.animatedMoves = [move]
 
-                    if let castling = move.castling {
-                        let from = Position.fromCoordinates(
-                            x: move.from.x,
-                            y: castling == .kingSide ? 7 : 0
-                        )
-                        let to = Position.fromCoordinates(
-                            x: move.to.x,
-                            y: castling == .kingSide ? 5 : 3
-                        )
-                        guard let from = from, let to = to else { return }
-                        self.animatedMoves.append(
-                            Move(from: from, to: to, piece: self.game.board[to])
-                        )
-                    }
-                }
+            guard let move = self.lastMove else { return }
+            if isAnimated {
+                self.animatedMoves = [move]
             } else {
                 self.animatedMoves = []
+            }
+            if let castling = move.castling {
+                let from = Position.fromCoordinates(
+                    x: move.from.x,
+                    y: castling == .kingSide ? 7 : 0
+                )
+                let to = Position.fromCoordinates(
+                    x: move.to.x,
+                    y: castling == .kingSide ? 5 : 3
+                )
+                guard let from = from, let to = to else { return }
+                self.animatedMoves.append(
+                    Move(from: from, to: to, piece: self.game.board[to])
+                )
             }
         }
     }

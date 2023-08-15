@@ -212,7 +212,6 @@ class ClassicGame: Game {
             timeLeft: turn == .white ? whiteTime : blackTime
         ))
         board = game.board
-
     }
 
     private func getPawnPromotePosition() -> Position? {

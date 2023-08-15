@@ -42,11 +42,9 @@ struct SquareView<ChessGame: Game>: View {
         GeometryReader { geometry in
             ZStack {
                 if position.x % 2 == position.y % 2 {
-                    Colors.whiteSquare
-                        .opacity(0.3)
+                    Colors.whiteSquare.opacity(0.3)
                 } else {
-                    Colors.blackSquare
-                        .opacity(0.3)
+                    Colors.blackSquare.opacity(0.3)
                 }
 
                 if position.y == 0 {
@@ -110,7 +108,7 @@ struct SquareView<ChessGame: Game>: View {
                         .padding(geometry.size.width / 8)
                         .scaleEffect(x: isDragged ? 2 : 1, y: isDragged ? 2 : 1)
                         .shadow(
-                            color: Color.green,
+                            color: .green,
                             radius: gameVM.selectedPosition == position ? 5 : 0
                         )
                         .position(gestureLocation)

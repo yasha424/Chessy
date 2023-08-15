@@ -33,8 +33,7 @@ struct BoardView<ChessGame: Game>: View {
                                 gameVM.lastMove?.to.x == 7 - i ? 1 : 0)
                 }
             }
-            .glassView(cornerRadius: 0)
-            .padding()
+            .padding(10)
 
             if let position = gameVM.canPromotePawnAtPosition {
                 Color.black.opacity(0.3)

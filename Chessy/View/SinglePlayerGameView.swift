@@ -22,10 +22,10 @@ struct SinglePlayerGameView: View {
             Spacer()
 
             gameView
-                .onShake {
-                    isAlertPresented = true
-                }
-                .padding([.leading, .trailing, .bottom])
+                .onShake { isAlertPresented = true }
+                .padding([.leading, .trailing, .bottom], 8)
+
+            Spacer()
 
             HStack {
                 Spacer()
@@ -36,16 +36,14 @@ struct SinglePlayerGameView: View {
                     Toggle("", isOn: $shouldRotate)
                         .labelsHidden()
                 }
-                .padding([.leading, .trailing])
+                .padding([.leading, .trailing], 8)
                 .frame(height: 40)
                 .glassView()
                 .tint(.primary.opacity(0.5))
             }
-            .padding(.horizontal)
+            .padding(8)
 
-            Spacer()
-
-            fenInputView.padding()
+            fenInputView.padding(8)
         }
         .background(.thinMaterial)
         .background(
