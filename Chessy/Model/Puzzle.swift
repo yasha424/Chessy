@@ -5,7 +5,7 @@
 //  Created by Yasha Serhiienko on 02.08.2023.
 //
 
-struct Puzzle {
+struct Puzzle: Identifiable, Equatable {
     let id: String
     let fen: String
     let moves: [Move]

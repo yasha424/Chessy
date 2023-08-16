@@ -7,9 +7,7 @@
 
 final class PuzzleGame: ClassicGame {
 
-    private let solution: [Move]
-    private(set) var selectedPosition: Position?
-    private(set) var allowedMoves = [Position]()
+    let solution: [Move]
 
     init(with puzzle: Puzzle) {
         self.solution = puzzle.moves
@@ -21,13 +19,4 @@ final class PuzzleGame: ClassicGame {
         super.movePiece(fromPosition: from, toPosition: to)
     }
 
-    func selectPosition(_ position: Position) {
-        self.selectedPosition = position
-        self.allowedMoves = allMoves(fromPosition: position)
-    }
-
-    func deselectPosition() {
-        self.selectedPosition = nil
-        self.allowedMoves = []
-    }
 }

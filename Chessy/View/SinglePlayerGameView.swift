@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct SinglePlayerGameView: View {
+struct SinglePlayerGameView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject var gameVM: GameViewModel<ClassicGame>
+    @EnvironmentObject var gameVM: ViewModel
 
     @State var isAlertPresented = false
     @AppStorage("shouldRotate") var shouldRotate = false
 
     let fenInputView = FenInputView<ClassicGame>()
-    let gameView = GameView<ClassicGame>()
+    let gameView = GameView<ViewModel>()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -45,15 +45,7 @@ struct SinglePlayerGameView: View {
 
             fenInputView.padding(8)
         }
-        .background(.thinMaterial)
-        .background(
-            LinearGradient(
-                colors: [.blue, .yellow],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            ignoresSafeAreaEdges: .all
-        )
+        .customBackground()
         .alert("Reset game?", isPresented: $isAlertPresented, actions: {
             Button(role: .destructive) {
                 gameVM.updateGame(with: ClassicGame(board: Board()))

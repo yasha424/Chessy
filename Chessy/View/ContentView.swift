@@ -11,7 +11,7 @@ struct ContentView: View {
 
     @StateObject var gameVM = GameViewModel(game: ClassicGame(board: Board()))
 
-    let singlePlayerGameView = SinglePlayerGameView()
+    let singlePlayerGameView = SinglePlayerGameView<GameViewModel<ClassicGame>>()
 
     @Environment(\.verticalSizeClass) var sizeClass
 
@@ -23,12 +23,18 @@ struct ContentView: View {
                     Label {
                         Text("1v1")
                     } icon: {
-                        Image(systemName: "play.circle")
+                        Image(systemName: "play.circle.fill")
                     }
-
                 }
 
-            PuzzleView()
+            PuzzleListView()
+                .tabItem {
+                    Label {
+                        Text("Puzzles")
+                    } icon: {
+                        Image(systemName: "brain.head.profile")
+                    }
+                }
         }
         .onAppear {
             UITabBar.appearance().backgroundColor = UIColor.systemBackground.withAlphaComponent(0.3)

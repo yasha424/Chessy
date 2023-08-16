@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SquareView<ChessGame: Game>: View {
+struct SquareView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
+    @ObservedObject var vm: ViewModel
     let piece: Piece?
     let position: Position
 
@@ -22,7 +22,7 @@ struct SquareView<ChessGame: Game>: View {
     private let refreshRate = 3
 
     @AppStorage("shouldRotate") var shouldRotate: Bool = false
-    @Environment(\.horizontalSizeClass) var sizeClass
+//    @Environment(\.horizontalSizeClass) var sizeClass
 
     var dragGesture: some Gesture {
         DragGesture()
@@ -51,6 +51,7 @@ struct SquareView<ChessGame: Game>: View {
                     HStack {
                         VStack {
                             Text(position.rank)
+                                .minimumScaleFactor(0.2)
                                 .font(.system(size: 10))
                                 .opacity(0.7)
                                 .padding(.leading, 2)
@@ -65,6 +66,7 @@ struct SquareView<ChessGame: Game>: View {
                         VStack {
                             Spacer()
                             Text(position.file)
+                                .minimumScaleFactor(0.2)
                                 .font(.system(size: 10))
                                 .opacity(0.7)
                                 .padding([.bottom, .trailing], 1)
@@ -72,11 +74,11 @@ struct SquareView<ChessGame: Game>: View {
                     }
                 }
 
-                if [gameVM.lastMove?.from, gameVM.lastMove?.to].contains(position) {
+                if [vm.lastMove?.from, vm.lastMove?.to].contains(position) {
                     Color.green.opacity(0.25)
                 }
 
-                if gameVM.draggedTo == position {
+                if vm.draggedTo == position {
                     Circle()
                         .foregroundColor(.green)
                         .opacity(0.3)
@@ -84,7 +86,7 @@ struct SquareView<ChessGame: Game>: View {
                 }
 
                 if let piece = self.piece {
-                    if piece.type == .king && gameVM.kingInCheckForColor == piece.color {
+                    if piece.type == .king && vm.kingInCheckForColor == piece.color {
                         Circle()
                             .blur(radius: 15)
                             .foregroundColor(.red)
@@ -97,7 +99,7 @@ struct SquareView<ChessGame: Game>: View {
                             .aspectRatio(contentMode: .fit)
                             .padding(geometry.size.width / 8)
                             .rotationEffect(Angle(
-                                degrees: shouldRotate && gameVM.turn == .black ? 180 : 0
+                                degrees: shouldRotate && vm.turn == .black ? 180 : 0
                             ))
                             .opacity(0.2)
                     }
@@ -109,23 +111,23 @@ struct SquareView<ChessGame: Game>: View {
                         .scaleEffect(x: isDragged ? 2 : 1, y: isDragged ? 2 : 1)
                         .shadow(
                             color: .green,
-                            radius: gameVM.selectedPosition == position ? 5 : 0
+                            radius: vm.selectedPosition == position ? 5 : 0
                         )
                         .position(gestureLocation)
                         .rotationEffect(Angle(
-                            degrees: shouldRotate && gameVM.turn == .black ? 180 : 0
+                            degrees: shouldRotate && vm.turn == .black ? 180 : 0
                         ))
                         .offset(tapOffset)
                         .onAppear {
                             performAnimation(withSize: geometry.size)
                         }
-                        .onChange(of: gameVM.animatedMoves) { _ in
+                        .onChange(of: vm.animatedMoves) { _ in
                             performAnimation(withSize: geometry.size)
                         }
                         .animation(.spring(response: 0.1), value: isDragged)
                 }
 
-                if gameVM.allowedMoves.contains(position) {
+                if vm.allowedMoves.contains(position) {
                     if piece != nil {
                         CapturePieceShape()
                             .stroke(.red, style: StrokeStyle(lineWidth: 2, lineJoin: .miter))
@@ -139,9 +141,10 @@ struct SquareView<ChessGame: Game>: View {
                     }
                 }
             }
+            .aspectRatio(1, contentMode: .fit)
             .onTapGesture {
                 DispatchQueue.global(qos: .userInteractive).async {
-                    gameVM.selectPosition(position)
+                    vm.selectPosition(position)
                 }
             }
             .gesture(dragGesture)
@@ -159,7 +162,7 @@ struct SquareView<ChessGame: Game>: View {
     }
 
     private func performAnimation(withSize size: CGSize) {
-        for move in gameVM.animatedMoves {
+        for move in vm.animatedMoves {
             if move.to == position {
                 let deltaX = position.x - move.from.x
                 let deltaY = position.y - move.from.y
@@ -178,7 +181,7 @@ struct SquareView<ChessGame: Game>: View {
     }
 
     func getOffset() -> CGSize {
-        if let lastMove = gameVM.lastMove,
+        if let lastMove = vm.lastMove,
            lastMove.to == position {
             let deltaX = position.x - lastMove.from.x
             let deltaY = position.y - lastMove.from.y
@@ -189,15 +192,15 @@ struct SquareView<ChessGame: Game>: View {
     }
 
     private func updateGesture(with gesture: DragGesture.Value) {
-        if gameVM.canSelectPiece(atPosition: position) {
-            if gameVM.selectedPosition != position || !isDragged {
+        if vm.canSelectPiece(atPosition: position) {
+            if vm.selectedPosition != position || !isDragged {
                 DispatchQueue.main.async {
                     isDragged = true
                 }
-                gameVM.selectPosition(position)
+                vm.selectPosition(position)
             }
 
-            if shouldRotate && gameVM.turn == .black {
+            if shouldRotate && vm.turn == .black {
                 DispatchQueue.main.async {
                     withAnimation(.spring(response: 0.1)) {
                         gestureLocation = CGPoint(
@@ -219,7 +222,7 @@ struct SquareView<ChessGame: Game>: View {
 
             DispatchQueue.global(qos: .background).async {
                 if changes % refreshRate == 0 {
-                    gameVM.computeDraggedPosition(
+                    vm.computeDraggedPosition(
                         location: gesture.location,
                         size: size
                     )
@@ -237,12 +240,12 @@ struct SquareView<ChessGame: Game>: View {
                 gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
             }
         }
-        gameVM.deselectPosition()
+        vm.deselectPosition()
 
-        if let to = gameVM.draggedTo {
-            gameVM.movePiece(fromPosition: position, toPosition: to)
+        if let to = vm.draggedTo {
+            vm.movePiece(fromPosition: position, toPosition: to, isAnimated: false)
         }
-        gameVM.endedGesture()
+        vm.endedGesture()
     }
 
 }

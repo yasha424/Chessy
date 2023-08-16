@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct BoardView<ChessGame: Game>: View {
+struct BoardView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
+    @ObservedObject var vm: ViewModel
 
     @AppStorage("shouldRotate") var shouldRotate: Bool = false
 
@@ -21,21 +21,22 @@ struct BoardView<ChessGame: Game>: View {
                         ForEach(0..<8) { j in
                             let position = Position(rawValue: (7 - i) * 8 + j)!
 
-                            SquareView<ChessGame>(
-                                piece: gameVM.getPiece(atPosition: position),
+                            SquareView<ViewModel>(
+                                vm: vm,
+                                piece: vm.getPiece(atPosition: position),
                                 position: position
                             )
-                            .zIndex(gameVM.selectedPosition == position ? 2 :
-                                        (gameVM.lastMove?.to == position ? 1 : 0))
+                            .zIndex(vm.selectedPosition == position ? 2 :
+                                        (vm.lastMove?.to == position ? 1 : 0))
                         }
                     }
-                    .zIndex(gameVM.selectedPosition?.x == 7 - i ? 2 :
-                                gameVM.lastMove?.to.x == 7 - i ? 1 : 0)
+                    .zIndex(vm.selectedPosition?.x == 7 - i ? 2 :
+                                vm.lastMove?.to.x == 7 - i ? 1 : 0)
                 }
             }
             .padding(10)
 
-            if let position = gameVM.canPromotePawnAtPosition {
+            if let position = vm.canPromotePawnAtPosition {
                 Color.black.opacity(0.3)
 
                 VStack {
@@ -48,12 +49,12 @@ struct BoardView<ChessGame: Game>: View {
 
                         ForEach(pieceTypes) { type in
                             Button {
-                                gameVM.promotePawn(to: type)
+                                vm.promotePawn(to: type)
                             } label: {
-                                if let piece = gameVM.getPiece(atPosition: position),
+                                if let piece = vm.getPiece(atPosition: position),
                                    let colorName = ImageNames.color[piece.color],
                                    let typeName = ImageNames.type[type] {
-                                    let rotationDegrees = (gameVM.turn == .black &&
+                                    let rotationDegrees = (vm.turn == .black &&
                                                            shouldRotate) ? 180.0 : 0.0
                                     Image(colorName + typeName)
                                         .resizable()

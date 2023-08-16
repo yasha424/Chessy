@@ -8,7 +8,24 @@
 import SwiftUI
 
 struct PuzzleListViewItem: View {
+
+    @ObservedObject var puzzleVM: PuzzleViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            BoardPreview(board: puzzleVM.game.board)
+                .frame(minWidth: 100, maxWidth: 200)
+                .padding(8)
+            Spacer()
+            VStack {
+                HStack {
+                    Text("Rating:")
+                    Text("\(puzzleVM.puzzle.rating)")
+                }
+                Spacer()
+            }
+            .padding(8)
+        }
+        .glassView()
     }
 }

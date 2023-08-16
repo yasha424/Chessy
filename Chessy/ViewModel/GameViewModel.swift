@@ -10,26 +10,29 @@ import Dispatch
 import CoreGraphics
 import AVFoundation
 
-class GameViewModel<ChessGame: Game>: ObservableObject {
+class GameViewModel<ChessGame: Game>: ViewModelProtocol {
 
-    private var game: ChessGame
+    internal var game: any Game
     @Published private(set) var state: GameState
-    private(set) var canPromotePawnAtPosition: Position?
-    private(set) var fen: String
+    internal var canPromotePawnAtPosition: Position?
+    internal var fen: String
 
-    @Published private(set) var selectedPosition: Position?
-    private(set) var allowedMoves = [Position]()
-    @Published private(set) var draggedTo: Position?
-    private(set) var lastMove: Move?
-    private(set) var animatedMoves = [Move]()
+    @Published internal var selectedPosition: Position?
+    internal var allowedMoves = [Position]()
+    @Published internal var draggedTo: Position?
+    internal var lastMove: Move?
+    internal var animatedMoves = [Move]()
 
-    private(set) var turn: PieceColor
-    private(set) var kingInCheckForColor: PieceColor?
+    internal var turn: PieceColor
+    internal var kingInCheckForColor: PieceColor?
 
-    private(set) var hasTimer: Bool
-    @Published private(set) var whiteTime: Int?
-    @Published private(set) var blackTime: Int?
-    private let audioPlayerService: AudioPlayerService
+    internal var hasTimer: Bool
+    @Published internal var whiteTime: Int?
+    @Published internal var blackTime: Int?
+    let audioPlayerService = AudioPlayerService(
+        moveSoundUrl: Bundle.main.url(forResource: "move", withExtension: "mp3"),
+        captureSoundUrl: Bundle.main.url(forResource: "capture", withExtension: "mp3")
+    )
 
     init(game: ChessGame) {
         self.game = game
@@ -40,10 +43,6 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
         self.whiteTime = game.whiteTime
         self.blackTime = game.blackTime
         self.canPromotePawnAtPosition = game.canPromotePawnAtPosition
-        self.audioPlayerService = AudioPlayerService(
-            moveSoundUrl: Bundle.main.url(forResource: "move", withExtension: "mp3"),
-            captureSoundUrl: Bundle.main.url(forResource: "capture", withExtension: "mp3")
-        )
         self.game.delegate = self
     }
 
@@ -79,10 +78,12 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
         }
     }
 
-    func updateGame(with newGame: ChessGame) {
+    func updateGame(with newGame: any Game) {
         DispatchQueue.main.async {
             self.game.delegate = nil
-            self.game = newGame
+            if let newGame = newGame as? ChessGame {
+                self.game = newGame
+            }
             self.state = self.game.state
             self.turn = self.game.turn
             self.game.delegate = self
@@ -116,19 +117,19 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
     }
 
     func movePiece(fromPosition from: Position, toPosition to: Position, isAnimated: Bool = false) {
-        guard allowedMoves.contains(to) else { return }
         DispatchQueue.main.async {
             self.game.movePiece(fromPosition: from, toPosition: to)
+
+            self.lastMove = self.game.history.last
+            guard let move = self.lastMove,
+                  move.from == from, move.to == to else { return }
             self.state = self.game.state
             self.turn = self.game.turn
             self.kingInCheckForColor = self.game.isKingInCheck(
                 forColor: self.turn) ? self.turn : nil
-            self.lastMove = self.game.history.last
-            self.audioPlayerService.playSound(capture: self.lastMove?.capturedPiece != nil)
             self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
             self.fen = self.game.fen
 
-            guard let move = self.lastMove else { return }
             if isAnimated {
                 self.animatedMoves = [move]
             } else {
@@ -148,6 +149,7 @@ class GameViewModel<ChessGame: Game>: ObservableObject {
                     Move(from: from, to: to, piece: self.game.board[to])
                 )
             }
+            self.audioPlayerService.playSound(capture: self.lastMove?.capturedPiece != nil)
         }
     }
 

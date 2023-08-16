@@ -7,25 +7,33 @@
 
 import SwiftUI
 
-struct GameView<ChessGame: Game>: View {
+struct GameView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
+    @EnvironmentObject var gameVM: ViewModel
 
-    let boardView = BoardView<ChessGame>()
-    let blackTimerView = TimerView<ChessGame>(color: .black)
-    let whiteTimerView = TimerView<ChessGame>(color: .white)
-    let undoButtonView = UndoButtonView<ChessGame>()
+    @State var boardView: BoardView<ViewModel>!
+    let blackTimerView = TimerView<ClassicGame>(color: .black)
+    let whiteTimerView = TimerView<ClassicGame>(color: .white)
+    let undoButtonView = UndoButtonView<ClassicGame>()
 
     var body: some View {
         ZStack {
             VStack {
                 switch gameVM.state {
                 case .checkmate(let color):
-                    Text((color == .black ? "White" : "Black") + " won by checkmate!")
-                        .padding([.leading, .trailing])
-                        .frame(height: 40)
-                        .glassView()
-                        .transition(.move(edge: .top))
+                    if color == .white {
+                        Text("Black won by checkmate!")
+                            .padding([.leading, .trailing])
+                            .frame(height: 40)
+                            .glassView()
+                            .transition(.move(edge: .top))
+                    } else {
+                        Text("White won by checkmate!")
+                            .padding([.leading, .trailing])
+                            .frame(height: 40)
+                            .glassView()
+                            .transition(.move(edge: .top))
+                    }
                 case .stalemate:
                     Text("Stalemate!")
                         .padding([.leading, .trailing])
@@ -62,6 +70,9 @@ struct GameView<ChessGame: Game>: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            boardView = BoardView<ViewModel>(vm: gameVM)
         }
     }
 }

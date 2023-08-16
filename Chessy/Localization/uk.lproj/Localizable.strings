@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  Chessy
+
+  Created by Yasha Serhiienko on 15.08.2023.
+  
+*/
+"White won by checkmate!" = "Мат. Білі перемогли";
+"Black won by checkmate!" = "Мат. Чорні перемогли";
+"Stalemate!" = "Пат";
+"Reset game?" = "Оновити гру?";
+"You will lose current game progress" = "Прогрес вашої поточної гри буде втрачений";
+"Cancel" = "Відхилити";
+"Reset" = "Оновити";
+"Rotating" = "Обертати";
+"Rating:" = "Рейтинг:";
+"Puzzles" = "Пазли";

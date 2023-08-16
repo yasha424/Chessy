@@ -45,7 +45,8 @@ struct FenInputView<ChessGame: Game>: View {
                 fenString = gameVM.fen
             }
             .onAppear {
-                if let game = ClassicGame(fromFen: fenString) as? ChessGame {
+                if gameVM.game.history.isEmpty,
+                   let game = ClassicGame(fromFen: fenString) as? ChessGame {
                     gameVM.updateGame(with: game)
                 }
                 fenString = gameVM.fen
