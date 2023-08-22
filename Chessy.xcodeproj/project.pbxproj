@@ -12,7 +12,7 @@
 		D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EC02A55DFB100D9D95A /* ContentView.swift */; };
 		D3141EC32A55DFB300D9D95A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3141EC22A55DFB300D9D95A /* Assets.xcassets */; };
 		D3141EC62A55DFB300D9D95A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3141EC52A55DFB300D9D95A /* Preview Assets.xcassets */; };
-		D3141ED02A55DFB400D9D95A /* ChessyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141ECF2A55DFB400D9D95A /* ChessyTests.swift */; };
+		D3141ED02A55DFB400D9D95A /* ClassicGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141ECF2A55DFB400D9D95A /* ClassicGameTests.swift */; };
 		D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141ED92A55DFB400D9D95A /* ChessyUITests.swift */; };
 		D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */; };
 		D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
@@ -37,6 +37,21 @@
 		D369D2112A79808600F9BC56 /* PuzzleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D369D2102A79808600F9BC56 /* PuzzleViewModel.swift */; };
 		D3788FC62A6E8E2B0008DE41 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC52A6E8E2B0008DE41 /* TimerView.swift */; };
 		D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC72A6E8FC40008DE41 /* BoardView.swift */; };
+		D38272F62A94ECD100A9B7A4 /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
+		D38272F72A94ECD100A9B7A4 /* SinglePlayerGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */; };
+		D38272F82A94ECD200A9B7A4 /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
+		D38272F92A94ECD200A9B7A4 /* SinglePlayerGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */; };
+		D38272FA2A94ECE000A9B7A4 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35DA9B52A8B86DA00CBC5B4 /* ViewModelProtocol.swift */; };
+		D38272FB2A94ECE000A9B7A4 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35DA9B52A8B86DA00CBC5B4 /* ViewModelProtocol.swift */; };
+		D38272FC2A94ED0500A9B7A4 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35DA9B12A8B7D6600CBC5B4 /* AudioPlayerService.swift */; };
+		D38272FD2A94ED0600A9B7A4 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35DA9B12A8B7D6600CBC5B4 /* AudioPlayerService.swift */; };
+		D38272FE2A94ED1800A9B7A4 /* capture.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9B32A8B7F1C00CBC5B4 /* capture.mp3 */; };
+		D38272FF2A94ED1800A9B7A4 /* capture.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9B32A8B7F1C00CBC5B4 /* capture.mp3 */; };
+		D38273002A94ED1B00A9B7A4 /* move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9AE2A8B7BBF00CBC5B4 /* move.mp3 */; };
+		D38273012A94ED1C00A9B7A4 /* move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9AE2A8B7BBF00CBC5B4 /* move.mp3 */; };
+		D38273022A94ED2000A9B7A4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9BC2A8BB1BD00CBC5B4 /* Localizable.strings */; };
+		D38273032A94ED2100A9B7A4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9BC2A8BB1BD00CBC5B4 /* Localizable.strings */; };
+		D38273052A94F7F500A9B7A4 /* PuzzleGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D38273042A94F7F500A9B7A4 /* PuzzleGameTests.swift */; };
 		D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3865A872A70873600529C41 /* UndoButtonView.swift */; };
 		D3879F222A90C314004F30B5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F212A90C314004F30B5 /* WidgetKit.framework */; };
 		D3879F242A90C314004F30B5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F232A90C314004F30B5 /* SwiftUI.framework */; };
@@ -156,7 +171,7 @@
 		D3141EC22A55DFB300D9D95A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3141EC52A55DFB300D9D95A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D3141ECB2A55DFB400D9D95A /* ChessyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3141ECF2A55DFB400D9D95A /* ChessyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyTests.swift; sourceTree = "<group>"; };
+		D3141ECF2A55DFB400D9D95A /* ClassicGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicGameTests.swift; sourceTree = "<group>"; };
 		D3141ED52A55DFB400D9D95A /* ChessyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3141ED92A55DFB400D9D95A /* ChessyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyUITests.swift; sourceTree = "<group>"; };
 		D3141EDB2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -181,6 +196,7 @@
 		D369D2102A79808600F9BC56 /* PuzzleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewModel.swift; sourceTree = "<group>"; };
 		D3788FC52A6E8E2B0008DE41 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		D3788FC72A6E8FC40008DE41 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		D38273042A94F7F500A9B7A4 /* PuzzleGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGameTests.swift; sourceTree = "<group>"; };
 		D3865A872A70873600529C41 /* UndoButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoButtonView.swift; sourceTree = "<group>"; };
 		D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChessyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3879F212A90C314004F30B5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -239,9 +255,8 @@
 		D3107AF32A72809200EB1032 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D38272F52A94EBC900A9B7A4 /* Puzzle */,
 				D3EE189B2A5D8D9C0096C9D4 /* Chess */,
-				D32945082A7A592800F98BF9 /* Puzzle.swift */,
-				D329450A2A7A59CA00F98BF9 /* PuzzleGame.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -273,18 +288,18 @@
 		D3141EBD2A55DFB100D9D95A /* Chessy */ = {
 			isa = PBXGroup;
 			children = (
-				D35DA9B72A8BB09B00CBC5B4 /* Localization */,
-				D35DA9B02A8B7D5300CBC5B4 /* Service */,
-				D35DA9AB2A8B7A5A00CBC5B4 /* Resource */,
-				D3D7C9F72A86EA1300D39644 /* Shape */,
-				D3F87F282A76938F00CAF3E3 /* ViewModel */,
+				D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */,
 				D3107AF32A72809200EB1032 /* Model */,
+				D3254D1F2A5A18FC0093ECC6 /* View */,
+				D3F87F282A76938F00CAF3E3 /* ViewModel */,
 				D3972CA22A6DE9210050E6FA /* Info.plist */,
+				D35DA9B02A8B7D5300CBC5B4 /* Service */,
+				D3D7C9F72A86EA1300D39644 /* Shape */,
 				D3EE189C2A5D8DA70096C9D4 /* Extension */,
 				D3610A7E2A5AB2F00046A585 /* Constants */,
-				D3254D1F2A5A18FC0093ECC6 /* View */,
+				D35DA9AB2A8B7A5A00CBC5B4 /* Resource */,
+				D35DA9B72A8BB09B00CBC5B4 /* Localization */,
 				D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */,
-				D3141EBE2A55DFB100D9D95A /* ChessyApp.swift */,
 				D3141EC22A55DFB300D9D95A /* Assets.xcassets */,
 				D3141EC42A55DFB300D9D95A /* Preview Content */,
 			);
@@ -302,7 +317,8 @@
 		D3141ECE2A55DFB400D9D95A /* ChessyTests */ = {
 			isa = PBXGroup;
 			children = (
-				D3141ECF2A55DFB400D9D95A /* ChessyTests.swift */,
+				D3141ECF2A55DFB400D9D95A /* ClassicGameTests.swift */,
+				D38273042A94F7F500A9B7A4 /* PuzzleGameTests.swift */,
 			);
 			path = ChessyTests;
 			sourceTree = "<group>";
@@ -319,17 +335,17 @@
 		D3254D1F2A5A18FC0093ECC6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D3254D202A5A19130093ECC6 /* GameView.swift */,
 				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
+				D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */,
+				D3254D202A5A19130093ECC6 /* GameView.swift */,
+				D3788FC72A6E8FC40008DE41 /* BoardView.swift */,
 				D3F404162A66A3A700C97C84 /* SquareView.swift */,
 				D3788FC52A6E8E2B0008DE41 /* TimerView.swift */,
-				D3788FC72A6E8FC40008DE41 /* BoardView.swift */,
 				D3865A872A70873600529C41 /* UndoButtonView.swift */,
 				D3386F992A78610F00E6C35F /* FenInputView.swift */,
-				D369D20A2A79803900F9BC56 /* PuzzleView.swift */,
 				D369D20C2A79805400F9BC56 /* PuzzleListView.swift */,
 				D369D20E2A79806300F9BC56 /* PuzzleListViewItem.swift */,
-				D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */,
+				D369D20A2A79803900F9BC56 /* PuzzleView.swift */,
 				D3A9BB272A8D01C30075F532 /* BoardPreview.swift */,
 			);
 			path = View;
@@ -367,6 +383,15 @@
 				D3F404182A66FDA800C97C84 /* ImageNames.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		D38272F52A94EBC900A9B7A4 /* Puzzle */ = {
+			isa = PBXGroup;
+			children = (
+				D32945082A7A592800F98BF9 /* Puzzle.swift */,
+				D329450A2A7A59CA00F98BF9 /* PuzzleGame.swift */,
+			);
+			path = Puzzle;
 			sourceTree = "<group>";
 		};
 		D3879F202A90C314004F30B5 /* Frameworks */ = {
@@ -421,9 +446,9 @@
 		D3F87F282A76938F00CAF3E3 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				D35DA9B52A8B86DA00CBC5B4 /* ViewModelProtocol.swift */,
 				D3F87F292A7693A600CAF3E3 /* GameViewModel.swift */,
 				D369D2102A79808600F9BC56 /* PuzzleViewModel.swift */,
-				D35DA9B52A8B86DA00CBC5B4 /* ViewModelProtocol.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -569,6 +594,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D38272FE2A94ED1800A9B7A4 /* capture.mp3 in Resources */,
+				D38273022A94ED2000A9B7A4 /* Localizable.strings in Resources */,
+				D38273002A94ED1B00A9B7A4 /* move.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,6 +604,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D38272FF2A94ED1800A9B7A4 /* capture.mp3 in Resources */,
+				D38273032A94ED2100A9B7A4 /* Localizable.strings in Resources */,
+				D38273012A94ED1C00A9B7A4 /* move.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,13 +687,15 @@
 			files = (
 				D3B1D9172A84E615009B533F /* ChessyApp.swift in Sources */,
 				D3B1D8F12A84E5E3009B533F /* ClassicGame.swift in Sources */,
-				D3141ED02A55DFB400D9D95A /* ChessyTests.swift in Sources */,
+				D3141ED02A55DFB400D9D95A /* ClassicGameTests.swift in Sources */,
 				D3B1D8F72A84E5FE009B533F /* PuzzleViewModel.swift in Sources */,
 				D3B1D9092A84E60E009B533F /* Colors.swift in Sources */,
+				D38272FC2A94ED0500A9B7A4 /* AudioPlayerService.swift in Sources */,
 				D3B1D9112A84E613009B533F /* PuzzleView.swift in Sources */,
 				D3B1D90F2A84E613009B533F /* UndoButtonView.swift in Sources */,
 				D3B1D8F62A84E5FE009B533F /* Piece.swift in Sources */,
 				D3141EED2A55E55C00D9D95A /* Board.swift in Sources */,
+				D38272F72A94ECD100A9B7A4 /* SinglePlayerGameView.swift in Sources */,
 				D3D7C9FA2A86EA3B00D39644 /* CapturePieceShape.swift in Sources */,
 				D3B1D9122A84E613009B533F /* PuzzleListView.swift in Sources */,
 				D3B1D9152A84E613009B533F /* FenInputView.swift in Sources */,
@@ -674,11 +707,14 @@
 				D3B1D9132A84E613009B533F /* PuzzleListViewItem.swift in Sources */,
 				D3B1D8F52A84E5FE009B533F /* GameViewModel.swift in Sources */,
 				D3B1D8F02A84E5D8009B533F /* Game.swift in Sources */,
+				D38272FA2A94ECE000A9B7A4 /* ViewModelProtocol.swift in Sources */,
+				D38273052A94F7F500A9B7A4 /* PuzzleGameTests.swift in Sources */,
 				D3B1D9142A84E613009B533F /* ContentView.swift in Sources */,
 				D3B1D9052A84E60A009B533F /* View+Extension.swift in Sources */,
 				D3B1D90E2A84E613009B533F /* BoardView.swift in Sources */,
 				D3B1D9062A84E60A009B533F /* EnvironmentValues+Extension.swift in Sources */,
 				D3B1D8FE2A84E604009B533F /* PuzzleGame.swift in Sources */,
+				D38272F62A94ECD100A9B7A4 /* BoardPreview.swift in Sources */,
 				D3B1D90A2A84E60E009B533F /* ImageNames.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -698,6 +734,8 @@
 				D3141EDA2A55DFB400D9D95A /* ChessyUITests.swift in Sources */,
 				D3B1D9012A84E604009B533F /* Puzzle.swift in Sources */,
 				D3EE189A2A5D8D8C0096C9D4 /* ContentView.swift in Sources */,
+				D38272F92A94ECD200A9B7A4 /* SinglePlayerGameView.swift in Sources */,
+				D38272F82A94ECD200A9B7A4 /* BoardPreview.swift in Sources */,
 				D3B1D8E72A84E5A1009B533F /* SquareView.swift in Sources */,
 				D3B1D8ED2A84E5B7009B533F /* PuzzleListView.swift in Sources */,
 				D3B1D9182A84E616009B533F /* ChessyApp.swift in Sources */,
@@ -711,7 +749,9 @@
 				D3B1D8FA2A84E5FF009B533F /* Piece.swift in Sources */,
 				D3B1D8FB2A84E5FF009B533F /* PuzzleViewModel.swift in Sources */,
 				D3B1D8EE2A84E5BB009B533F /* PuzzleListViewItem.swift in Sources */,
+				D38272FB2A94ECE000A9B7A4 /* ViewModelProtocol.swift in Sources */,
 				D3141EDC2A55DFB400D9D95A /* ChessyUITestsLaunchTests.swift in Sources */,
+				D38272FD2A94ED0600A9B7A4 /* AudioPlayerService.swift in Sources */,
 				D3B1D8EB2A84E5AD009B533F /* FenInputView.swift in Sources */,
 				D3B1D9072A84E60B009B533F /* View+Extension.swift in Sources */,
 			);
@@ -819,6 +859,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -877,6 +918,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -912,6 +954,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -953,6 +996,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -976,10 +1020,15 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V6FC2DVK94;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -996,10 +1045,15 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V6FC2DVK94;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1018,6 +1072,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1036,6 +1094,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.ChessyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

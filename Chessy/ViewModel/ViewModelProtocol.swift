@@ -8,7 +8,6 @@
 import Foundation
 
 protocol ViewModelProtocol: ObservableObject {
-//    var game: any Game { get }
     var game: any Game { get }
     var state: GameState { get }
     var lastMove: Move? { get }
@@ -35,15 +34,4 @@ protocol ViewModelProtocol: ObservableObject {
     func canSelectPiece(atPosition position: Position) -> Bool
     func computeDraggedPosition(location: CGPoint, size: CGSize)
     func endedGesture()
-}
-
-extension ViewModelProtocol {
-
-//    var audioPlayerService: AudioPlayerService = {
-//        AudioPlayerService(
-//            moveSoundUrl: Bundle.main.url(forResource: "move", withExtension: "mp3"),
-//            captureSoundUrl: Bundle.main.url(forResource: "capture", withExtension: "mp3")
-//        )
-//    }()
-
 }

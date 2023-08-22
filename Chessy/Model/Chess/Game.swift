@@ -111,18 +111,15 @@ extension Game {
         fen.removeLast()
         fen += turn == .white ? " w " : " b "
         fen += getCastlingSidesInString()
-        if let lastMove = history.last, let piece = lastMove.piece, piece.type == .pawn {
+        if let lastMove = history.last, let piece = lastMove.piece,
+           piece.type == .pawn, abs(lastMove.to.x - lastMove.from.x) == 2 {
             if piece.color == .white {
-                if lastMove.to.x - lastMove.from.x == 2 {
-                    if let position = Position.fromCoordinates(x: 2, y: lastMove.to.y) {
-                        fen += " \(position)"
-                    }
+                if let position = Position.fromCoordinates(x: 2, y: lastMove.to.y) {
+                    fen += " \(position)"
                 }
             } else {
-                if lastMove.to.x - lastMove.from.x == -2 {
-                    if let position = Position.fromCoordinates(x: 5, y: lastMove.to.y) {
-                        fen += " \(position)"
-                    }
+                if let position = Position.fromCoordinates(x: 5, y: lastMove.to.y) {
+                    fen += " \(position)"
                 }
             }
         } else {

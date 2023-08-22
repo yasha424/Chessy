@@ -13,7 +13,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
 
     private(set) var puzzle: Puzzle
     private var moves = [Move]()
-    private var playerColor: PieceColor
+    private(set) var playerColor: PieceColor
     private(set) var solved: Bool = false
     private var playedFirstMove: Bool = false
 
