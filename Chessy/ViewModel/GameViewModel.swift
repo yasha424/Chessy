@@ -16,6 +16,9 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     @Published private(set) var state: GameState
     internal var canPromotePawnAtPosition: Position?
     internal var fen: String
+    private(set) var whiteCapturedPiece = [PieceType: Int]()
+    private(set) var blackCapturedPiece = [PieceType: Int]()
+    private(set) var value = 0
 
     @Published internal var selectedPosition: Position?
     internal var allowedMoves = [Position]()
@@ -81,6 +84,9 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         self.lastMove = self.game.history.last
         self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
         self.fen = self.game.fen
+        self.whiteCapturedPiece = capturedPieces(for: .white)
+        self.blackCapturedPiece = capturedPieces(for: .black)
+        self.value = self.game.value
     }
 
     func updateGame(with newGame: any Game) {

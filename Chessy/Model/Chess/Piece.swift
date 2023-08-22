@@ -13,12 +13,12 @@ enum PieceType: String, Identifiable {
     case queen = "Q"
     case king = "K"
 
-    var value: Int {
+    var value: Double {
         switch self {
         case .pawn:
             return 1
         case .bishop:
-            return 3
+            return 3.05
         case .knight:
             return 3
         case .rook:
@@ -41,6 +41,9 @@ enum PieceColor: String {
 
     var opposite: PieceColor {
         self == .white ? .black : .white
+    }
+    var intValue: Int {
+        return self == .white ? 1 : -1
     }
 }
 

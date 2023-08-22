@@ -69,6 +69,19 @@ extension Game {
         getFen()
     }
 
+    var value: Int {
+        return countValue()
+    }
+
+    private func countValue() -> Int {
+         return board.pieces.reduce(0) { partialResult, piece in
+             if let piece = piece {
+                 return partialResult + Int(piece.type.value) * piece.color.intValue
+             }
+             return partialResult
+        }
+    }
+
     func canSelectPiece(atPosition position: Position) -> Bool {
         return board[position]?.color == turn
     }

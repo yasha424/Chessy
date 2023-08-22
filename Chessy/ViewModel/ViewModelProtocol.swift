@@ -23,6 +23,9 @@ protocol ViewModelProtocol: ObservableObject {
     var whiteTime: Int? { get }
     var blackTime: Int? { get }
     var audioPlayerService: AudioPlayerService { get }
+    var whiteCapturedPiece: [PieceType: Int] { get }
+    var blackCapturedPiece: [PieceType: Int] { get }
+    var value: Int { get }
 
     func updateGame(with newGame: any Game)
     func undoLastMove()
@@ -34,4 +37,17 @@ protocol ViewModelProtocol: ObservableObject {
     func canSelectPiece(atPosition position: Position) -> Bool
     func computeDraggedPosition(location: CGPoint, size: CGSize)
     func endedGesture()
+}
+
+extension ViewModelProtocol {
+    func capturedPieces(for color: PieceColor) -> [PieceType: Int] {
+        var pieces: [PieceType: Int] = [.queen: 1, .rook: 2, .bishop: 2, .knight: 2, .pawn: 8]
+        for piece in game.board.pieces where piece != nil && piece?.type != .king {
+            guard let piece = piece else { return [:] }
+            if piece.color == color {
+                pieces[piece.type]! -= 1
+            }
+        }
+        return pieces
+    }
 }
