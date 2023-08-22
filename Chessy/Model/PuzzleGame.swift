@@ -13,6 +13,9 @@ final class PuzzleGame: ClassicGame {
         self.solution = puzzle.moves
 
         super.init(fromFen: puzzle.fen)
+        self.timer = nil
+        self.blackTime = nil
+        self.whiteTime = nil
     }
 
     override func movePiece(fromPosition from: Position, toPosition to: Position) {

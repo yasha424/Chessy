@@ -12,9 +12,9 @@ class ClassicGame: Game {
     private(set) var turn: PieceColor = .white
     weak var delegate: GameDelegate?
 
-    private(set) var timer: GameTimer?
-    private(set) var whiteTime: Int?
-    private(set) var blackTime: Int?
+    internal var timer: GameTimer?
+    internal var whiteTime: Int?
+    internal var blackTime: Int?
 
     private(set) var state: GameState = .inProgress
     private(set) var canPromotePawnAtPosition: Position?

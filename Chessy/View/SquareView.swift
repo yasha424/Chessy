@@ -22,7 +22,6 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
     private let refreshRate = 3
 
     @AppStorage("shouldRotate") var shouldRotate: Bool = false
-//    @Environment(\.horizontalSizeClass) var sizeClass
 
     var dragGesture: some Gesture {
         DragGesture()
@@ -239,12 +238,12 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
             withAnimation(.spring(response: 0.3)) {
                 gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
             }
+            if let to = vm.draggedTo {
+                vm.movePiece(fromPosition: position, toPosition: to, isAnimated: false)
+            }
         }
         vm.deselectPosition()
 
-        if let to = vm.draggedTo {
-            vm.movePiece(fromPosition: position, toPosition: to, isAnimated: false)
-        }
         vm.endedGesture()
     }
 

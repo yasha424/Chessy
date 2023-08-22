@@ -38,6 +38,20 @@
 		D3788FC62A6E8E2B0008DE41 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC52A6E8E2B0008DE41 /* TimerView.swift */; };
 		D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC72A6E8FC40008DE41 /* BoardView.swift */; };
 		D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3865A872A70873600529C41 /* UndoButtonView.swift */; };
+		D3879F222A90C314004F30B5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F212A90C314004F30B5 /* WidgetKit.framework */; };
+		D3879F242A90C314004F30B5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F232A90C314004F30B5 /* SwiftUI.framework */; };
+		D3879F272A90C314004F30B5 /* ChessyWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3879F262A90C314004F30B5 /* ChessyWidgetBundle.swift */; };
+		D3879F292A90C314004F30B5 /* ChessyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3879F282A90C314004F30B5 /* ChessyWidget.swift */; };
+		D3879F2B2A90C31C004F30B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3879F2A2A90C31C004F30B5 /* Assets.xcassets */; };
+		D3879F2F2A90C31C004F30B5 /* ChessyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D3879F352A90C60F004F30B5 /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
+		D3879F412A90C63D004F30B5 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
+		D3879F422A90C668004F30B5 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
+		D3879F432A90C672004F30B5 /* ImageNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404182A66FDA800C97C84 /* ImageNames.swift */; };
+		D3879F442A90C672004F30B5 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3610A7F2A5AB3030046A585 /* Colors.swift */; };
+		D3879F452A90C6F7004F30B5 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
+		D3879F462A90C781004F30B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3141EC22A55DFB300D9D95A /* Assets.xcassets */; };
+		D3879F482A90E2EB004F30B5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9BC2A8BB1BD00CBC5B4 /* Localizable.strings */; };
 		D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */; };
 		D3A9BB282A8D01C30075F532 /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
 		D3B1D8E72A84E5A1009B533F /* SquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404162A66A3A700C97C84 /* SquareView.swift */; };
@@ -111,7 +125,28 @@
 			remoteGlobalIDString = D3141EBA2A55DFB100D9D95A;
 			remoteInfo = Chessy;
 		};
+		D3879F2D2A90C31C004F30B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3141EB32A55DFB100D9D95A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3879F1E2A90C314004F30B5;
+			remoteInfo = ChessyWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D3879F312A90C31D004F30B5 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D3879F2F2A90C31C004F30B5 /* ChessyWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D3107AF42A7280B700EB1032 /* ClassicGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicGame.swift; sourceTree = "<group>"; };
@@ -147,6 +182,14 @@
 		D3788FC52A6E8E2B0008DE41 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		D3788FC72A6E8FC40008DE41 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		D3865A872A70873600529C41 /* UndoButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoButtonView.swift; sourceTree = "<group>"; };
+		D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChessyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3879F212A90C314004F30B5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		D3879F232A90C314004F30B5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		D3879F262A90C314004F30B5 /* ChessyWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyWidgetBundle.swift; sourceTree = "<group>"; };
+		D3879F282A90C314004F30B5 /* ChessyWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessyWidget.swift; sourceTree = "<group>"; };
+		D3879F2A2A90C31C004F30B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D3879F2C2A90C31C004F30B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3879F302A90C31D004F30B5 /* ChessyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChessyWidgetExtension.entitlements; sourceTree = "<group>"; };
 		D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
 		D3972CA22A6DE9210050E6FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
@@ -181,6 +224,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3879F1C2A90C314004F30B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3879F242A90C314004F30B5 /* SwiftUI.framework in Frameworks */,
+				D3879F222A90C314004F30B5 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -197,9 +249,12 @@
 		D3141EB22A55DFB100D9D95A = {
 			isa = PBXGroup;
 			children = (
+				D3879F302A90C31D004F30B5 /* ChessyWidgetExtension.entitlements */,
 				D3141EBD2A55DFB100D9D95A /* Chessy */,
 				D3141ECE2A55DFB400D9D95A /* ChessyTests */,
 				D3141ED82A55DFB400D9D95A /* ChessyUITests */,
+				D3879F252A90C314004F30B5 /* ChessyWidget */,
+				D3879F202A90C314004F30B5 /* Frameworks */,
 				D3141EBC2A55DFB100D9D95A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -210,6 +265,7 @@
 				D3141EBB2A55DFB100D9D95A /* Chessy.app */,
 				D3141ECB2A55DFB400D9D95A /* ChessyTests.xctest */,
 				D3141ED52A55DFB400D9D95A /* ChessyUITests.xctest */,
+				D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -313,6 +369,26 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
+		D3879F202A90C314004F30B5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D3879F212A90C314004F30B5 /* WidgetKit.framework */,
+				D3879F232A90C314004F30B5 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D3879F252A90C314004F30B5 /* ChessyWidget */ = {
+			isa = PBXGroup;
+			children = (
+				D3879F262A90C314004F30B5 /* ChessyWidgetBundle.swift */,
+				D3879F282A90C314004F30B5 /* ChessyWidget.swift */,
+				D3879F2A2A90C31C004F30B5 /* Assets.xcassets */,
+				D3879F2C2A90C31C004F30B5 /* Info.plist */,
+			);
+			path = ChessyWidget;
+			sourceTree = "<group>";
+		};
 		D3D7C9F72A86EA1300D39644 /* Shape */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,10 +439,12 @@
 				D3141EB82A55DFB100D9D95A /* Frameworks */,
 				D3141EB92A55DFB100D9D95A /* Resources */,
 				D3107AF62A7281EF00EB1032 /* SwiftLint */,
+				D3879F312A90C31D004F30B5 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D3879F2E2A90C31C004F30B5 /* PBXTargetDependency */,
 			);
 			name = Chessy;
 			productName = Chessy;
@@ -409,6 +487,23 @@
 			productReference = D3141ED52A55DFB400D9D95A /* ChessyUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		D3879F1E2A90C314004F30B5 /* ChessyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3879F342A90C31D004F30B5 /* Build configuration list for PBXNativeTarget "ChessyWidgetExtension" */;
+			buildPhases = (
+				D3879F1B2A90C314004F30B5 /* Sources */,
+				D3879F1C2A90C314004F30B5 /* Frameworks */,
+				D3879F1D2A90C314004F30B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChessyWidgetExtension;
+			productName = ChessyWidgetExtension;
+			productReference = D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -430,6 +525,9 @@
 						CreatedOnToolsVersion = 15.0;
 						TestTargetID = D3141EBA2A55DFB100D9D95A;
 					};
+					D3879F1E2A90C314004F30B5 = {
+						CreatedOnToolsVersion = 15.0;
+					};
 				};
 			};
 			buildConfigurationList = D3141EB62A55DFB100D9D95A /* Build configuration list for PBXProject "Chessy" */;
@@ -449,6 +547,7 @@
 				D3141EBA2A55DFB100D9D95A /* Chessy */,
 				D3141ECA2A55DFB400D9D95A /* ChessyTests */,
 				D3141ED42A55DFB400D9D95A /* ChessyUITests */,
+				D3879F1E2A90C314004F30B5 /* ChessyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -477,6 +576,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3879F1D2A90C314004F30B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3879F462A90C781004F30B5 /* Assets.xcassets in Resources */,
+				D3879F482A90E2EB004F30B5 /* Localizable.strings in Resources */,
+				D3879F2B2A90C31C004F30B5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +717,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3879F1B2A90C314004F30B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3879F292A90C314004F30B5 /* ChessyWidget.swift in Sources */,
+				D3879F352A90C60F004F30B5 /* BoardPreview.swift in Sources */,
+				D3879F452A90C6F7004F30B5 /* View+Extension.swift in Sources */,
+				D3879F432A90C672004F30B5 /* ImageNames.swift in Sources */,
+				D3879F442A90C672004F30B5 /* Colors.swift in Sources */,
+				D3879F422A90C668004F30B5 /* Piece.swift in Sources */,
+				D3879F412A90C63D004F30B5 /* Board.swift in Sources */,
+				D3879F272A90C314004F30B5 /* ChessyWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -620,6 +744,11 @@
 			isa = PBXTargetDependency;
 			target = D3141EBA2A55DFB100D9D95A /* Chessy */;
 			targetProxy = D3141ED62A55DFB400D9D95A /* PBXContainerItemProxy */;
+		};
+		D3879F2E2A90C31C004F30B5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3879F1E2A90C314004F30B5 /* ChessyWidgetExtension */;
+			targetProxy = D3879F2D2A90C31C004F30B5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -759,6 +888,7 @@
 		D3141EE02A55DFB400D9D95A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
@@ -799,6 +929,7 @@
 		D3141EE12A55DFB400D9D95A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
@@ -912,6 +1043,76 @@
 			};
 			name = Release;
 		};
+		D3879F322A90C31D004F30B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ChessyWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChessyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChessyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy.ChessyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D3879F332A90C31D004F30B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ChessyWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6FC2DVK94;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChessyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChessyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy.ChessyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -947,6 +1148,15 @@
 			buildConfigurations = (
 				D3141EE62A55DFB400D9D95A /* Debug */,
 				D3141EE72A55DFB400D9D95A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3879F342A90C31D004F30B5 /* Build configuration list for PBXNativeTarget "ChessyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3879F322A90C31D004F30B5 /* Debug */,
+				D3879F332A90C31D004F30B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

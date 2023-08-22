@@ -12,19 +12,33 @@ struct PuzzleListViewItem: View {
     @ObservedObject var puzzleVM: PuzzleViewModel
 
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             BoardPreview(board: puzzleVM.game.board)
-                .frame(minWidth: 100, maxWidth: 200)
-                .padding(8)
-            Spacer()
-            VStack {
+                .frame(minWidth: 100, maxWidth: 150)
+                .padding()
+            VStack(spacing: 8) {
+                HStack {
+                    if puzzleVM.solved {
+                        Image(systemName: "checkmark.circle")
+                            .foregroundStyle(.green)
+                            .opacity(0.8)
+                    } else {
+                        Image(systemName: "x.circle")
+                            .foregroundStyle(.red)
+                            .opacity(0.8)
+                    }
+                    Spacer()
+                }
+                .animation(.spring(response: 0.5), value: puzzleVM.solved)
                 HStack {
                     Text("Rating:")
                     Text("\(puzzleVM.puzzle.rating)")
+                    Spacer()
                 }
                 Spacer()
             }
-            .padding(8)
+            .padding(.vertical)
+            Spacer()
         }
         .glassView()
     }

@@ -65,17 +65,22 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
                 }
             }
             self.game.undoLastMove()
-            self.state = self.game.state
-            self.lastMove = nil
-            self.turn = self.game.turn
-            self.kingInCheckForColor = self.game.isKingInCheck(
-                forColor: self.turn) ? self.turn : nil
-            self.lastMove = self.game.history.last
-            self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
-            self.fen = self.game.fen
+            self.updateStates()
             self.selectedPosition = nil
             self.allowedMoves = []
         }
+    }
+
+    private func updateStates() {
+        DispatchQueue.main.async {
+            self.state = self.game.state
+        }
+        self.turn = self.game.turn
+        self.kingInCheckForColor = self.game.isKingInCheck(
+            forColor: self.turn) ? self.turn : nil
+        self.lastMove = self.game.history.last
+        self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
+        self.fen = self.game.fen
     }
 
     func updateGame(with newGame: any Game) {
@@ -84,17 +89,13 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
             if let newGame = newGame as? ChessGame {
                 self.game = newGame
             }
-            self.state = self.game.state
-            self.turn = self.game.turn
             self.game.delegate = self
             self.whiteTime = self.game.whiteTime
             self.blackTime = self.game.blackTime
-            self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
-            self.lastMove = self.game.history.last
-            self.fen = self.game.fen
             self.selectedPosition = nil
             self.allowedMoves = []
             self.animatedMoves = []
+            self.updateStates()
 
             if let move = self.lastMove {
                 self.animatedMoves = [Move(from: move.to, to: move.from, piece: move.piece)]
@@ -117,38 +118,32 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     }
 
     func movePiece(fromPosition from: Position, toPosition to: Position, isAnimated: Bool = false) {
-        DispatchQueue.main.async {
-            self.game.movePiece(fromPosition: from, toPosition: to)
+        self.game.movePiece(fromPosition: from, toPosition: to)
 
-            self.lastMove = self.game.history.last
-            guard let move = self.lastMove,
-                  move.from == from, move.to == to else { return }
-            self.state = self.game.state
-            self.turn = self.game.turn
-            self.kingInCheckForColor = self.game.isKingInCheck(
-                forColor: self.turn) ? self.turn : nil
-            self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
-            self.fen = self.game.fen
-
-            if isAnimated {
-                self.animatedMoves = [move]
-            } else {
-                self.animatedMoves = []
-            }
-            if let castling = move.castling {
-                let from = Position.fromCoordinates(
-                    x: move.from.x,
-                    y: castling == .kingSide ? 7 : 0
-                )
-                let to = Position.fromCoordinates(
-                    x: move.to.x,
-                    y: castling == .kingSide ? 5 : 3
-                )
-                guard let from = from, let to = to else { return }
-                self.animatedMoves.append(
-                    Move(from: from, to: to, piece: self.game.board[to])
-                )
-            }
+        self.lastMove = self.game.history.last
+        guard let move = self.lastMove,
+              move.from == from, move.to == to else { return }
+        self.updateStates()
+        if isAnimated {
+            self.animatedMoves = [move]
+        } else {
+            self.animatedMoves = []
+        }
+        if let castling = move.castling {
+            let from = Position.fromCoordinates(
+                x: move.from.x,
+                y: castling == .kingSide ? 7 : 0
+            )
+            let to = Position.fromCoordinates(
+                x: move.to.x,
+                y: castling == .kingSide ? 5 : 3
+            )
+            guard let from = from, let to = to else { return }
+            self.animatedMoves.append(
+                Move(from: from, to: to, piece: self.game.board[to])
+            )
+        }
+        DispatchQueue.global(qos: .background).async {
             self.audioPlayerService.playSound(capture: self.lastMove?.capturedPiece != nil)
         }
     }
@@ -156,13 +151,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     func promotePawn(to type: PieceType) {
         DispatchQueue.main.async {
             self.game.promotePawn(to: type)
-            self.turn = self.game.turn
-            self.state = self.game.state
-            self.kingInCheckForColor = self.game.isKingInCheck(
-                forColor: self.turn) ? self.turn : nil
-            self.lastMove = self.game.history.last
-            self.fen = self.game.fen
-            self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
+            self.updateStates()
             self.animatedMoves = []
         }
     }
@@ -189,12 +178,13 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
                         self.allowedMoves = self.game.allMoves(fromPosition: position)
                     }
                 } else {
-                    movePiece(
-                        fromPosition: selectedPosition,
-                        toPosition: position,
-                        isAnimated: true
-                    )
                     DispatchQueue.main.async {
+                        self.movePiece(
+                            fromPosition: selectedPosition,
+                            toPosition: position,
+                            isAnimated: true
+                        )
+//                    DispatchQueue.main.async {
                         self.selectedPosition = nil
                         self.allowedMoves = []
                     }

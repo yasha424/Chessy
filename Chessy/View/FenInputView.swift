@@ -11,7 +11,8 @@ struct FenInputView<ChessGame: Game>: View {
 
     @EnvironmentObject var gameVM: GameViewModel<ChessGame>
     @FocusState var isInputActive: Bool
-    @AppStorage("fen") var fenString: String = ""
+    @AppStorage("fen", store: UserDefaults(suiteName: "group.com.yasha424.Chessy"))
+    var fenString: String = ""
 
     var body: some View {
         TextField("Input FEN", text: $fenString)

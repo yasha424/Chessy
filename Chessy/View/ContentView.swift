@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ContentView: View {
 
     @StateObject var gameVM = GameViewModel(game: ClassicGame(board: Board()))
-
     let singlePlayerGameView = SinglePlayerGameView<GameViewModel<ClassicGame>>()
-
-    @Environment(\.verticalSizeClass) var sizeClass
+    let puzzleListView = PuzzleListView()
+    @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
         TabView {
@@ -27,7 +27,7 @@ struct ContentView: View {
                     }
                 }
 
-            PuzzleListView()
+            puzzleListView
                 .tabItem {
                     Label {
                         Text("Puzzles")
@@ -35,6 +35,11 @@ struct ContentView: View {
                         Image(systemName: "brain.head.profile")
                     }
                 }
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .background {
+                WidgetCenter.shared.reloadAllTimelines()
+            }
         }
         .onAppear {
             UITabBar.appearance().backgroundColor = UIColor.systemBackground.withAlphaComponent(0.3)

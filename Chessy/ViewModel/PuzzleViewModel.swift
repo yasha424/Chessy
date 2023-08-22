@@ -14,6 +14,8 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
     private(set) var puzzle: Puzzle
     private var moves = [Move]()
     private var playerColor: PieceColor
+    private(set) var solved: Bool = false
+    private var playedFirstMove: Bool = false
 
     init(puzzle: Puzzle) {
         self.puzzle = puzzle
@@ -23,21 +25,10 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
         super.init(game: game)
         self.hasTimer = false
 
-//        if let firstMove = self.puzzle.moves.first {
-////            print(self.turn)
-////            self.allowedMoves = [firstMove.to]
-//            super.movePiece(
-//                fromPosition: firstMove.from,
-//                toPosition: firstMove.to,
-//                isAnimated: true
-//            )
-////            self.allowedMoves = []
-//            self.moves.removeFirst()
-//        }
     }
 
     func firstMove() {
-        if self.turn != playerColor && !self.moves.isEmpty {
+        if self.turn != playerColor && !self.moves.isEmpty && !playedFirstMove {
             if let firstMove = self.puzzle.moves.first {
                 super.movePiece(
                     fromPosition: firstMove.from,
@@ -45,6 +36,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
                     isAnimated: true
                 )
                 self.moves.removeFirst()
+                playedFirstMove = true
             }
         }
     }
@@ -52,28 +44,30 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
     override func movePiece(fromPosition from: Position,
                             toPosition to: Position,
                             isAnimated: Bool = false) {
+        guard self.allowedMoves.contains(to) else { return }
         super.movePiece(fromPosition: from, toPosition: to, isAnimated: isAnimated)
-//        self.turn = self.game.turn
-//        print(self.turn)
 
-        if self.turn == self.playerColor {
+        if self.turn != self.playerColor {
             if from == self.moves.first?.from, to == self.moves.first?.to {
                 self.moves.removeFirst()
                 if let puzzleMove = self.moves.first {
-//                    self.allowedMoves = [puzzleMove.to]
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         super.movePiece(
                             fromPosition: puzzleMove.from,
                             toPosition: puzzleMove.to,
-                            isAnimated: isAnimated
+                            isAnimated: true
                         )
                     }
-//                    self.allowedMoves = []
                     self.moves.removeFirst()
                 }
             } else {
-                self.undoLastMove()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.undoLastMove()
+                }
             }
+        }
+        if self.moves.isEmpty {
+            solved = true
         }
     }
 
@@ -97,7 +91,6 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
                             toPosition: position,
                             isAnimated: true
                         )
-//                    DispatchQueue.main.async {
                         self.selectedPosition = nil
                         self.allowedMoves = []
                     }
