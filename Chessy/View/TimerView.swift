@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct TimerView<ChessGame: Game>: View {
-    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
+
+    @EnvironmentObject private var gameVM: GameViewModel<ChessGame>
     let color: PieceColor
-    @State var time: Int = 30
+    @State private var time: Int = 0
 
-    @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.horizontalSizeClass) private var sizeClass
 
-    @AppStorage("shouldRotate") var shouldRotate: Bool = false
-    @AppStorage("whiteTime") var whiteTime: Int = 30
-    @AppStorage("blackTime") var blackTime: Int = 30
+    @AppStorage("shouldRotate") private var shouldRotate: Bool = false
 
     var body: some View {
         ZStack {
@@ -33,16 +32,13 @@ struct TimerView<ChessGame: Game>: View {
         .onTapGesture {
             gameVM.addTime(for: color)
         }
-        .onChange(of: color == .white ? gameVM.whiteTime : gameVM.blackTime) { _ in
-            time = (color == .white ? gameVM.whiteTime : gameVM.blackTime) ?? 0
-            whiteTime = gameVM.whiteTime ?? 30
-            blackTime = gameVM.blackTime ?? 30
+        .onReceive(color == .white ? gameVM.whiteTime : gameVM.blackTime) {
+            if let seconds = $0 {
+                time = seconds
+            }
         }
         .onAppear {
-            gameVM.setTime(seconds: whiteTime, for: .white)
-            gameVM.setTime(seconds: blackTime, for: .black)
-            time = color == .white ? whiteTime : blackTime
-            gameVM.startTimer()
+            time = (color == .white ? gameVM.whiteTime.value : gameVM.blackTime.value) ?? 0
         }
     }
 }

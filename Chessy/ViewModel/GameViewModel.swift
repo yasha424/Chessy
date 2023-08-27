@@ -16,22 +16,23 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     @Published private(set) var state: GameState
     internal var canPromotePawnAtPosition: Position?
     internal var fen: String
-    private(set) var whiteCapturedPiece = [PieceType: Int]()
-    private(set) var blackCapturedPiece = [PieceType: Int]()
+
+    private(set) var whiteCapturedPieces = [PieceType: Int]()
+    private(set) var blackCapturedPieces = [PieceType: Int]()
     private(set) var value = 0
 
-    @Published internal var selectedPosition: Position?
-    internal var allowedMoves = [Position]()
-    @Published internal var draggedTo: Position?
-    internal var lastMove: Move?
+    internal var selectedPosition: CurrentValueSubject<Position?, Never> = .init(nil)
+    internal var allowedMoves: CurrentValueSubject<[Position], Never> = .init([])
+    internal var draggedTo: CurrentValueSubject<Position?, Never> = .init(nil)
+    internal var lastMove: CurrentValueSubject<Move?, Never> = .init(nil)
     internal var animatedMoves = [Move]()
 
     internal var turn: PieceColor
     internal var kingInCheckForColor: PieceColor?
 
     internal var hasTimer: Bool
-    @Published internal var whiteTime: Int?
-    @Published internal var blackTime: Int?
+    internal var whiteTime: CurrentValueSubject<Int?, Never>
+    internal var blackTime: CurrentValueSubject<Int?, Never>
     let audioPlayerService = AudioPlayerService(
         moveSoundUrl: Bundle.main.url(forResource: "move", withExtension: "mp3"),
         captureSoundUrl: Bundle.main.url(forResource: "capture", withExtension: "mp3")
@@ -43,15 +44,17 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         self.state = game.state
         self.turn = game.turn
         self.fen = game.fen
-        self.whiteTime = game.whiteTime
-        self.blackTime = game.blackTime
+        self.whiteTime = .init(game.whiteTime)
+        self.blackTime = .init(game.blackTime)
         self.canPromotePawnAtPosition = game.canPromotePawnAtPosition
+        self.whiteCapturedPieces = capturedPieces(for: .white)
+        self.blackCapturedPieces = capturedPieces(for: .black)
         self.game.delegate = self
     }
 
     func undoLastMove() {
         DispatchQueue.main.async {
-            if let move = self.lastMove {
+            if let move = self.lastMove.value {
                 self.animatedMoves = [Move(from: move.to, to: move.from, piece: move.piece)]
 
                 if let castling = move.castling {
@@ -69,8 +72,8 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
             }
             self.game.undoLastMove()
             self.updateStates()
-            self.selectedPosition = nil
-            self.allowedMoves = []
+            self.selectedPosition.send(nil)
+            self.allowedMoves.send([])
         }
     }
 
@@ -81,11 +84,11 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         self.turn = self.game.turn
         self.kingInCheckForColor = self.game.isKingInCheck(
             forColor: self.turn) ? self.turn : nil
-        self.lastMove = self.game.history.last
+        self.lastMove.send(self.game.history.last)
         self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
         self.fen = self.game.fen
-        self.whiteCapturedPiece = capturedPieces(for: .white)
-        self.blackCapturedPiece = capturedPieces(for: .black)
+        self.whiteCapturedPieces = capturedPieces(for: .white)
+        self.blackCapturedPieces = capturedPieces(for: .black)
         self.value = self.game.value
     }
 
@@ -96,14 +99,14 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
                 self.game = newGame
             }
             self.game.delegate = self
-            self.whiteTime = self.game.whiteTime
-            self.blackTime = self.game.blackTime
-            self.selectedPosition = nil
-            self.allowedMoves = []
+            self.whiteTime.send(self.game.whiteTime)
+            self.blackTime.send(self.game.blackTime)
+            self.selectedPosition.send(nil)
+            self.allowedMoves.send([])
             self.animatedMoves = []
             self.updateStates()
 
-            if let move = self.lastMove {
+            if let move = self.lastMove.value {
                 self.animatedMoves = [Move(from: move.to, to: move.from, piece: move.piece)]
 
                 if let castling = move.castling {
@@ -126,8 +129,8 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     func movePiece(fromPosition from: Position, toPosition to: Position, isAnimated: Bool = false) {
         self.game.movePiece(fromPosition: from, toPosition: to)
 
-        self.lastMove = self.game.history.last
-        guard let move = self.lastMove,
+        self.lastMove.send(self.game.history.last)
+        guard let move = self.lastMove.value,
               move.from == from, move.to == to else { return }
         self.updateStates()
         if isAnimated {
@@ -150,7 +153,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
             )
         }
         DispatchQueue.global(qos: .background).async {
-            self.audioPlayerService.playSound(capture: self.lastMove?.capturedPiece != nil)
+            self.audioPlayerService.playSound(capture: self.lastMove.value?.capturedPiece != nil)
         }
     }
 
@@ -171,17 +174,17 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     }
 
     func selectPosition(_ position: Position) {
-        if self.selectedPosition == position {
+        if self.selectedPosition.value == position {
             DispatchQueue.main.async {
-                self.selectedPosition = nil
-                self.allowedMoves = []
+                self.selectedPosition.send(nil)
+                self.allowedMoves.send([])
             }
         } else {
-            if let selectedPosition = self.selectedPosition {
+            if let selectedPosition = self.selectedPosition.value {
                 if canSelectPiece(atPosition: position) {
                     DispatchQueue.main.async {
-                        self.selectedPosition = position
-                        self.allowedMoves = self.game.allMoves(fromPosition: position)
+                        self.selectedPosition.send(position)
+                        self.allowedMoves.send(self.game.allMoves(fromPosition: position))
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -190,16 +193,15 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
                             toPosition: position,
                             isAnimated: true
                         )
-//                    DispatchQueue.main.async {
-                        self.selectedPosition = nil
-                        self.allowedMoves = []
+                        self.selectedPosition.send(nil)
+                        self.allowedMoves.send([])
                     }
                 }
             } else {
                 if canSelectPiece(atPosition: position) {
                     DispatchQueue.main.async {
-                        self.selectedPosition = position
-                        self.allowedMoves = self.game.allMoves(fromPosition: position)
+                        self.selectedPosition.send(position)
+                        self.allowedMoves.send(self.game.allMoves(fromPosition: position))
                     }
                 }
             }
@@ -208,9 +210,9 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
 
     func deselectPosition() {
         DispatchQueue.main.async {
-            self.selectedPosition = nil
-            self.allowedMoves = []
-            self.draggedTo = nil
+            self.selectedPosition.send(nil)
+            self.allowedMoves.send([])
+            self.draggedTo.send(nil)
         }
     }
 
@@ -218,30 +220,30 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         let deltaX = Int(((location.y - size.height / 2) / size.height).rounded())
         let deltaY = Int(((location.x - size.width / 2) / size.width).rounded())
 
-        if let position = self.selectedPosition {
+        if let position = self.selectedPosition.value {
             let draggedPositionX = position.x - deltaX
             let draggedPositionY = position.y + deltaY
 
             guard draggedPositionX >= 0, draggedPositionX < 8,
                   draggedPositionY >= 0, draggedPositionY < 8 else {
-                if self.draggedTo != nil {
+                if self.draggedTo.value != nil {
                     DispatchQueue.main.async {
-                        self.draggedTo = nil
+                        self.draggedTo.send(nil)
                     }
                 }
                 return
             }
 
             let to = Position(rawValue: (position.x - deltaX) * 8 + position.y + deltaY)
-            if self.draggedTo != to {
+            if self.draggedTo.value != to {
                 DispatchQueue.main.async {
-                    self.draggedTo = to
+                    self.draggedTo.send(to)
                 }
             }
         } else {
-            if self.draggedTo != nil {
+            if self.draggedTo.value != nil {
                 DispatchQueue.main.async {
-                    self.draggedTo = nil
+                    self.draggedTo.send(nil)
                 }
             }
         }
@@ -249,7 +251,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
 
     func endedGesture() {
         DispatchQueue.main.async {
-            self.draggedTo = nil
+            self.draggedTo.send(nil)
         }
     }
 }
@@ -280,12 +282,12 @@ extension GameViewModel: GameDelegate {
         let seconds = time / 10
         switch color {
         case .white:
-            if whiteTime != seconds {
-                whiteTime = seconds
+            if whiteTime.value != seconds {
+                whiteTime.send(seconds)
             }
         case .black:
-            if blackTime != seconds {
-                blackTime = seconds
+            if blackTime.value != seconds {
+                blackTime.send(seconds)
             }
         }
     }

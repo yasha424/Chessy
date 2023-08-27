@@ -22,7 +22,7 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [Entry] = []
 
-        let userDefaults = UserDefaults(suiteName: "group.com.yasha424.Chessy")!
+        let userDefaults = UserDefaults(suiteName: "group.com.yasha424.Chessy.default")!
         let fenString = userDefaults.string(forKey: "fen") ?? ""
         entries.append(Entry(date: .now, fen: fenString))
 
@@ -38,14 +38,14 @@ struct Entry: TimelineEntry {
 
 struct ChessyWidgetView : View {
     var entry: Provider.Entry
+    @Environment(\.widgetFamily) var widgetFamily
 
     var body: some View {
         let separetedFen = entry.fen.split(separator: " ")
         let fen = separetedFen.isEmpty ? "" : String(separetedFen[0])
         BoardPreview(board: Board(fromFen: fen)).boardView
             .clipShape(RoundedRectangle(cornerRadius: 6))
-            .padding(10)
-            .padding(.horizontal, 4)
+            .padding(widgetFamily == .systemLarge ? 20 : 10)
             .background(.ultraThinMaterial)
     }
 }

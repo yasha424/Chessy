@@ -44,7 +44,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
     override func movePiece(fromPosition from: Position,
                             toPosition to: Position,
                             isAnimated: Bool = false) {
-        guard self.allowedMoves.contains(to) else { return }
+        guard self.allowedMoves.value.contains(to) else { return }
         super.movePiece(fromPosition: from, toPosition: to, isAnimated: isAnimated)
 
         if self.turn != self.playerColor {
@@ -72,17 +72,17 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
     }
 
     override func selectPosition(_ position: Position) {
-        if self.selectedPosition == position {
+        if self.selectedPosition.value == position {
             DispatchQueue.main.async {
-                self.selectedPosition = nil
-                self.allowedMoves = []
+                self.selectedPosition.send(nil)
+                self.allowedMoves.send([])
             }
         } else {
-            if let selectedPosition = self.selectedPosition {
+            if let selectedPosition = self.selectedPosition.value {
                 if canSelectPiece(atPosition: position) {
                     DispatchQueue.main.async {
-                        self.selectedPosition = position
-                        self.allowedMoves = self.game.allMoves(fromPosition: position)
+                        self.selectedPosition.send(position)
+                        self.allowedMoves.send(self.game.allMoves(fromPosition: position))
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -91,15 +91,15 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
                             toPosition: position,
                             isAnimated: true
                         )
-                        self.selectedPosition = nil
-                        self.allowedMoves = []
+                        self.selectedPosition.send(nil)
+                        self.allowedMoves.send([])
                     }
                 }
             } else {
                 if canSelectPiece(atPosition: position) {
                     DispatchQueue.main.async {
-                        self.selectedPosition = position
-                        self.allowedMoves = self.game.allMoves(fromPosition: position)
+                        self.selectedPosition.send(position)
+                        self.allowedMoves.send(self.game.allMoves(fromPosition: position))
                     }
                 }
             }

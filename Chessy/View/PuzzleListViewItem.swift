@@ -9,11 +9,17 @@ import SwiftUI
 
 struct PuzzleListViewItem: View {
 
-    @ObservedObject var puzzleVM: PuzzleViewModel
+    @ObservedObject private var puzzleVM: PuzzleViewModel
+    private let boardPreview: BoardPreview
+
+    init(puzzleVM: PuzzleViewModel) {
+        self.puzzleVM = puzzleVM
+        self.boardPreview = BoardPreview(board: puzzleVM.game.board)
+    }
 
     var body: some View {
         HStack(spacing: 8) {
-            BoardPreview(board: puzzleVM.game.board)
+            boardPreview
                 .frame(minWidth: 100, maxWidth: 150)
                 .padding()
             VStack(spacing: 8) {

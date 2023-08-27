@@ -9,10 +9,10 @@ import SwiftUI
 
 struct FenInputView<ChessGame: Game>: View {
 
-    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
-    @FocusState var isInputActive: Bool
-    @AppStorage("fen", store: UserDefaults(suiteName: "group.com.yasha424.Chessy"))
-    var fenString: String = ""
+    @EnvironmentObject private var gameVM: GameViewModel<ChessGame>
+    @FocusState private var isInputActive: Bool
+    @AppStorage("fen", store: UserDefaults(suiteName: "group.com.yasha424.Chessy.default"))
+    private var fenString: String = ""
 
     var body: some View {
         TextField("Input FEN", text: $fenString)
@@ -43,13 +43,6 @@ struct FenInputView<ChessGame: Game>: View {
                 }
             }
             .onChange(of: gameVM.fen) { _ in
-                fenString = gameVM.fen
-            }
-            .onAppear {
-                if gameVM.game.history.isEmpty,
-                   let game = ClassicGame(fromFen: fenString) as? ChessGame {
-                    gameVM.updateGame(with: game)
-                }
                 fenString = gameVM.fen
             }
     }

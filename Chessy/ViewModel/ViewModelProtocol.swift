@@ -6,25 +6,26 @@
 //
 
 import Foundation
+import Combine
 
 protocol ViewModelProtocol: ObservableObject {
     var game: any Game { get }
     var state: GameState { get }
-    var lastMove: Move? { get }
-    var draggedTo: Position? { get }
+    var lastMove: CurrentValueSubject<Move?, Never> { get }
+    var draggedTo: CurrentValueSubject<Position?, Never> { get }
     var kingInCheckForColor: PieceColor? { get }
     var animatedMoves: [Move] { get }
-    var selectedPosition: Position? { get }
+    var selectedPosition: CurrentValueSubject<Position?, Never> { get }
     var fen: String { get }
     var turn: PieceColor { get }
-    var allowedMoves: [Position] { get }
+    var allowedMoves: CurrentValueSubject<[Position], Never> { get }
     var canPromotePawnAtPosition: Position? { get }
     var hasTimer: Bool { get }
-    var whiteTime: Int? { get }
-    var blackTime: Int? { get }
+    var whiteTime: CurrentValueSubject<Int?, Never> { get }
+    var blackTime: CurrentValueSubject<Int?, Never> { get }
     var audioPlayerService: AudioPlayerService { get }
-    var whiteCapturedPiece: [PieceType: Int] { get }
-    var blackCapturedPiece: [PieceType: Int] { get }
+    var whiteCapturedPieces: [PieceType: Int] { get }
+    var blackCapturedPieces: [PieceType: Int] { get }
     var value: Int { get }
 
     func updateGame(with newGame: any Game)
@@ -37,6 +38,7 @@ protocol ViewModelProtocol: ObservableObject {
     func canSelectPiece(atPosition position: Position) -> Bool
     func computeDraggedPosition(location: CGPoint, size: CGSize)
     func endedGesture()
+    func setTime(seconds: Int, for color: PieceColor)
 }
 
 extension ViewModelProtocol {

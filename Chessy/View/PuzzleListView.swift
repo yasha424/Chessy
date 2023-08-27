@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PuzzleListView: View {
 
-    @State var puzzleVMs = [
+    @State private var puzzleVMs = [
         PuzzleViewModel(puzzle: Puzzle(
             id: UUID().uuidString,
             fen: "r3r1k1/p4ppp/2p2n2/1p6/3P1qb1/2NQR3/PPB2PP1/R1B3K1 w - - 5 18",
@@ -50,7 +50,7 @@ struct PuzzleListView: View {
             rating: 2235
         ))
     ]
-    @State var selectedPuzzleId: String?
+    @State private var selectedPuzzleId: String?
 
     var body: some View {
         NavigationView {

@@ -9,15 +9,15 @@ import SwiftUI
 
 struct GameView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject var gameVM: ViewModel
+    @EnvironmentObject private var gameVM: ViewModel
 
-    @State var boardView: BoardView<ViewModel>!
-    let blackTimerView = TimerView<ClassicGame>(color: .black)
-    let whiteTimerView = TimerView<ClassicGame>(color: .white)
-    let undoButtonView = UndoButtonView<ClassicGame>()
-
-    @State var isWhiteCapturedPiecesShown: Bool = true
-    @State var isBlackCapturedPiecesShown: Bool = true
+    @State private var boardView: BoardView<ViewModel>!
+    private let blackTimerView = TimerView<ClassicGame>(color: .black)
+    private let whiteTimerView = TimerView<ClassicGame>(color: .white)
+    private let undoButtonView = UndoButtonView<ClassicGame>()
+    private let whiteCapturedPiecesView = CapturedPiecesView<ViewModel>(color: .white)
+    private let blackCapturedPiecesView = CapturedPiecesView<ViewModel>(color: .black)
+    @AppStorage("shouldRotate") private var shouldRotate = false
 
     var body: some View {
         ZStack {
@@ -54,46 +54,7 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
 
             VStack {
                 HStack {
-                    HStack(spacing: 0) {
-                        if isWhiteCapturedPiecesShown {
-                            let capturedPieces = gameVM.whiteCapturedPiece.sorted { first, second in
-                                first.key.value > second.key.value
-                            }
-                            ForEach(capturedPieces, id: \.key) { pieceType, num in
-                                if num > 0 {
-                                    ZStack {
-                                        ForEach(0..<num, id: \.self) { i in
-                                            Image(ImageNames.color[.white]! +
-                                                  ImageNames.type[pieceType]!)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .offset(x: (CGFloat(i) - CGFloat(num) / 2) * 10 + 5)
-                                            .transition(.scale)
-                                        }
-                                    }
-                                    .frame(width: 26 + CGFloat(num - 1) * 10)
-                                }
-                            }
-                            if gameVM.value < 0 {
-                                let valueString = "+\(-gameVM.value)"
-                                Text(valueString)
-                                    .font(.body.monospaced())
-                                    .opacity(0.5)
-                                    .frame(width: 40)
-                                    .transition(.scale)
-                            }
-                        }
-                    }
-                    .padding(8)
-                    .frame(height: 40)
-                    .glassView()
-                    .onTapGesture {
-                        withAnimation(.spring(response: 0.5)) {
-                            isWhiteCapturedPiecesShown.toggle()
-                        }
-                    }
-                    .animation(.spring(response: 0.5), value: gameVM.whiteCapturedPiece)
-                    .animation(.spring(response: 0.5), value: gameVM.value)
+                    whiteCapturedPiecesView
 
                     Spacer()
 
@@ -105,45 +66,7 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
                 boardView.padding(.vertical, 8)
 
                 HStack {
-                    HStack(spacing: 0) {
-                        if isBlackCapturedPiecesShown {
-                            let capturedPieces = gameVM.blackCapturedPiece.sorted { first, second in
-                                first.key.value > second.key.value
-                            }
-                            ForEach(capturedPieces, id: \.key) { pieceType, num in
-                                if num > 0 {
-                                    ZStack {
-                                        ForEach(0..<num, id: \.self) { i in
-                                            Image(ImageNames.color[.black]! +
-                                                  ImageNames.type[pieceType]!)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .offset(x: (CGFloat(i) - CGFloat(num) / 2) * 10 + 5)
-                                            .transition(.scale)
-                                        }
-                                    }
-                                    .frame(width: 26 + CGFloat(num - 1) * 10)
-                                }
-                            }
-                            if gameVM.value > 0 {
-                                Text("+\(gameVM.value)")
-                                    .font(.body.monospaced())
-                                    .opacity(0.5)
-                                    .frame(width: 40)
-                                    .transition(.scale)
-                            }
-                        }
-                    }
-                    .padding(8)
-                    .frame(height: 40)
-                    .glassView()
-                    .onTapGesture {
-                        withAnimation(.spring(response: 0.5)) {
-                            isBlackCapturedPiecesShown.toggle()
-                        }
-                    }
-                    .animation(.spring(response: 0.5), value: gameVM.blackCapturedPiece)
-                    .animation(.spring(response: 0.5), value: gameVM.value)
+                    blackCapturedPiecesView
 
                     Spacer()
 
@@ -159,7 +82,7 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
             }
         }
         .onAppear {
-            boardView = BoardView<ViewModel>(vm: gameVM)
+            boardView = BoardView<ViewModel>(vm: gameVM, shouldRotate: $shouldRotate)
         }
     }
 }

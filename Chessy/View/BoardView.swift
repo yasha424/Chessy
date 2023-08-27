@@ -10,8 +10,10 @@ import SwiftUI
 struct BoardView<ViewModel: ViewModelProtocol>: View {
 
     @ObservedObject var vm: ViewModel
-
-    @AppStorage("shouldRotate") var shouldRotate: Bool = false
+    @State private var board: Board = Board()
+    @Binding var shouldRotate: Bool
+    @State private var selectedPosition: Position?
+    @State private var lastMove: Move?
 
     var body: some View {
         ZStack {
@@ -24,17 +26,28 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
                             SquareView<ViewModel>(
                                 vm: vm,
                                 piece: vm.getPiece(atPosition: position),
-                                position: position
+                                position: position,
+                                shouldRotate: shouldRotate
                             )
-                            .zIndex(vm.selectedPosition == position ? 2 :
-                                        (vm.lastMove?.to == position ? 1 : 0))
+                            .zIndex(selectedPosition == position ? 2 :
+                                        (lastMove?.to == position ? 1 : 0))
                         }
                     }
-                    .zIndex(vm.selectedPosition?.x == 7 - i ? 2 :
-                                vm.lastMove?.to.x == 7 - i ? 1 : 0)
+                    .zIndex(selectedPosition?.x == 7 - i ? 2 :
+                                (lastMove?.to.x == 7 - i ? 1 : 0))
                 }
             }
             .padding(10)
+            .onReceive(vm.selectedPosition) {
+                if selectedPosition != $0 {
+                    selectedPosition = $0
+                }
+            }
+            .onReceive(vm.lastMove) {
+                if lastMove != $0 {
+                    lastMove = $0
+                }
+            }
 
             if let position = vm.canPromotePawnAtPosition {
                 Color.black.opacity(0.3)
@@ -42,7 +55,7 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
                 VStack {
                     Spacer()
 
-                    HStack {
+                    HStack(spacing: 16) {
                         let pieceTypes: [PieceType] = [.queen, .rook, .bishop, .knight]
 
                         Spacer()
@@ -65,7 +78,7 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
                                 }
                             }
                             .aspectRatio(1, contentMode: .fit)
-                            .frame(minWidth: 20, maxWidth: 80, minHeight: 20, maxHeight: 80)
+                            .frame(minWidth: 20, maxWidth: 60, minHeight: 20, maxHeight: 60)
                             .glassView()
 
                             Spacer()
@@ -79,5 +92,4 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
         .aspectRatio(1, contentMode: .fit)
         .glassView()
     }
-
 }

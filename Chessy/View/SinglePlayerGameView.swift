@@ -9,13 +9,13 @@ import SwiftUI
 
 struct SinglePlayerGameView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject var gameVM: ViewModel
+    @EnvironmentObject private var gameVM: ViewModel
 
-    @State var isAlertPresented = false
-    @AppStorage("shouldRotate") var shouldRotate = false
+    @State private var isAlertPresented = false
+    @AppStorage("shouldRotate") private var shouldRotate = false
 
-    let fenInputView = FenInputView<ClassicGame>()
-    let gameView = GameView<ViewModel>()
+    private let fenInputView = FenInputView<ClassicGame>()
+    private let gameView = GameView<ViewModel>()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -55,5 +55,22 @@ struct SinglePlayerGameView<ViewModel: ViewModelProtocol>: View {
         }, message: {
             Text("You will lose current game progress")
         })
+        .onAppear {
+            if gameVM.game.fen != ClassicGame(board: Board()).fen {
+                if let gameVM = gameVM as? GameViewModel<ClassicGame> {
+                    gameVM.startTimer()
+                }
+            }
+        }
+        .onReceive(gameVM.whiteTime) {
+            if let seconds = $0 {
+                UserDefaults.standard.set(seconds, forKey: "whiteTime")
+            }
+        }
+        .onReceive(gameVM.blackTime) {
+            if let seconds = $0 {
+                UserDefaults.standard.set(seconds, forKey: "blackTime")
+            }
+        }
     }
 }

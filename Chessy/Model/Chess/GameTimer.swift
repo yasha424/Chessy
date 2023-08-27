@@ -39,8 +39,10 @@ class GameTimer {
     func set(seconds: Int, for color: PieceColor) {
         if color == .white {
             whiteTime = seconds * 10
+            delegate?.didUpdateTime(with: whiteTime, for: color)
         } else {
             blackTime = seconds * 10
+            delegate?.didUpdateTime(with: blackTime, for: color)
         }
     }
 

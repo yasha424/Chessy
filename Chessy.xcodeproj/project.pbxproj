@@ -35,17 +35,26 @@
 		D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3865A872A70873600529C41 /* UndoButtonView.swift */; };
 		D3879F222A90C314004F30B5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F212A90C314004F30B5 /* WidgetKit.framework */; };
 		D3879F242A90C314004F30B5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F232A90C314004F30B5 /* SwiftUI.framework */; };
-		D3879F2B2A90C31C004F30B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3879F2A2A90C31C004F30B5 /* Assets.xcassets */; };
 		D3879F2F2A90C31C004F30B5 /* ChessyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D3879F462A90C781004F30B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3141EC22A55DFB300D9D95A /* Assets.xcassets */; };
 		D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */; };
 		D3A9BB282A8D01C30075F532 /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
+		D3AAB0C32A9AB184008582EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3879F2A2A90C31C004F30B5 /* Assets.xcassets */; };
+		D3C79AA02A96459900CFFA5A /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
+		D3C79AA12A96459D00CFFA5A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
+		D3C79AA22A9645A100CFFA5A /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
+		D3C79AA32A96460400CFFA5A /* ImageNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404182A66FDA800C97C84 /* ImageNames.swift */; };
+		D3C79AA42A96460400CFFA5A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3610A7F2A5AB3030046A585 /* Colors.swift */; };
+		D3C79AA52A96461400CFFA5A /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
 		D3D7C9F92A86EA3B00D39644 /* CapturePieceShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D7C9F82A86EA3B00D39644 /* CapturePieceShape.swift */; };
 		D3EE189E2A5D8DD90096C9D4 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
 		D3F031BF2A79AF4000C9C0D5 /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F031BE2A79AF4000C9C0D5 /* EnvironmentValues+Extension.swift */; };
 		D3F404172A66A3A800C97C84 /* SquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404162A66A3A700C97C84 /* SquareView.swift */; };
 		D3F404192A66FDA800C97C84 /* ImageNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F404182A66FDA800C97C84 /* ImageNames.swift */; };
+		D3F49B4F2A96071500C892B3 /* CapturedPiecesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F49B4E2A96071500C892B3 /* CapturedPiecesView.swift */; };
 		D3F87F2A2A7693A600CAF3E3 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F87F292A7693A600CAF3E3 /* GameViewModel.swift */; };
+		D3FF1D762A96534800AB3AD8 /* ChessyWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3879F262A90C314004F30B5 /* ChessyWidgetBundle.swift */; };
+		D3FF1D772A96534C00AB3AD8 /* ChessyWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3879F282A90C314004F30B5 /* ChessyWidget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,14 +84,14 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		D3879F312A90C31D004F30B5 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
 				D3879F2F2A90C31C004F30B5 /* ChessyWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -138,6 +147,7 @@
 		D3F031BE2A79AF4000C9C0D5 /* EnvironmentValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extension.swift"; sourceTree = "<group>"; };
 		D3F404162A66A3A700C97C84 /* SquareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareView.swift; sourceTree = "<group>"; };
 		D3F404182A66FDA800C97C84 /* ImageNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNames.swift; sourceTree = "<group>"; };
+		D3F49B4E2A96071500C892B3 /* CapturedPiecesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturedPiecesView.swift; sourceTree = "<group>"; };
 		D3F87F292A7693A600CAF3E3 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -263,6 +273,7 @@
 				D3254D202A5A19130093ECC6 /* GameView.swift */,
 				D3788FC72A6E8FC40008DE41 /* BoardView.swift */,
 				D3F404162A66A3A700C97C84 /* SquareView.swift */,
+				D3F49B4E2A96071500C892B3 /* CapturedPiecesView.swift */,
 				D3788FC52A6E8E2B0008DE41 /* TimerView.swift */,
 				D3865A872A70873600529C41 /* UndoButtonView.swift */,
 				D3386F992A78610F00E6C35F /* FenInputView.swift */,
@@ -532,7 +543,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3879F462A90C781004F30B5 /* Assets.xcassets in Resources */,
-				D3879F2B2A90C31C004F30B5 /* Assets.xcassets in Resources */,
+				D3AAB0C32A9AB184008582EE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +577,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3F87F2A2A7693A600CAF3E3 /* GameViewModel.swift in Sources */,
+				D3F49B4F2A96071500C892B3 /* CapturedPiecesView.swift in Sources */,
 				D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */,
 				D3452B2C2A694172003A1F45 /* Game.swift in Sources */,
 				D3386F9A2A78610F00E6C35F /* FenInputView.swift in Sources */,
@@ -615,6 +627,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3FF1D772A96534C00AB3AD8 /* ChessyWidget.swift in Sources */,
+				D3C79AA02A96459900CFFA5A /* BoardPreview.swift in Sources */,
+				D3C79AA52A96461400CFFA5A /* View+Extension.swift in Sources */,
+				D3C79AA32A96460400CFFA5A /* ImageNames.swift in Sources */,
+				D3C79AA42A96460400CFFA5A /* Colors.swift in Sources */,
+				D3C79AA22A9645A100CFFA5A /* Piece.swift in Sources */,
+				D3C79AA12A96459D00CFFA5A /* Board.swift in Sources */,
+				D3FF1D762A96534800AB3AD8 /* ChessyWidgetBundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +675,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -689,6 +710,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -719,6 +741,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -753,6 +776,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -767,6 +791,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -776,6 +801,8 @@
 		D3141EE02A55DFB400D9D95A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
@@ -786,6 +813,7 @@
 				DEVELOPMENT_TEAM = V6FC2DVK94;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chessy/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
@@ -801,9 +829,11 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -817,6 +847,8 @@
 		D3141EE12A55DFB400D9D95A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chessy/Chessy.entitlements;
@@ -827,6 +859,7 @@
 				DEVELOPMENT_TEAM = V6FC2DVK94;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chessy/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
@@ -842,9 +875,11 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yasha424.Chessy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

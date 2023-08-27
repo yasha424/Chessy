@@ -13,15 +13,18 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
     let piece: Piece?
     let position: Position
 
-    @State private var tapOffset = CGSize.zero
+    @State private var animationOffset = CGSize.zero
     @State private var size: CGSize!
     @State private var isDragged: Bool = false
     @State private var gestureLocation: CGPoint = CGPoint.zero
+    @State private var draggedTo: Bool = false
+    @State private var isSelected: Bool = false
+    @State private var isMoveHereAllowed = false
 
     @State private var changes = 0
     private let refreshRate = 3
 
-    @AppStorage("shouldRotate") var shouldRotate: Bool = false
+    let shouldRotate: Bool
 
     var dragGesture: some Gesture {
         DragGesture()
@@ -73,11 +76,11 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                     }
                 }
 
-                if [vm.lastMove?.from, vm.lastMove?.to].contains(position) {
+                if [vm.lastMove.value?.from, vm.lastMove.value?.to].contains(position) {
                     Color.green.opacity(0.25)
                 }
 
-                if vm.draggedTo == position {
+                if draggedTo {
                     Circle()
                         .foregroundColor(.green)
                         .opacity(0.3)
@@ -110,13 +113,13 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                         .scaleEffect(x: isDragged ? 2 : 1, y: isDragged ? 2 : 1)
                         .shadow(
                             color: .green,
-                            radius: vm.selectedPosition == position ? 5 : 0
+                            radius: isSelected ? 5 : 0
                         )
                         .position(gestureLocation)
                         .rotationEffect(Angle(
                             degrees: shouldRotate && vm.turn == .black ? 180 : 0
                         ))
-                        .offset(tapOffset)
+                        .offset(animationOffset)
                         .onAppear {
                             performAnimation(withSize: geometry.size)
                         }
@@ -126,7 +129,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                         .animation(.spring(response: 0.1), value: isDragged)
                 }
 
-                if vm.allowedMoves.contains(position) {
+                if isMoveHereAllowed {
                     if piece != nil {
                         CapturePieceShape()
                             .stroke(.red, style: StrokeStyle(lineWidth: 2, lineJoin: .miter))
@@ -158,6 +161,22 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
             .accessibilityElement()
             .accessibilityLabel(Text("" + "\(position)"))
         }
+        .onReceive(vm.draggedTo) {
+            if draggedTo != ($0 == position) {
+                draggedTo = $0 == position
+            }
+        }
+        .onReceive(vm.selectedPosition) {
+            if isSelected != ($0 == position) {
+                isSelected = ($0 == position)
+            }
+        }
+        .onReceive(vm.allowedMoves) {
+            let isAllowed = $0.contains(position)
+            if isMoveHereAllowed != isAllowed {
+                isMoveHereAllowed = isAllowed
+            }
+        }
     }
 
     private func performAnimation(withSize size: CGSize) {
@@ -165,22 +184,22 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
             if move.to == position {
                 let deltaX = position.x - move.from.x
                 let deltaY = position.y - move.from.y
-                tapOffset = CGSize(
+                animationOffset = CGSize(
                     width: size.width * CGFloat(-deltaY),
                     height: size.height * CGFloat(deltaX)
                 )
                 withAnimation(.spring(response: 0.3)) {
-                    tapOffset.width = 0
-                    tapOffset.height = 0
+                    animationOffset.width = 0
+                    animationOffset.height = 0
                 }
             } else {
-                tapOffset = CGSize.zero
+                animationOffset = CGSize.zero
             }
         }
     }
 
     func getOffset() -> CGSize {
-        if let lastMove = vm.lastMove,
+        if let lastMove = vm.lastMove.value,
            lastMove.to == position {
             let deltaX = position.x - lastMove.from.x
             let deltaY = position.y - lastMove.from.y
@@ -192,7 +211,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
 
     private func updateGesture(with gesture: DragGesture.Value) {
         if vm.canSelectPiece(atPosition: position) {
-            if vm.selectedPosition != position || !isDragged {
+            if vm.selectedPosition.value != position || !isDragged {
                 DispatchQueue.main.async {
                     isDragged = true
                 }
@@ -201,25 +220,21 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
 
             if shouldRotate && vm.turn == .black {
                 DispatchQueue.main.async {
-                    withAnimation(.spring(response: 0.1)) {
-                        gestureLocation = CGPoint(
-                            x: -gesture.location.x + size.width,
-                            y: -(gesture.location.y - size.height)
-                        )
-                    }
+                    gestureLocation = CGPoint(
+                        x: -gesture.location.x + size.width,
+                        y: -(gesture.location.y - size.height)
+                    )
                 }
             } else {
                 DispatchQueue.main.async {
-                    withAnimation(.spring(response: 0.1)) {
-                        gestureLocation = CGPoint(
-                            x: gesture.location.x,
-                            y: (gesture.location.y - size.height)
-                        )
-                    }
+                    gestureLocation = CGPoint(
+                        x: gesture.location.x,
+                        y: (gesture.location.y - size.height)
+                    )
                 }
             }
 
-            DispatchQueue.global(qos: .background).async {
+            DispatchQueue.global(qos: .default).async {
                 if changes % refreshRate == 0 {
                     vm.computeDraggedPosition(
                         location: gesture.location,
@@ -238,7 +253,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
             withAnimation(.spring(response: 0.3)) {
                 gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
             }
-            if let to = vm.draggedTo {
+            if let to = vm.draggedTo.value {
                 vm.movePiece(fromPosition: position, toPosition: to, isAnimated: false)
             }
         }

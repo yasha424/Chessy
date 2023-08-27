@@ -9,14 +9,20 @@ import SwiftUI
 
 struct PuzzleView: View {
 
-    @ObservedObject var puzzleVM: PuzzleViewModel
+    @ObservedObject private var puzzleVM: PuzzleViewModel
+    private let boardView: BoardView<PuzzleViewModel>
+
+    init(puzzleVM: PuzzleViewModel) {
+        self.puzzleVM = puzzleVM
+        self.boardView = BoardView(vm: puzzleVM, shouldRotate: .constant(false))
+    }
 
     var body: some View {
         HStack {
             Spacer()
             VStack {
                 Spacer()
-                BoardView(vm: puzzleVM, shouldRotate: false)
+                boardView
                     .padding(8)
                     .onAppear(perform: puzzleVM.firstMove)
                     .onChange(of: puzzleVM.puzzle) { _ in

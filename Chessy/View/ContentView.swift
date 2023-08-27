@@ -10,10 +10,22 @@ import WidgetKit
 
 struct ContentView: View {
 
-    @StateObject var gameVM = GameViewModel(game: ClassicGame(board: Board()))
-    let singlePlayerGameView = SinglePlayerGameView<GameViewModel<ClassicGame>>()
-    let puzzleListView = PuzzleListView()
-    @Environment(\.scenePhase) var scenePhase
+    @StateObject private var gameVM: GameViewModel = {
+        let userDefaults = UserDefaults(suiteName: "group.com.yasha424.Chessy.default")!
+        let fen = userDefaults.string(forKey: "fen") ?? ""
+        let game = ClassicGame(fromFen: fen)
+        let timer = GameTimer(seconds: 0)
+        let whiteTime = UserDefaults.standard.integer(forKey: "whiteTime")
+        let blackTime = UserDefaults.standard.integer(forKey: "blackTime")
+        game.timer = timer
+        timer.delegate = game
+        timer.set(seconds: whiteTime, for: .white)
+        timer.set(seconds: blackTime, for: .black)
+        return GameViewModel(game: game)
+    }()
+    private let singlePlayerGameView = SinglePlayerGameView<GameViewModel<ClassicGame>>()
+    private let puzzleListView = PuzzleListView()
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         TabView {

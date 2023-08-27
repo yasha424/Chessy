@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct UndoButtonView<ChessGame: Game>: View {
-    @EnvironmentObject var gameVM: GameViewModel<ChessGame>
+    @EnvironmentObject private var gameVM: GameViewModel<ChessGame>
     @State private var rotations = 0.0
-    @GestureState var press = false
+    @GestureState private var press = false
     @State private var timer: Timer?
-    @AppStorage("shouldRotate") var shouldRotate: Bool = false
+    @AppStorage("shouldRotate") private var shouldRotate: Bool = false
 
     var body: some View {
         Button {
             if let isValid = timer?.isValid, isValid {
                 timer?.invalidate()
             } else {
-                if gameVM.lastMove != nil {
+                if gameVM.lastMove.value != nil {
                     gameVM.undoLastMove()
                     withAnimation(.spring(response: 0.3, dampingFraction: 1)) {
                         rotations += 1
@@ -40,7 +40,7 @@ struct UndoButtonView<ChessGame: Game>: View {
             LongPressGesture(minimumDuration: 0.75)
                 .onEnded { _ in
                     timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
-                        if gameVM.lastMove != nil {
+                        if gameVM.lastMove.value != nil {
                             gameVM.undoLastMove()
                             withAnimation(.spring(response: 0.3, dampingFraction: 1)) {
                                 rotations += 1
