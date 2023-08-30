@@ -66,8 +66,8 @@ struct Board: Equatable {
 
         for i in 0..<8 {
             var count = 0
-            for piece in rows[7 - i] {
-                if let emptyCells = Int("\(piece)") {
+            for fenCharacter in rows[7 - i] {
+                if let emptyCells = Int("\(fenCharacter)") {
                     count += emptyCells
 
                     guard count <= 8 else {
@@ -86,27 +86,59 @@ struct Board: Equatable {
                         return
                     }
 
-                    pieces[i * 8 + count - 1] = Piece(fromFenCharacter: piece)
+                    pieces[i * 8 + count - 1] = Piece(fromFenCharacter: fenCharacter)
                 }
             }
             guard count == 8 else {
                 defaultSetup()
                 return
             }
+            setPiecesIds()
+        }
+    }
+
+    private mutating func setPiecesIds() {
+        var piecesCount: [PieceColor: [PieceType: Int]] = [
+            .white: [
+                .pawn: 0,
+                .knight: 0,
+                .bishop: 0,
+                .rook: 0,
+                .queen: 0,
+                .king: 0
+            ],
+            .black: [
+                .pawn: 0,
+                .knight: 0,
+                .bishop: 0,
+                .rook: 0,
+                .queen: 0,
+                .king: 0
+            ]
+        ]
+
+        for (i, piece) in pieces.enumerated() where piece != nil {
+            guard let piece = piece else { return }
+            pieces[i]!.setId(piece.color.rawValue + piece.type.rawValue +
+                             String(piecesCount[piece.color]![piece.type]!))
+            piecesCount[piece.color]![piece.type]! += 1
         }
     }
 
     private mutating func defaultSetup() {
-        let pieceTypes: [PieceType] = [
-            .rook, .knight, .bishop, .queen, .king, .bishop, .knight, .rook
+        let pieceTypes: [(PieceType, Int)] = [
+            (.rook, 0), (.knight, 0), (.bishop, 0), (.queen, 0),
+            (.king, 0), (.bishop, 1), (.knight, 1), (.rook, 1)
         ]
 
         // white setup
         (0..<8).forEach { i in
-            pieces[i] = Piece(color: .white, type: pieceTypes[i])
+            var piece = Piece(color: .white, type: pieceTypes[i].0)
+            piece.setId(piece.color.rawValue + piece.type.rawValue + "\(pieceTypes[i].1)")
+            pieces[i] = piece
         }
         (8..<16).forEach { i in
-            pieces[i] = Piece(color: .white, type: .pawn)
+            pieces[i] = Piece(color: .white, type: .pawn, id: "WP\(i - 8)")
         }
 
         (16..<48).forEach { i in
@@ -115,10 +147,12 @@ struct Board: Equatable {
 
         // black setup
         (48..<56).forEach { i in
-            pieces[i] = Piece(color: .black, type: .pawn)
+            pieces[i] = Piece(color: .black, type: .pawn, id: "BP\(i - 48)")
         }
         (56..<64).forEach { i in
-            pieces[i] = Piece(color: .black, type: pieceTypes[i - 56])
+            var piece = Piece(color: .black, type: pieceTypes[i - 56].0)
+            piece.setId(piece.color.rawValue + piece.type.rawValue + "\(pieceTypes[i - 56].1)")
+            pieces[i] = piece
         }
     }
 

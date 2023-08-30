@@ -10,21 +10,23 @@ import SwiftUI
 struct SquareView<ViewModel: ViewModelProtocol>: View {
 
     @ObservedObject var vm: ViewModel
-    let piece: Piece?
     let position: Position
+    let shouldRotate: Bool
+    let pieceImageNamespace: Namespace.ID
 
+    @State private var piece: Piece?
+    @State private var turn: PieceColor = .white
     @State private var animationOffset = CGSize.zero
     @State private var size: CGSize!
     @State private var isDragged: Bool = false
-    @State private var gestureLocation: CGPoint = CGPoint.zero
+    @State private var gestureLocation: CGPoint = .zero
     @State private var draggedTo: Bool = false
     @State private var isSelected: Bool = false
     @State private var isMoveHereAllowed = false
+    @State private var wasLastMoveHere = false
 
     @State private var changes = 0
     private let refreshRate = 3
-
-    let shouldRotate: Bool
 
     var dragGesture: some Gesture {
         DragGesture()
@@ -76,7 +78,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                     }
                 }
 
-                if [vm.lastMove.value?.from, vm.lastMove.value?.to].contains(position) {
+                if wasLastMoveHere {
                     Color.green.opacity(0.25)
                 }
 
@@ -87,7 +89,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                         .scaleEffect(x: 1.9, y: 1.9)
                 }
 
-                if let piece = self.piece {
+                if let piece = vm.getPiece(atPosition: position) {
                     if piece.type == .king && vm.kingInCheckForColor == piece.color {
                         Circle()
                             .blur(radius: 15)
@@ -101,7 +103,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                             .aspectRatio(contentMode: .fit)
                             .padding(geometry.size.width / 8)
                             .rotationEffect(Angle(
-                                degrees: shouldRotate && vm.turn == .black ? 180 : 0
+                                degrees: shouldRotate && turn == .black ? 180 : 0
                             ))
                             .opacity(0.2)
                     }
@@ -110,22 +112,19 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .padding(geometry.size.width / 8)
-                        .scaleEffect(x: isDragged ? 2 : 1, y: isDragged ? 2 : 1)
+                        .matchedGeometryEffect(id: piece.id, in: pieceImageNamespace)
+                        .frame(
+                            width: geometry.size.width * (isDragged ? 2 : 1),
+                            height: geometry.size.height * (isDragged ? 2 : 1)
+                        )
                         .shadow(
                             color: .green,
                             radius: isSelected ? 5 : 0
                         )
                         .position(gestureLocation)
                         .rotationEffect(Angle(
-                            degrees: shouldRotate && vm.turn == .black ? 180 : 0
+                            degrees: shouldRotate && turn == .black ? 180 : 0
                         ))
-                        .offset(animationOffset)
-                        .onAppear {
-                            performAnimation(withSize: geometry.size)
-                        }
-                        .onChange(of: vm.animatedMoves) { _ in
-                            performAnimation(withSize: geometry.size)
-                        }
                         .animation(.spring(response: 0.1), value: isDragged)
                 }
 
@@ -161,6 +160,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
             .accessibilityElement()
             .accessibilityLabel(Text("" + "\(position)"))
         }
+        .animation(.spring(response: 0.3), value: vm.game.board)
         .onReceive(vm.draggedTo) {
             if draggedTo != ($0 == position) {
                 draggedTo = $0 == position
@@ -177,36 +177,13 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                 isMoveHereAllowed = isAllowed
             }
         }
-    }
-
-    private func performAnimation(withSize size: CGSize) {
-        for move in vm.animatedMoves {
-            if move.to == position {
-                let deltaX = position.x - move.from.x
-                let deltaY = position.y - move.from.y
-                animationOffset = CGSize(
-                    width: size.width * CGFloat(-deltaY),
-                    height: size.height * CGFloat(deltaX)
-                )
-                withAnimation(.spring(response: 0.3)) {
-                    animationOffset.width = 0
-                    animationOffset.height = 0
-                }
-            } else {
-                animationOffset = CGSize.zero
-            }
+        .onReceive(vm.lastMove) { move in
+            let wasLastMoveHere = [move?.from, move?.to].contains(position)
+                self.wasLastMoveHere = wasLastMoveHere
         }
-    }
-
-    func getOffset() -> CGSize {
-        if let lastMove = vm.lastMove.value,
-           lastMove.to == position {
-            let deltaX = position.x - lastMove.from.x
-            let deltaY = position.y - lastMove.from.y
-
-            return CGSize(width: deltaX, height: deltaY)
+        .onReceive(vm.turn) {
+            turn = $0
         }
-        return CGSize.zero
     }
 
     private func updateGesture(with gesture: DragGesture.Value) {
@@ -218,7 +195,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                 vm.selectPosition(position)
             }
 
-            if shouldRotate && vm.turn == .black {
+            if shouldRotate && turn == .black {
                 DispatchQueue.main.async {
                     gestureLocation = CGPoint(
                         x: -gesture.location.x + size.width,

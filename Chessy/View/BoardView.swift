@@ -14,6 +14,7 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
     @Binding var shouldRotate: Bool
     @State private var selectedPosition: Position?
     @State private var lastMove: Move?
+    @Namespace private var pieceImageNamespace
 
     var body: some View {
         ZStack {
@@ -25,9 +26,9 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
 
                             SquareView<ViewModel>(
                                 vm: vm,
-                                piece: vm.getPiece(atPosition: position),
                                 position: position,
-                                shouldRotate: shouldRotate
+                                shouldRotate: shouldRotate,
+                                pieceImageNamespace: pieceImageNamespace
                             )
                             .zIndex(selectedPosition == position ? 2 :
                                         (lastMove?.to == position ? 1 : 0))
@@ -67,8 +68,8 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
                                 if let piece = vm.getPiece(atPosition: position),
                                    let colorName = ImageNames.color[piece.color],
                                    let typeName = ImageNames.type[type] {
-                                    let rotationDegrees = (vm.turn == .black &&
-                                                           shouldRotate) ? 180.0 : 0.0
+                                    let rotationDegrees = (shouldRotate &&
+                                                           vm.turn.value == .black) ? 180.0 : 0.0
                                     Image(colorName + typeName)
                                         .resizable()
                                         .padding(8)

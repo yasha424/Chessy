@@ -40,6 +40,7 @@
 		D3972CA12A6D3BAD0050E6FA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3972CA02A6D3BAD0050E6FA /* GameTimer.swift */; };
 		D3A9BB282A8D01C30075F532 /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
 		D3AAB0C32A9AB184008582EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3879F2A2A90C31C004F30B5 /* Assets.xcassets */; };
+		D3AAB0C42A9B6B9E008582EE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9BC2A8BB1BD00CBC5B4 /* Localizable.strings */; };
 		D3C79AA02A96459900CFFA5A /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
 		D3C79AA12A96459D00CFFA5A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EEB2A55E55900D9D95A /* Board.swift */; };
 		D3C79AA22A9645A100CFFA5A /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
@@ -543,6 +544,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3879F462A90C781004F30B5 /* Assets.xcassets in Resources */,
+				D3AAB0C42A9B6B9E008582EE /* Localizable.strings in Resources */,
 				D3AAB0C32A9AB184008582EE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

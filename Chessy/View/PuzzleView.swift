@@ -24,7 +24,11 @@ struct PuzzleView: View {
                 Spacer()
                 boardView
                     .padding(8)
-                    .onAppear(perform: puzzleVM.firstMove)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            puzzleVM.firstMove()
+                        }
+                    }
                     .onChange(of: puzzleVM.puzzle) { _ in
                         puzzleVM.firstMove()
                     }

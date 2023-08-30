@@ -15,19 +15,20 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     internal var game: any Game
     @Published private(set) var state: GameState
     internal var canPromotePawnAtPosition: Position?
-    internal var fen: String
+    internal var fen: CurrentValueSubject<String, Never>
 
-    private(set) var whiteCapturedPieces = [PieceType: Int]()
-    private(set) var blackCapturedPieces = [PieceType: Int]()
-    private(set) var value = 0
+    private(set) var whiteCapturedPieces: CurrentValueSubject<[PieceType: Int], Never> = .init([:])
+    private(set) var blackCapturedPieces: CurrentValueSubject<[PieceType: Int], Never> = .init([:])
+    private(set) var value: CurrentValueSubject<Int, Never>
 
     internal var selectedPosition: CurrentValueSubject<Position?, Never> = .init(nil)
     internal var allowedMoves: CurrentValueSubject<[Position], Never> = .init([])
     internal var draggedTo: CurrentValueSubject<Position?, Never> = .init(nil)
     internal var lastMove: CurrentValueSubject<Move?, Never> = .init(nil)
+    internal var undidMove: CurrentValueSubject<Move?, Never> = .init(nil)
     internal var animatedMoves = [Move]()
 
-    internal var turn: PieceColor
+    internal var turn: CurrentValueSubject<PieceColor, Never>
     internal var kingInCheckForColor: PieceColor?
 
     internal var hasTimer: Bool
@@ -37,18 +38,22 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         moveSoundUrl: Bundle.main.url(forResource: "move", withExtension: "mp3"),
         captureSoundUrl: Bundle.main.url(forResource: "capture", withExtension: "mp3")
     )
+    private(set) var didUpdateGame: CurrentValueSubject<Bool, Never> = .init(false)
 
     init(game: ChessGame) {
         self.game = game
         self.hasTimer = game.timer != nil
         self.state = game.state
-        self.turn = game.turn
-        self.fen = game.fen
+        self.turn = .init(game.turn)
+        self.fen = .init(game.fen)
         self.whiteTime = .init(game.whiteTime)
         self.blackTime = .init(game.blackTime)
         self.canPromotePawnAtPosition = game.canPromotePawnAtPosition
-        self.whiteCapturedPieces = capturedPieces(for: .white)
-        self.blackCapturedPieces = capturedPieces(for: .black)
+        self.value = .init(game.value)
+        self.kingInCheckForColor = self.game.isKingInCheck(
+            forColor: self.turn.value) ? self.turn.value : nil
+        self.whiteCapturedPieces = .init(capturedPieces(for: .white))
+        self.blackCapturedPieces = .init(capturedPieces(for: .black))
         self.game.delegate = self
     }
 
@@ -71,6 +76,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
                 }
             }
             self.game.undoLastMove()
+            self.undidMove.send(self.lastMove.value)
             self.updateStates()
             self.selectedPosition.send(nil)
             self.allowedMoves.send([])
@@ -81,15 +87,15 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         DispatchQueue.main.async {
             self.state = self.game.state
         }
-        self.turn = self.game.turn
+        self.turn.send(self.game.turn)
         self.kingInCheckForColor = self.game.isKingInCheck(
-            forColor: self.turn) ? self.turn : nil
+            forColor: self.turn.value) ? self.turn.value : nil
         self.lastMove.send(self.game.history.last)
         self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
-        self.fen = self.game.fen
-        self.whiteCapturedPieces = capturedPieces(for: .white)
-        self.blackCapturedPieces = capturedPieces(for: .black)
-        self.value = self.game.value
+        self.fen.send(self.game.fen)
+        self.whiteCapturedPieces.send(capturedPieces(for: .white))
+        self.blackCapturedPieces.send(capturedPieces(for: .black))
+        self.value.send(self.game.value)
     }
 
     func updateGame(with newGame: any Game) {
@@ -122,7 +128,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
                     self.animatedMoves.append(Move(from: from, to: to, piece: self.game.board[to]))
                 }
             }
-
+            self.didUpdateGame.send(true)
         }
     }
 

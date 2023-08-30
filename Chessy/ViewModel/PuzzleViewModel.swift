@@ -28,7 +28,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
     }
 
     func firstMove() {
-        if self.turn != playerColor && !self.moves.isEmpty && !playedFirstMove {
+        if self.turn.value != playerColor && !self.moves.isEmpty && !playedFirstMove {
             if let firstMove = self.puzzle.moves.first {
                 super.movePiece(
                     fromPosition: firstMove.from,
@@ -47,7 +47,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
         guard self.allowedMoves.value.contains(to) else { return }
         super.movePiece(fromPosition: from, toPosition: to, isAnimated: isAnimated)
 
-        if self.turn != self.playerColor {
+        if self.turn.value != self.playerColor {
             if from == self.moves.first?.from, to == self.moves.first?.to {
                 self.moves.removeFirst()
                 if let puzzleMove = self.moves.first {

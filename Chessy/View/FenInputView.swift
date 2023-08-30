@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FenInputView<ChessGame: Game>: View {
 
-    @EnvironmentObject private var gameVM: GameViewModel<ChessGame>
+    @EnvironmentObject private var vm: GameViewModel<ChessGame>
     @FocusState private var isInputActive: Bool
     @AppStorage("fen", store: UserDefaults(suiteName: "group.com.yasha424.Chessy.default"))
     private var fenString: String = ""
@@ -25,7 +25,7 @@ struct FenInputView<ChessGame: Game>: View {
             .focused($isInputActive)
             .onSubmit {
                 if let game = ClassicGame(fromFen: fenString) as? ChessGame {
-                    gameVM.updateGame(with: game)
+                    vm.updateGame(with: game)
                 }
             }
             .toolbar {
@@ -37,13 +37,13 @@ struct FenInputView<ChessGame: Game>: View {
                     Button("Done") {
                         isInputActive.toggle()
                         if let game = ClassicGame(fromFen: fenString) as? ChessGame {
-                            gameVM.updateGame(with: game)
+                            vm.updateGame(with: game)
                         }
                     }
                 }
             }
-            .onChange(of: gameVM.fen) { _ in
-                fenString = gameVM.fen
+            .onReceive(vm.fen) {
+                fenString = $0
             }
     }
 }

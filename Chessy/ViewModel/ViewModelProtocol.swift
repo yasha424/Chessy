@@ -16,17 +16,19 @@ protocol ViewModelProtocol: ObservableObject {
     var kingInCheckForColor: PieceColor? { get }
     var animatedMoves: [Move] { get }
     var selectedPosition: CurrentValueSubject<Position?, Never> { get }
-    var fen: String { get }
-    var turn: PieceColor { get }
+    var fen: CurrentValueSubject<String, Never> { get }
+    var turn: CurrentValueSubject<PieceColor, Never> { get }
     var allowedMoves: CurrentValueSubject<[Position], Never> { get }
     var canPromotePawnAtPosition: Position? { get }
     var hasTimer: Bool { get }
     var whiteTime: CurrentValueSubject<Int?, Never> { get }
     var blackTime: CurrentValueSubject<Int?, Never> { get }
     var audioPlayerService: AudioPlayerService { get }
-    var whiteCapturedPieces: [PieceType: Int] { get }
-    var blackCapturedPieces: [PieceType: Int] { get }
-    var value: Int { get }
+    var whiteCapturedPieces: CurrentValueSubject<[PieceType: Int], Never> { get }
+    var blackCapturedPieces: CurrentValueSubject<[PieceType: Int], Never> { get }
+    var value: CurrentValueSubject<Int, Never> { get }
+    var didUpdateGame: CurrentValueSubject<Bool, Never> { get }
+    var undidMove: CurrentValueSubject<Move?, Never> { get }
 
     func updateGame(with newGame: any Game)
     func undoLastMove()

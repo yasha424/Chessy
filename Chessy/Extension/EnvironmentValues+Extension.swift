@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-private struct ShouldRotateKey: EnvironmentKey {
+private struct ShouldRotateEnvironmentKey: EnvironmentKey {
     static let defaultValue: Bool = false
 }
 
 extension EnvironmentValues {
     var shouldRotate: Bool {
-        get { self[ShouldRotateKey.self] }
-        set { self[ShouldRotateKey.self] = newValue }
+        get { self[ShouldRotateEnvironmentKey.self] }
+        set { self[ShouldRotateEnvironmentKey.self] = newValue }
     }
 }

@@ -5,6 +5,8 @@
 //  Created by Yasha Serhiienko on 05.07.2023.
 //
 
+import Foundation
+
 enum PieceType: String, Identifiable {
     case pawn = "P"
     case bishop = "B"
@@ -47,21 +49,28 @@ enum PieceColor: String {
     }
 }
 
-struct Piece: Equatable {
+struct Piece: Equatable, Identifiable {
     let color: PieceColor
     var type: PieceType
+    private(set) var id: String
+
+    init(color: PieceColor, type: PieceType, id: String = UUID().uuidString) {
+        self.color = color
+        self.type = type
+        self.id = id
+    }
 
     static func == (lhs: Piece, rhs: Piece) -> Bool {
         return lhs.color == rhs.color && lhs.type == rhs.type
     }
 
-    init(color: PieceColor, type: PieceType) {
-        self.color = color
-        self.type = type
-    }
-
-    init(fromFenCharacter fen: Character) {
+    init(fromFenCharacter fen: Character, id: String = UUID().uuidString) {
         self.color = fen.isUppercase ? .white : .black
         self.type = PieceType(rawValue: fen.uppercased()) ?? .pawn
+        self.id = id
+    }
+
+    mutating func setId(_ id: String) {
+        self.id = id
     }
 }

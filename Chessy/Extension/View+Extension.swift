@@ -53,7 +53,7 @@ extension View {
     func glassView(cornerRadius: CGFloat = 14) -> some View {
         return self
             .background(.ultraThinMaterial)
-            .cornerRadius(cornerRadius)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .shadow(color: .white.opacity(0.9), radius: 2, x: -1, y: -2)
             .shadow(color: .black.opacity(0.6), radius: 2, x: 2, y: 2)
     }

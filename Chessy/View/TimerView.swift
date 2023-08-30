@@ -23,10 +23,10 @@ struct TimerView<ChessGame: Game>: View {
                 .frame(height: 40)
                 .font(.title.monospaced())
                 .padding(.horizontal, 8)
-                .opacity(gameVM.turn == color ? 1.0 : 0.5)
+                .opacity(gameVM.turn.value == color ? 1.0 : 0.5)
         }
         .rotationEffect(Angle(
-            degrees: shouldRotate && gameVM.turn == .black ? 180 : 0
+            degrees: shouldRotate && gameVM.turn.value == .black ? 180 : 0
         ))
         .glassView()
         .onTapGesture {
