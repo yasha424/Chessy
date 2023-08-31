@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject private var gameVM: ViewModel
+    @EnvironmentObject private var vm: ViewModel
 
     @State private var boardView: BoardView<ViewModel>!
     private let blackTimerView = TimerView<ClassicGame>(color: .black)
@@ -17,72 +17,129 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
     private let undoButtonView = UndoButtonView<ClassicGame>()
     private let whiteCapturedPiecesView = CapturedPiecesView<ViewModel>(color: .white)
     private let blackCapturedPiecesView = CapturedPiecesView<ViewModel>(color: .black)
+    @State private var gameState: GameState = .inProgress
     @AppStorage("shouldRotate") private var shouldRotate = false
+    @Namespace var namespace
+    @Environment(\.verticalSizeClass) private var sizeClass
 
     var body: some View {
         ZStack {
-            VStack {
-                switch gameVM.state {
-                case .checkmate(let color):
-                    if color == .white {
-                        Text("Black won by checkmate!")
-                            .padding([.leading, .trailing])
-                            .frame(height: 40)
-                            .glassView()
-                            .transition(.move(edge: .top))
-                    } else {
-                        Text("White won by checkmate!")
-                            .padding([.leading, .trailing])
-                            .frame(height: 40)
-                            .glassView()
-                            .transition(.move(edge: .top))
+            if sizeClass == .regular {
+                VStack {
+                    blackInfoView
+                    boardView.padding(.vertical, 8)
+                        .matchedGeometryEffect(id: "boardView", in: namespace)
+                    whiteInfoView
+                    HStack {
+                        undoButtonView
+                        Spacer()
                     }
-                case .stalemate:
-                    Text("Stalemate!")
-                        .padding([.leading, .trailing])
-                        .frame(height: 40)
-                        .glassView()
-                        .transition(.move(edge: .top))
-                default:
-                    EmptyView()
+                    .padding(.top, 8)
                 }
-
-                Spacer()
-            }
-            .zIndex(3.0)
-            .animation(.spring(response: 0.3), value: gameVM.state)
-
-            VStack {
+                .padding(.vertical, 8)
+            } else {
                 HStack {
-                    whiteCapturedPiecesView
-
+                    VStack {
+                        whiteCapturedPiecesView
+                        Spacer()
+                        blackCapturedPiecesView
+                    }
                     Spacer()
-
-                    if gameVM.hasTimer {
+                }
+                .padding(.vertical, 8)
+                HStack {
+                    Spacer()
+                    VStack {
                         blackTimerView
-                    }
-                }
-
-                boardView.padding(.vertical, 8)
-
-                HStack {
-                    blackCapturedPiecesView
-
-                    Spacer()
-
-                    if gameVM.hasTimer {
+                        Spacer()
                         whiteTimerView
                     }
+                    .padding(.vertical, 8)
                 }
                 HStack {
                     undoButtonView
-                    Spacer()
+                    boardView.padding(8)
                 }
-                .padding(.top, 8)
+            }
+            gameStateNotificationView
+        }
+        .padding(.horizontal, 8)
+        .onAppear {
+            self.boardView = BoardView<ViewModel>(vm: vm, shouldRotate: $shouldRotate)
+            self.gameState = vm.state.value
+        }
+    }
+}
+
+extension GameView {
+    private var gameStateNotificationView: some View {
+        VStack {
+            switch gameState {
+            case .checkmate(let color):
+                if color == .white {
+                    Text("Black won by checkmate!")
+                        .padding()
+                        .frame(height: 40)
+                        .glassView()
+                        .padding([.top, .bottom])
+                        .transition(.move(edge: .top))
+                } else {
+                    Text("White won by checkmate!")
+                        .padding()
+                        .frame(height: 40)
+                        .glassView()
+                        .padding([.top, .bottom])
+                        .transition(.move(edge: .top))
+                }
+            case .stalemate:
+                Text("Stalemate!")
+                    .padding()
+                    .frame(height: 40)
+                    .glassView()
+                    .padding([.top, .bottom])
+                    .transition(.move(edge: .top))
+            default:
+                EmptyView()
+            }
+
+            Spacer()
+        }
+        .animation(.spring(response: 0.3), value: gameState)
+        .onReceive(vm.state) {
+            if self.gameState != $0 {
+                self.gameState = $0
             }
         }
-        .onAppear {
-            boardView = BoardView<ViewModel>(vm: gameVM, shouldRotate: $shouldRotate)
+    }
+
+    private var blackInfoView: some View {
+        HStack {
+            whiteCapturedPiecesView
+
+            Spacer()
+
+            if vm.hasTimer {
+                blackTimerView
+            }
         }
+    }
+
+    private var whiteInfoView: some View {
+        HStack {
+            blackCapturedPiecesView
+
+            Spacer()
+
+            if vm.hasTimer {
+                whiteTimerView
+            }
+        }
+    }
+}
+
+struct GameViewPreview: PreviewProvider {
+    static var previews: some View {
+        GameView<GameViewModel<ClassicGame>>()
+            .environmentObject(GameViewModel(game: ClassicGame(board: Board())))
     }
 }

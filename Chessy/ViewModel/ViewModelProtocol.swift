@@ -10,10 +10,10 @@ import Combine
 
 protocol ViewModelProtocol: ObservableObject {
     var game: any Game { get }
-    var state: GameState { get }
+    var state: CurrentValueSubject<GameState, Never> { get }
     var lastMove: CurrentValueSubject<Move?, Never> { get }
     var draggedTo: CurrentValueSubject<Position?, Never> { get }
-    var kingInCheckForColor: PieceColor? { get }
+    var kingInCheckForColor: CurrentValueSubject<PieceColor?, Never> { get }
     var animatedMoves: [Move] { get }
     var selectedPosition: CurrentValueSubject<Position?, Never> { get }
     var fen: CurrentValueSubject<String, Never> { get }

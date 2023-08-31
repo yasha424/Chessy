@@ -7,43 +7,31 @@
 
 import SwiftUI
 
-struct SinglePlayerGameView<ViewModel: ViewModelProtocol>: View {
+struct LocalGameView<ViewModel: ViewModelProtocol>: View {
 
     @EnvironmentObject private var gameVM: ViewModel
 
     @State private var isAlertPresented = false
     @AppStorage("shouldRotate") private var shouldRotate = false
+    @Environment(\.verticalSizeClass) private var sizeClass
 
     private let fenInputView = FenInputView<ClassicGame>()
     private let gameView = GameView<ViewModel>()
 
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
+//            Spacer()
 
             gameView
                 .onShake { isAlertPresented = true }
-                .padding([.leading, .trailing, .bottom], 8)
+//                .padding([.leading, .trailing, .bottom], 8)
 
             Spacer()
 
-            HStack {
-                Spacer()
-                HStack {
-                    Text("Rotating")
-                        .foregroundColor(.primary)
-                        .font(.title3)
-                    Toggle("", isOn: $shouldRotate)
-                        .labelsHidden()
-                }
-                .padding([.leading, .trailing], 8)
-                .frame(height: 40)
-                .glassView()
-                .tint(.primary.opacity(0.5))
+            if sizeClass == .regular {
+                switchRotateView
+                fenInputView.padding(8)
             }
-            .padding(8)
-
-            fenInputView.padding(8)
         }
         .customBackground()
         .alert("Reset game?", isPresented: $isAlertPresented, actions: {
@@ -72,5 +60,25 @@ struct SinglePlayerGameView<ViewModel: ViewModelProtocol>: View {
                 UserDefaults.standard.set(seconds, forKey: "blackTime")
             }
         }
+    }
+}
+
+extension LocalGameView {
+    private var switchRotateView: some View {
+        HStack {
+            Spacer()
+            HStack {
+                Text("Rotating")
+                    .foregroundColor(.primary)
+                    .font(.title3)
+                Toggle("", isOn: $shouldRotate)
+                    .labelsHidden()
+            }
+            .padding([.leading, .trailing], 8)
+            .frame(height: 40)
+            .glassView()
+            .tint(.primary.opacity(0.5))
+        }
+        .padding(8)
     }
 }

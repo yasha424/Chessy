@@ -67,8 +67,10 @@ struct CapturedPiecesView<ViewModel: ViewModelProtocol>: View {
             }
         }
         .onReceive(gameVM.value) {
-            if (color == .white && $0 < 0) || (color == .black && $0 > 0) && value != $0 {
-                value = $0
+            if (color == .white && $0 < 0) || (color == .black && $0 > 0) {
+                if value != $0 {
+                    value = $0
+                }
             } else {
                 value = 0
             }

@@ -23,13 +23,13 @@ struct ContentView: View {
         timer.set(seconds: blackTime, for: .black)
         return GameViewModel(game: game)
     }()
-    private let singlePlayerGameView = SinglePlayerGameView<GameViewModel<ClassicGame>>()
+    private let localGameView = LocalGameView<GameViewModel<ClassicGame>>()
     private let puzzleListView = PuzzleListView()
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         TabView {
-            singlePlayerGameView
+            localGameView
                 .environmentObject(gameVM)
                 .tabItem {
                     Label {

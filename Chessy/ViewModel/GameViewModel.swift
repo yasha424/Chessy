@@ -13,7 +13,7 @@ import AVFoundation
 class GameViewModel<ChessGame: Game>: ViewModelProtocol {
 
     internal var game: any Game
-    @Published private(set) var state: GameState
+    /*@Published*/ private(set) var state: CurrentValueSubject<GameState, Never>
     internal var canPromotePawnAtPosition: Position?
     internal var fen: CurrentValueSubject<String, Never>
 
@@ -29,7 +29,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     internal var animatedMoves = [Move]()
 
     internal var turn: CurrentValueSubject<PieceColor, Never>
-    internal var kingInCheckForColor: PieceColor?
+    internal var kingInCheckForColor: CurrentValueSubject<PieceColor?, Never>
 
     internal var hasTimer: Bool
     internal var whiteTime: CurrentValueSubject<Int?, Never>
@@ -43,15 +43,15 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     init(game: ChessGame) {
         self.game = game
         self.hasTimer = game.timer != nil
-        self.state = game.state
+        self.state = .init(game.state)
         self.turn = .init(game.turn)
         self.fen = .init(game.fen)
         self.whiteTime = .init(game.whiteTime)
         self.blackTime = .init(game.blackTime)
         self.canPromotePawnAtPosition = game.canPromotePawnAtPosition
         self.value = .init(game.value)
-        self.kingInCheckForColor = self.game.isKingInCheck(
-            forColor: self.turn.value) ? self.turn.value : nil
+        self.kingInCheckForColor = .init(self.game.isKingInCheck(
+            forColor: self.turn.value) ? self.turn.value : nil)
         self.whiteCapturedPieces = .init(capturedPieces(for: .white))
         self.blackCapturedPieces = .init(capturedPieces(for: .black))
         self.game.delegate = self
@@ -84,12 +84,12 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     }
 
     private func updateStates() {
-        DispatchQueue.main.async {
-            self.state = self.game.state
-        }
+//        DispatchQueue.main.async {
+            self.state.send(self.game.state)
+//        }
         self.turn.send(self.game.turn)
-        self.kingInCheckForColor = self.game.isKingInCheck(
-            forColor: self.turn.value) ? self.turn.value : nil
+        self.kingInCheckForColor.send(self.game.isKingInCheck(
+            forColor: self.turn.value) ? self.turn.value : nil)
         self.lastMove.send(self.game.history.last)
         self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
         self.fen.send(self.game.fen)

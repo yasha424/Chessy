@@ -24,7 +24,7 @@
 		D35DA9B42A8B7F1C00CBC5B4 /* capture.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9B32A8B7F1C00CBC5B4 /* capture.mp3 */; };
 		D35DA9B62A8B86DA00CBC5B4 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35DA9B52A8B86DA00CBC5B4 /* ViewModelProtocol.swift */; };
 		D35DA9BA2A8BB1BD00CBC5B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D35DA9BC2A8BB1BD00CBC5B4 /* Localizable.strings */; };
-		D35EEDEB2A894241006A9B1D /* SinglePlayerGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */; };
+		D35EEDEB2A894241006A9B1D /* LocalGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35EEDEA2A894241006A9B1D /* LocalGameView.swift */; };
 		D3610A802A5AB3030046A585 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3610A7F2A5AB3030046A585 /* Colors.swift */; };
 		D369D20B2A79803900F9BC56 /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D369D20A2A79803900F9BC56 /* PuzzleView.swift */; };
 		D369D20D2A79805400F9BC56 /* PuzzleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D369D20C2A79805400F9BC56 /* PuzzleListView.swift */; };
@@ -121,7 +121,7 @@
 		D35DA9B52A8B86DA00CBC5B4 /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
 		D35DA9BD2A8BB1CB00CBC5B4 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D35DA9BE2A8BB44400CBC5B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePlayerGameView.swift; sourceTree = "<group>"; };
+		D35EEDEA2A894241006A9B1D /* LocalGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalGameView.swift; sourceTree = "<group>"; };
 		D3610A7F2A5AB3030046A585 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D369D20A2A79803900F9BC56 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		D369D20C2A79805400F9BC56 /* PuzzleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleListView.swift; sourceTree = "<group>"; };
@@ -270,7 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				D3141EC02A55DFB100D9D95A /* ContentView.swift */,
-				D35EEDEA2A894241006A9B1D /* SinglePlayerGameView.swift */,
+				D35EEDEA2A894241006A9B1D /* LocalGameView.swift */,
 				D3254D202A5A19130093ECC6 /* GameView.swift */,
 				D3788FC72A6E8FC40008DE41 /* BoardView.swift */,
 				D3F404162A66A3A700C97C84 /* SquareView.swift */,
@@ -602,7 +602,7 @@
 				D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */,
 				D35DA9B62A8B86DA00CBC5B4 /* ViewModelProtocol.swift in Sources */,
 				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
-				D35EEDEB2A894241006A9B1D /* SinglePlayerGameView.swift in Sources */,
+				D35EEDEB2A894241006A9B1D /* LocalGameView.swift in Sources */,
 				D3F031BF2A79AF4000C9C0D5 /* EnvironmentValues+Extension.swift in Sources */,
 				D3A9BB282A8D01C30075F532 /* BoardPreview.swift in Sources */,
 				D369D2112A79808600F9BC56 /* PuzzleViewModel.swift in Sources */,
@@ -836,7 +836,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -882,7 +882,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
