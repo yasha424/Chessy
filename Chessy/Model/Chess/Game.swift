@@ -21,6 +21,7 @@ protocol Game: Equatable, GameTimerDelegate {
     var whiteTime: Int? { get }
     var blackTime: Int? { get }
 
+    init(board: Board)
     func canSelectPiece(atPosition: Position) -> Bool
     func allMoves(fromPosition: Position) -> [Position]
     func movePiece(fromPosition: Position, toPosition: Position)
@@ -71,6 +72,10 @@ extension Game {
 
     var value: Int {
         return countValue()
+    }
+
+    init(fromPGN pgn: String) {
+        self.init(board: Board())
     }
 
     private func countValue() -> Int {

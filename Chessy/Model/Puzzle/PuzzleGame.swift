@@ -18,6 +18,10 @@ final class PuzzleGame: ClassicGame {
         self.whiteTime = nil
     }
 
+    required init(board: Board) {
+        fatalError("init(board:) has not been implemented")
+    }
+
     override func movePiece(fromPosition from: Position, toPosition to: Position) {
         super.movePiece(fromPosition: from, toPosition: to)
     }

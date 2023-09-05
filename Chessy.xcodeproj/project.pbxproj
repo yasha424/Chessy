@@ -32,7 +32,10 @@
 		D369D2112A79808600F9BC56 /* PuzzleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D369D2102A79808600F9BC56 /* PuzzleViewModel.swift */; };
 		D3788FC62A6E8E2B0008DE41 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC52A6E8E2B0008DE41 /* TimerView.swift */; };
 		D3788FC82A6E8FC40008DE41 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3788FC72A6E8FC40008DE41 /* BoardView.swift */; };
+		D37CCFAC2AA0DCC20028FC51 /* PuzzleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37CCFAB2AA0DCC20028FC51 /* PuzzleDataSource.swift */; };
+		D37CCFAE2AA0DF770028FC51 /* HapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37CCFAD2AA0DF770028FC51 /* HapticFeedbackService.swift */; };
 		D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3865A872A70873600529C41 /* UndoButtonView.swift */; };
+		D3866F0D2AA758FA0028F9E2 /* puzzles.csv in Resources */ = {isa = PBXBuildFile; fileRef = D3866F0C2AA758FA0028F9E2 /* puzzles.csv */; };
 		D3879F222A90C314004F30B5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F212A90C314004F30B5 /* WidgetKit.framework */; };
 		D3879F242A90C314004F30B5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3879F232A90C314004F30B5 /* SwiftUI.framework */; };
 		D3879F2F2A90C31C004F30B5 /* ChessyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -129,8 +132,11 @@
 		D369D2102A79808600F9BC56 /* PuzzleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleViewModel.swift; sourceTree = "<group>"; };
 		D3788FC52A6E8E2B0008DE41 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		D3788FC72A6E8FC40008DE41 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		D37CCFAB2AA0DCC20028FC51 /* PuzzleDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleDataSource.swift; sourceTree = "<group>"; };
+		D37CCFAD2AA0DF770028FC51 /* HapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackService.swift; sourceTree = "<group>"; };
 		D38273042A94F7F500A9B7A4 /* PuzzleGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGameTests.swift; sourceTree = "<group>"; };
 		D3865A872A70873600529C41 /* UndoButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoButtonView.swift; sourceTree = "<group>"; };
+		D3866F0C2AA758FA0028F9E2 /* puzzles.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = puzzles.csv; sourceTree = "<group>"; };
 		D3879F1F2A90C314004F30B5 /* ChessyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChessyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3879F212A90C314004F30B5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		D3879F232A90C314004F30B5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -289,6 +295,7 @@
 		D35DA9AB2A8B7A5A00CBC5B4 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				D3866F0C2AA758FA0028F9E2 /* puzzles.csv */,
 				D35DA9B32A8B7F1C00CBC5B4 /* capture.mp3 */,
 				D35DA9AE2A8B7BBF00CBC5B4 /* move.mp3 */,
 			);
@@ -299,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				D35DA9B12A8B7D6600CBC5B4 /* AudioPlayerService.swift */,
+				D37CCFAD2AA0DF770028FC51 /* HapticFeedbackService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -325,6 +333,7 @@
 			children = (
 				D32945082A7A592800F98BF9 /* Puzzle.swift */,
 				D329450A2A7A59CA00F98BF9 /* PuzzleGame.swift */,
+				D37CCFAB2AA0DCC20028FC51 /* PuzzleDataSource.swift */,
 			);
 			path = Puzzle;
 			sourceTree = "<group>";
@@ -517,6 +526,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3866F0D2AA758FA0028F9E2 /* puzzles.csv in Resources */,
 				D35DA9BA2A8BB1BD00CBC5B4 /* Localizable.strings in Resources */,
 				D3141EC62A55DFB300D9D95A /* Preview Assets.xcassets in Resources */,
 				D35DA9B42A8B7F1C00CBC5B4 /* capture.mp3 in Resources */,
@@ -583,6 +593,7 @@
 				D3141EC12A55DFB100D9D95A /* ContentView.swift in Sources */,
 				D3452B2C2A694172003A1F45 /* Game.swift in Sources */,
 				D3386F9A2A78610F00E6C35F /* FenInputView.swift in Sources */,
+				D37CCFAE2AA0DF770028FC51 /* HapticFeedbackService.swift in Sources */,
 				D329450B2A7A59CA00F98BF9 /* PuzzleGame.swift in Sources */,
 				D369D20D2A79805400F9BC56 /* PuzzleListView.swift in Sources */,
 				D3610A802A5AB3030046A585 /* Colors.swift in Sources */,
@@ -600,6 +611,7 @@
 				D3D7C9F92A86EA3B00D39644 /* CapturePieceShape.swift in Sources */,
 				D3107AF52A7280B700EB1032 /* ClassicGame.swift in Sources */,
 				D3865A882A70873600529C41 /* UndoButtonView.swift in Sources */,
+				D37CCFAC2AA0DCC20028FC51 /* PuzzleDataSource.swift in Sources */,
 				D35DA9B62A8B86DA00CBC5B4 /* ViewModelProtocol.swift in Sources */,
 				D3141EE92A55E43C00D9D95A /* Piece.swift in Sources */,
 				D35EEDEB2A894241006A9B1D /* LocalGameView.swift in Sources */,

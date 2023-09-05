@@ -39,7 +39,7 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
                 .padding(.vertical, 8)
             } else {
                 HStack {
-                    VStack {
+                    VStack(alignment: .leading) {
                         whiteCapturedPiecesView
                         Spacer()
                         blackCapturedPiecesView

@@ -6,14 +6,12 @@
 //
 
 import Combine
-import Dispatch
 import CoreGraphics
-import AVFoundation
 
 class GameViewModel<ChessGame: Game>: ViewModelProtocol {
 
     internal var game: any Game
-    /*@Published*/ private(set) var state: CurrentValueSubject<GameState, Never>
+    private(set) var state: CurrentValueSubject<GameState, Never>
     internal var canPromotePawnAtPosition: Position?
     internal var fen: CurrentValueSubject<String, Never>
 
@@ -24,7 +22,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     internal var selectedPosition: CurrentValueSubject<Position?, Never> = .init(nil)
     internal var allowedMoves: CurrentValueSubject<[Position], Never> = .init([])
     internal var draggedTo: CurrentValueSubject<Position?, Never> = .init(nil)
-    internal var lastMove: CurrentValueSubject<Move?, Never> = .init(nil)
+    internal var lastMove: CurrentValueSubject<Move?, Never>
     internal var undidMove: CurrentValueSubject<Move?, Never> = .init(nil)
     internal var animatedMoves = [Move]()
 
@@ -34,10 +32,6 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     internal var hasTimer: Bool
     internal var whiteTime: CurrentValueSubject<Int?, Never>
     internal var blackTime: CurrentValueSubject<Int?, Never>
-    let audioPlayerService = AudioPlayerService(
-        moveSoundUrl: Bundle.main.url(forResource: "move", withExtension: "mp3"),
-        captureSoundUrl: Bundle.main.url(forResource: "capture", withExtension: "mp3")
-    )
     private(set) var didUpdateGame: CurrentValueSubject<Bool, Never> = .init(false)
 
     init(game: ChessGame) {
@@ -52,6 +46,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         self.value = .init(game.value)
         self.kingInCheckForColor = .init(self.game.isKingInCheck(
             forColor: self.turn.value) ? self.turn.value : nil)
+        self.lastMove = .init(game.history.last)
         self.whiteCapturedPieces = .init(capturedPieces(for: .white))
         self.blackCapturedPieces = .init(capturedPieces(for: .black))
         self.game.delegate = self
@@ -88,8 +83,11 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
             self.state.send(self.game.state)
 //        }
         self.turn.send(self.game.turn)
-        self.kingInCheckForColor.send(self.game.isKingInCheck(
-            forColor: self.turn.value) ? self.turn.value : nil)
+        let isInCheck = self.game.isKingInCheck(forColor: self.turn.value) ? self.turn.value : nil
+        if isInCheck != nil {
+            HapticFeedbackService.instance.impact(style: .light)
+        }
+        self.kingInCheckForColor.send(isInCheck)
         self.lastMove.send(self.game.history.last)
         self.canPromotePawnAtPosition = self.game.canPromotePawnAtPosition
         self.fen.send(self.game.fen)
@@ -158,8 +156,9 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
                 Move(from: from, to: to, piece: self.game.board[to])
             )
         }
+        let capture = self.lastMove.value?.capturedPiece != nil
         DispatchQueue.global(qos: .background).async {
-            self.audioPlayerService.playSound(capture: self.lastMove.value?.capturedPiece != nil)
+            AudioPlayerService.instance.playSound(capture: capture)
         }
     }
 

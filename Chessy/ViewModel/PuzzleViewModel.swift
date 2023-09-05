@@ -14,7 +14,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
     private(set) var puzzle: Puzzle
     private var moves = [Move]()
     private(set) var playerColor: PieceColor
-    private(set) var solved: Bool = false
+    private(set) var solved: CurrentValueSubject<Bool, Never> = .init(false)
     private var playedFirstMove: Bool = false
 
     init(puzzle: Puzzle) {
@@ -28,7 +28,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
     }
 
     func firstMove() {
-        if self.turn.value != playerColor && !self.moves.isEmpty && !playedFirstMove {
+        if self.turn.value != playerColor && !playedFirstMove {
             if let firstMove = self.puzzle.moves.first {
                 super.movePiece(
                     fromPosition: firstMove.from,
@@ -67,7 +67,7 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
             }
         }
         if self.moves.isEmpty {
-            solved = true
+            solved.send(true)
         }
     }
 
@@ -106,4 +106,13 @@ class PuzzleViewModel: GameViewModel<PuzzleGame> {
         }
     }
 
+    func skipMove() {
+        if turn.value == playerColor {
+            if let move = moves.first {
+                allowedMoves.send([move.to])
+                movePiece(fromPosition: move.from, toPosition: move.to)
+                allowedMoves.send([])
+            }
+        }
+    }
 }

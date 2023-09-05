@@ -9,10 +9,12 @@ import SwiftUI
 
 struct LocalGameView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject private var gameVM: ViewModel
+    @EnvironmentObject private var vm: ViewModel
 
     @State private var isAlertPresented = false
     @AppStorage("shouldRotate") private var shouldRotate = false
+    @AppStorage("shouldUndoMove") private var shouldUndoMove: Bool = false
+    @AppStorage("shouldUpdateGame") private var shouldUpdateGame: Bool = false
     @Environment(\.verticalSizeClass) private var sizeClass
 
     private let fenInputView = FenInputView<ClassicGame>()
@@ -20,15 +22,11 @@ struct LocalGameView<ViewModel: ViewModelProtocol>: View {
 
     var body: some View {
         VStack(spacing: 0) {
-//            Spacer()
-
             gameView
-                .onShake { isAlertPresented = true }
-//                .padding([.leading, .trailing, .bottom], 8)
-
-            Spacer()
+                .onShake { isAlertPresented.toggle() }
 
             if sizeClass == .regular {
+                Spacer()
                 switchRotateView
                 fenInputView.padding(8)
             }
@@ -36,28 +34,33 @@ struct LocalGameView<ViewModel: ViewModelProtocol>: View {
         .customBackground()
         .alert("Reset game?", isPresented: $isAlertPresented, actions: {
             Button(role: .destructive) {
-                gameVM.updateGame(with: ClassicGame(board: Board()))
+                vm.updateGame(with: ClassicGame(board: Board()))
             } label: {
                 Text("Reset")
             }
         }, message: {
             Text("You will lose current game progress")
         })
-        .onAppear {
-            if gameVM.game.fen != ClassicGame(board: Board()).fen {
-                if let gameVM = gameVM as? GameViewModel<ClassicGame> {
-                    gameVM.startTimer()
-                }
-            }
-        }
-        .onReceive(gameVM.whiteTime) {
+        .onReceive(vm.whiteTime) {
             if let seconds = $0 {
                 UserDefaults.standard.set(seconds, forKey: "whiteTime")
             }
         }
-        .onReceive(gameVM.blackTime) {
+        .onReceive(vm.blackTime) {
             if let seconds = $0 {
                 UserDefaults.standard.set(seconds, forKey: "blackTime")
+            }
+        }
+        .onChange(of: shouldUndoMove) { _ in
+            if shouldUndoMove {
+                shouldUndoMove = false
+                vm.undoLastMove()
+            }
+        }
+        .onChange(of: shouldUpdateGame) { _ in
+            if shouldUpdateGame {
+                shouldUpdateGame = false
+                isAlertPresented.toggle()
             }
         }
     }

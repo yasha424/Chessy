@@ -7,30 +7,19 @@
 
 import AVFoundation
 
-struct AudioPlayerService {
-    let moveSoundUrl: URL?
-    let captureSoundUrl: URL?
-
-    private var moveAudioPlayer: AVAudioPlayer?
-    private var captureAudioPlayer: AVAudioPlayer?
-
-    init(moveSoundUrl: URL?, captureSoundUrl: URL?) {
-        self.moveSoundUrl = moveSoundUrl
-        self.captureSoundUrl = captureSoundUrl
-
-        do {
-            guard let moveSoundUrl = moveSoundUrl,
-                  let captureSoundUrl = captureSoundUrl else { return }
-            self.moveAudioPlayer = try AVAudioPlayer(contentsOf: moveSoundUrl)
-            self.captureAudioPlayer = try AVAudioPlayer(contentsOf: captureSoundUrl)
-        } catch {}
-    }
+class AudioPlayerService {
+    static let instance = AudioPlayerService()
+    private var player: AVAudioPlayer?
 
     func playSound(capture: Bool = false) {
-        if capture {
-            captureAudioPlayer?.play()
-        } else {
-            moveAudioPlayer?.play()
-        }
+        guard let url = Bundle.main.url(
+            forResource: capture ? "capture" : "move",
+            withExtension: "mp3"
+        ) else { return }
+
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch {}
     }
 }

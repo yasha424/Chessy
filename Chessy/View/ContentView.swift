@@ -14,6 +14,7 @@ struct ContentView: View {
         let userDefaults = UserDefaults(suiteName: "group.com.yasha424.Chessy.default")!
         let fen = userDefaults.string(forKey: "fen") ?? ""
         let game = ClassicGame(fromFen: fen)
+//        let game = ClassicGame(fromPGN: "")
         let timer = GameTimer(seconds: 0)
         let whiteTime = UserDefaults.standard.integer(forKey: "whiteTime")
         let blackTime = UserDefaults.standard.integer(forKey: "blackTime")

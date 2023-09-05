@@ -18,7 +18,6 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
     @State private var isKingInCheckHere: Bool = false
     @State private var turn: PieceColor = .white
     @State private var animationOffset = CGSize.zero
-    @State private var size: CGSize = .zero
     @State private var isDragged: Bool = false
     @State private var gestureLocation: CGPoint = .zero
     @State private var draggedTo: Bool = false
@@ -55,7 +54,6 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
 
                 if let piece = piece {
                     PieceImageView<ViewModel>(
-                        //                    vm: vm,
                         piece: piece,
                         isKingInCheckHere: isKingInCheckHere,
                         position: position,
@@ -64,7 +62,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                         isDragged: $isDragged,
                         isSelected: $isSelected,
                         gestureLocation: $gestureLocation,
-                        size: $size,
+                        size: Binding(get: { return proxy.size }, set: { _ in }),
                         shouldRotate: shouldRotate
                     )
                 }
@@ -79,19 +77,30 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                     vm.selectPosition(position)
                 }
             }
-            .gesture(dragGesture)
+            .gesture(
+                DragGesture()
+                    .onChanged { gesture in
+                        if piece != nil {
+                            DispatchQueue.global(qos: .userInteractive).async {
+                                updateGesture(with: gesture, size: proxy.size)
+                            }
+                        }
+                    }
+                    .onEnded { _ in
+                        DispatchQueue.global(qos: .userInteractive).async {
+                            endGesture(size: proxy.size)
+                        }
+                    }
+            )
             .onChange(of: proxy.size) { _ in
-                size = proxy.size
-                gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
+                gestureLocation = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
             }
             .onAppear {
-                size = proxy.size
-                gestureLocation = CGPoint(x: size.width / 2, y: size.height / 2)
+                gestureLocation = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
             }
             .accessibilityElement()
             .accessibilityLabel(Text("" + "\(position)"))
         }
-//        .animation(.spring(response: 0.3), value: vm.game.board)
         .onReceive(vm.draggedTo) {
             if draggedTo != ($0 == position) {
                 draggedTo = $0 == position
@@ -110,7 +119,9 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
         }
         .onReceive(vm.lastMove) { move in
             let wasLastMoveHere = [move?.from, move?.to].contains(position)
+            if self.wasLastMoveHere != wasLastMoveHere {
                 self.wasLastMoveHere = wasLastMoveHere
+            }
         }
         .onReceive(vm.turn) {
             self.turn = $0
@@ -118,14 +129,23 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
         .onAppear {
             self.piece = vm.getPiece(atPosition: position)
             self.updateKingInCheckValue(vm.kingInCheckForColor.value)
+            if let move = vm.lastMove.value {
+                self.wasLastMoveHere = [move.from, move.to].contains(position)
+            }
         }
         .onReceive(vm.turn) { _ in
-            if self.piece != vm.getPiece(atPosition: position) {
+            withAnimation(.spring(response: 0.3)) {
                 self.piece = vm.getPiece(atPosition: position)
             }
         }
         .onReceive(vm.kingInCheckForColor) {
             updateKingInCheckValue($0)
+        }
+        .onReceive(vm.didUpdateGame) { _ in
+            self.piece = nil
+            withAnimation(.spring(response: 0.3)) {
+                self.piece = vm.getPiece(atPosition: position)
+            }
         }
     }
 
@@ -148,7 +168,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
         }
     }
 
-    private func updateGesture(with gesture: DragGesture.Value) {
+    private func updateGesture(with gesture: DragGesture.Value, size: CGSize) {
         if vm.canSelectPiece(atPosition: position) {
             if vm.selectedPosition.value != position || !isDragged {
                 DispatchQueue.main.async {
@@ -185,7 +205,7 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
         }
     }
 
-    private func endGesture() {
+    private func endGesture(size: CGSize) {
         DispatchQueue.main.async {
             isDragged = false
 
@@ -255,29 +275,10 @@ extension SquareView {
             }
         }
     }
-
-    private var dragGesture: some Gesture {
-        DragGesture()
-            .onChanged { gesture in
-                if vm.getPiece(atPosition: position) != nil {
-                    DispatchQueue.global(qos: .userInteractive).async {
-                        updateGesture(with: gesture)
-                    }
-                }
-            }
-            .onEnded { _ in
-                if vm.getPiece(atPosition: position) != nil {
-                    DispatchQueue.global(qos: .userInteractive).async {
-                        endGesture()
-                    }
-                }
-            }
-    }
 }
 
 private struct PieceImageView<ViewModel: ViewModelProtocol>: View {
 
-//    @ObservedObject var vm: ViewModel
     let piece: Piece
     let isKingInCheckHere: Bool
     let position: Position
@@ -294,7 +295,8 @@ private struct PieceImageView<ViewModel: ViewModelProtocol>: View {
             if isKingInCheckHere {
                 Circle()
                     .foregroundColor(.red)
-                    .blur(radius: 16)
+                    .blur(radius: 8)
+                    .padding(size.width / 8)
             }
 
             if isDragged {
@@ -308,13 +310,10 @@ private struct PieceImageView<ViewModel: ViewModelProtocol>: View {
 
             Image(ImageNames.color[piece.color]! + ImageNames.type[piece.type]!)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .padding(size.width / 8)
                 .matchedGeometryEffect(id: piece.id, in: pieceImageNamespace)
-                .frame(
-                    width: size.width * (isDragged ? 2 : 1),
-                    height: size.height * (isDragged ? 2 : 1)
-                )
+                .scaleEffect(x: isDragged ? 2 : 1, y: isDragged ? 2 : 1)
                 .shadow(color: .green, radius: isSelected ? 5 : 0)
                 .position(gestureLocation)
                 .rotationEffect(Angle(degrees: shouldRotate && turn == .black ? 180 : 0))

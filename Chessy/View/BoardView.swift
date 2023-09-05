@@ -30,11 +30,7 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
                     }
                 }
 
-//            if let position = vm.canPromotePawnAtPosition {
-//                Color.black.opacity(0.3)
-//
-                promotionView
-//            }
+            promotionView
         }
         .aspectRatio(1, contentMode: .fit)
         .glassView()
@@ -43,27 +39,49 @@ struct BoardView<ViewModel: ViewModelProtocol>: View {
 
 extension BoardView {
     private var squaresBoardView: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<8) { i in
-                HStack(spacing: 0) {
-                    ForEach(0..<8) { j in
-                        let position = Position(rawValue: (7 - i) * 8 + j)!
+        if #available(iOS 16.0, *) {
+            return Grid(horizontalSpacing: 0, verticalSpacing: 0) {
+                ForEach(0..<8) { i in
+                    GridRow {
+                        ForEach(0..<8) { j in
+                            let position = Position(rawValue: (7 - i) * 8 + j)!
 
-                        SquareView<ViewModel>(
-                            vm: vm,
-                            position: position,
-                            shouldRotate: shouldRotate,
-                            pieceImageNamespace: pieceImageNamespace
-                        )
-                        .zIndex(selectedPosition == position ? 2 :
-                                    (lastMove?.to == position ? 1 : 0))
+                            SquareView<ViewModel>(
+                                vm: vm,
+                                position: position,
+                                shouldRotate: shouldRotate,
+                                pieceImageNamespace: pieceImageNamespace
+                            )
+                            .zIndex(selectedPosition == position ? 2 :
+                                        (lastMove?.to == position ? 1 : 0))
+                        }
                     }
                 }
-                .zIndex(selectedPosition?.x == 7 - i ? 2 :
-                            (lastMove?.to.x == 7 - i ? 1 : 0))
             }
+            .padding(10)
+        } else {
+            return VStack(spacing: 0) {
+                ForEach(0..<8) { i in
+                    HStack(spacing: 0) {
+                        ForEach(0..<8) { j in
+                            let position = Position(rawValue: (7 - i) * 8 + j)!
+
+                            SquareView<ViewModel>(
+                                vm: vm,
+                                position: position,
+                                shouldRotate: shouldRotate,
+                                pieceImageNamespace: pieceImageNamespace
+                            )
+                            .zIndex(selectedPosition == position ? 2 :
+                                        (lastMove?.to == position ? 1 : 0))
+                        }
+                    }
+                    .zIndex(selectedPosition?.x == 7 - i ? 2 :
+                                (lastMove?.to.x == 7 - i ? 1 : 0))
+                }
+            }
+            .padding(10)
         }
-        .padding(10)
     }
 
     private var promotionView: some View {

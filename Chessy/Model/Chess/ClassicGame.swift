@@ -19,7 +19,7 @@ class ClassicGame: Game {
     private(set) var state: GameState = .inProgress
     private(set) var canPromotePawnAtPosition: Position?
 
-    init(board: Board) {
+    required init(board: Board) {
         self.board = board
         setupTimer(seconds: 30)
     }

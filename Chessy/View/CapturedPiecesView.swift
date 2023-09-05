@@ -16,6 +16,7 @@ struct CapturedPiecesView<ViewModel: ViewModelProtocol>: View {
     @State private var turn: PieceColor = .white
     @State private var isShown = true
     @AppStorage("shouldRotate") private var shouldRotate = false
+    @Environment(\.verticalSizeClass) private var sizeClass
 
     var body: some View {
         HStack(spacing: 0) {
@@ -23,19 +24,58 @@ struct CapturedPiecesView<ViewModel: ViewModelProtocol>: View {
                 let pieces = capturedPieces.sorted {
                     $0.key.value > $1.key.value
                 }
-                ForEach(pieces, id: \.key) { pieceType, num in
-                    if num > 0 {
-                        ZStack {
-                            ForEach(0..<num, id: \.self) { i in
-                                Image(ImageNames.color[color]! +
-                                      ImageNames.type[pieceType]!)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .offset(x: (CGFloat(i) - CGFloat(num) / 2) * 10 + 5)
-                                .transition(.scale)
+                if sizeClass == .regular {
+                    ForEach(pieces, id: \.key) { pieceType, num in
+                        if num > 0 {
+                            ZStack {
+                                ForEach(0..<num, id: \.self) { i in
+                                    Image(ImageNames.color[color]! +
+                                          ImageNames.type[pieceType]!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .offset(x: (CGFloat(i) - CGFloat(num) / 2) * 10 + 5)
+                                    .transition(.scale)
+                                }
+                            }
+                            .frame(width: 26 + CGFloat(num - 1) * 10)
+                        }
+                    }
+                } else {
+                    VStack(alignment: .leading) {
+                        HStack(spacing: 0) {
+                            ForEach(pieces, id: \.key) { pieceType, num in
+                                if num > 0 && pieceType != .pawn {
+                                    ZStack {
+                                        ForEach(0..<num, id: \.self) { i in
+                                            Image(ImageNames.color[color]! +
+                                                  ImageNames.type[pieceType]!)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .offset(x: (CGFloat(i) - CGFloat(num) / 2) * 10 + 5)
+                                            .transition(.scale)
+                                        }
+                                    }
+                                    .frame(width: 28 + CGFloat(num - 1) * 10, height: 26)
+                                }
                             }
                         }
-                        .frame(width: 26 + CGFloat(num - 1) * 10)
+                        HStack(spacing: 0) {
+                            ForEach(pieces, id: \.key) { pieceType, num in
+                                if num > 0 && pieceType == .pawn {
+                                    ZStack {
+                                        ForEach(0..<num, id: \.self) { i in
+                                            Image(ImageNames.color[color]! +
+                                                  ImageNames.type[pieceType]!)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .offset(x: (CGFloat(i) - CGFloat(num) / 2) * 10 + 5)
+                                            .transition(.scale)
+                                        }
+                                    }
+                                    .frame(width: 26 + CGFloat(num - 1) * 10, height: 24)
+                                }
+                            }
+                        }
                     }
                 }
                 if (value < 0 && color == .white) || (value > 0 && color == .black) {
@@ -49,7 +89,7 @@ struct CapturedPiecesView<ViewModel: ViewModelProtocol>: View {
             }
         }
         .padding(8)
-        .frame(height: 40)
+        .frame(height: sizeClass == .regular ? 40 : 70)
         .animation(.spring(response: 0.5), value: capturedPieces)
         .animation(.spring(response: 0.5), value: value)
         .rotationEffect(
@@ -80,5 +120,14 @@ struct CapturedPiecesView<ViewModel: ViewModelProtocol>: View {
                 turn = $0
             }
         }
+    }
+}
+
+struct CapturedPiecesViewPreview: PreviewProvider {
+    static var previews: some View {
+        CapturedPiecesView<GameViewModel<ClassicGame>>(color: .black)
+            .environmentObject(GameViewModel(
+                game: ClassicGame(fromFen: "k6r/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+            ))
     }
 }

@@ -23,7 +23,6 @@ protocol ViewModelProtocol: ObservableObject {
     var hasTimer: Bool { get }
     var whiteTime: CurrentValueSubject<Int?, Never> { get }
     var blackTime: CurrentValueSubject<Int?, Never> { get }
-    var audioPlayerService: AudioPlayerService { get }
     var whiteCapturedPieces: CurrentValueSubject<[PieceType: Int], Never> { get }
     var blackCapturedPieces: CurrentValueSubject<[PieceType: Int], Never> { get }
     var value: CurrentValueSubject<Int, Never> { get }
