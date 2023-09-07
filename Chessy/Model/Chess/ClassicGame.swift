@@ -78,8 +78,9 @@ class ClassicGame: Game {
         return lhs.history == rhs.history && lhs.board == rhs.board && lhs.turn == rhs.turn
     }
 
-    private func canMove(fromPosition from: Position, toPosition to: Position) -> Bool {
+    internal func canMove(fromPosition from: Position, toPosition to: Position) -> Bool {
         guard let piece = board[from],
+//              piece.color == turn,
               canPromotePawnAtPosition == nil else { return false }
 
         if let otherPiece = board[to] {

@@ -66,12 +66,12 @@ struct PuzzleListView: View {
             .navigationTitle("Puzzles")
         }
         .refreshable {
-            puzzleIndex = 1
-            puzzleVMs = await PuzzleDataSource.instance.getPuzzles(
+            let newPuzzles = await PuzzleDataSource.instance.getPuzzles(
                 from: puzzleIndex,
                 to: puzzleIndex + 10
-            ).map { PuzzleViewModel(puzzle: $0) }
+            )
             puzzleIndex += 10
+            puzzleVMs.insert(contentsOf: newPuzzles.map { PuzzleViewModel(puzzle: $0) }, at: 0)
         }
     }
 }

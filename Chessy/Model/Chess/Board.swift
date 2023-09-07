@@ -206,4 +206,15 @@ struct Board: Equatable {
 
         pieces[position.rawValue] = Piece(color: piece.color, type: type)
     }
+
+    func getPiecesPosition(with character: String, color: PieceColor) -> [Position] {
+        guard character.count == 1 else { return [] }
+        var positions = [Position]()
+        pieces.enumerated().forEach { n, piece in
+            if piece?.type.rawValue == character && piece?.color == color {
+                positions.append(Position(rawValue: n)!)
+            }
+        }
+        return positions
+    }
 }

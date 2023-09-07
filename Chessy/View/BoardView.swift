@@ -10,7 +10,7 @@ import SwiftUI
 struct BoardView<ViewModel: ViewModelProtocol>: View {
 
     @ObservedObject var vm: ViewModel
-    @State private var board: Board = Board()
+//    @State private var board: Board = Board()
     @Binding var shouldRotate: Bool
     @State private var selectedPosition: Position?
     @State private var lastMove: Move?

@@ -5,6 +5,8 @@
 //  Created by Yasha Serhiienko on 20.07.2023.
 //
 
+import Foundation
+
 protocol GameDelegate: AnyObject {
     func didUpdateTime(with time: Int, for color: PieceColor)
 }
@@ -22,6 +24,7 @@ protocol Game: Equatable, GameTimerDelegate {
     var blackTime: Int? { get }
 
     init(board: Board)
+    func canMove(fromPosition: Position, toPosition: Position) -> Bool
     func canSelectPiece(atPosition: Position) -> Bool
     func allMoves(fromPosition: Position) -> [Position]
     func movePiece(fromPosition: Position, toPosition: Position)
@@ -76,6 +79,112 @@ extension Game {
 
     init(fromPGN pgn: String) {
         self.init(board: Board())
+        if let pgnHistory = try? NSRegularExpression(pattern: "[0-9]+\\. ").splitn(pgn) {
+            for pgnMoves in pgnHistory {
+                let moves = pgnMoves.split(separator: " ")
+                for pgnMove in moves {
+                    let pgnMove = pgnMove
+                        .replacingOccurrences(of: "+", with: "")
+                        .replacingOccurrences(of: "#", with: "")
+                        .replacingOccurrences(of: "x", with: "")
+
+                    if let move = getMoveFromPgn(String(pgnMove)) {
+                        self.movePiece(fromPosition: move.from, toPosition: move.to)
+                        if let promotionType = move.pawnPromotedTo {
+                            self.promotePawn(to: promotionType)
+                        }
+                    } else {
+                        return
+                    }
+                }
+            }
+        }
+    }
+
+    private func getMoveFromPgn(_ pgn: String) -> Move? {
+        guard let firstCharacter = pgn.first else { return nil }
+        if firstCharacter == "O" {
+            return getCastlingMoveFromPgn(pgn)
+        } else if firstCharacter.isUppercase {
+            return getFigureMoveFromPgn(firstCharacter: String(firstCharacter), pgn)
+        } else {
+            return getPawnMoveFromPgn(pgn)
+        }
+    }
+
+    private func getFigureMoveFromPgn(firstCharacter: String, _ pgn: String) -> Move? {
+        guard pgn.count >= 3,
+              let to = Position.fromString(String(pgn[pgn.count-2..<pgn.count])) else { return nil }
+        let positions = board.getPiecesPosition(with: String(firstCharacter), color: turn)
+
+        for position in positions where canMove(fromPosition: position, toPosition: to) {
+            if pgn.count == 3 {
+                return Move(from: position, to: to, piece: nil)
+            } else if pgn.count == 4 {
+                if let rank = Int(pgn[1]) {
+                    if position.rank == String(rank) {
+                        return Move(from: position, to: to, piece: nil)
+                    }
+                } else {
+                    let file = pgn[1]
+                    if position.file == file {
+                        return Move(from: position, to: to, piece: nil)
+                    }
+                }
+            } else if pgn.count == 5 {
+                let file = pgn[1]
+                let rank = pgn[2]
+                if position.file == file, position.rank == rank {
+                    return Move(from: position, to: to, piece: nil)
+                }
+            }
+        }
+        return nil
+    }
+
+    private func getPawnMoveFromPgn(_ pgn: String) -> Move? {
+        guard let lastCharacter = pgn.last else { return nil }
+
+        // TODO: handle multiple pawns promotion from different positions
+        if lastCharacter.isUppercase {
+            guard pgn.count == 3,
+                  let to = Position.fromString(pgn[pgn.count-3..<pgn.count-1]) else { return nil }
+            let positions = board.getPiecesPosition(with: "P", color: turn)
+            for position in positions where canMove(fromPosition: position, toPosition: to) {
+                return Move(from: position, to: to, piece: nil,
+                            pawnPromotedTo: PieceType.init(rawValue: String(lastCharacter)))
+            }
+        } else {
+            guard pgn.count >= 2,
+                  let to = Position.fromString(pgn[pgn.count-2..<pgn.count]) else { return nil }
+
+            let positions = board.getPiecesPosition(with: "P", color: turn)
+            for position in positions where canMove(fromPosition: position, toPosition: to) {
+                return Move(from: position, to: to, piece: nil)
+            }
+        }
+        return nil
+    }
+
+    private func getCastlingMoveFromPgn(_ pgn: String) -> Move? {
+        if pgn == "O-O" {
+            let positions = board.getPiecesPosition(with: "K", color: turn)
+            for position in positions {
+                let to: Position = turn == .white ? .g1 : .g8
+                if canMove(fromPosition: position, toPosition: to) {
+                    return Move(from: position, to: to, piece: nil)
+                }
+            }
+        } else if pgn == "O-O-O" {
+            let positions = board.getPiecesPosition(with: "K", color: turn)
+            for position in positions {
+                let to: Position = turn == .white ? .c1 : .c8
+                if canMove(fromPosition: position, toPosition: to) {
+                    return Move(from: position, to: to, piece: nil)
+                }
+            }
+        }
+        return nil
     }
 
     private func countValue() -> Int {
