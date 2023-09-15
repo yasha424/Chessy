@@ -12,6 +12,7 @@ struct ChessyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear { hideTitleBarOnCatalyst() }
         }
         .commands {
             SidebarCommands()
@@ -34,6 +35,14 @@ struct ChessyApp: App {
                 }.keyboardShortcut("z")
             }
         }
+    }
+
+    private func hideTitleBarOnCatalyst() {
+        #if targetEnvironment(macCatalyst)
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            scene.titlebar?.titleVisibility = .hidden
+        }
+        #endif
     }
 }
 

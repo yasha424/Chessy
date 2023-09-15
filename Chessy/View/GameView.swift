@@ -33,8 +33,10 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
                     HStack {
                         undoButtonView
                         Spacer()
+                        switchRotateView
                     }
                     .padding(.top, 8)
+                    Spacer()
                 }
                 .padding(.vertical, 8)
             } else {
@@ -49,8 +51,10 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
                 .padding(.vertical, 8)
                 HStack {
                     Spacer()
-                    VStack {
+                    VStack(alignment: .trailing) {
                         blackTimerView
+                        Spacer()
+                        switchRotateView
                         Spacer()
                         whiteTimerView
                     }
@@ -62,6 +66,7 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
                 }
             }
             gameStateNotificationView
+                .ignoresSafeArea()
         }
         .padding(.horizontal, 8)
         .onAppear {
@@ -81,14 +86,14 @@ extension GameView {
                         .padding()
                         .frame(height: 40)
                         .glassView()
-                        .padding([.top, .bottom])
+                        .padding([.top, .bottom], 100)
                         .transition(.move(edge: .top))
                 } else {
                     Text("White won by checkmate!")
                         .padding()
                         .frame(height: 40)
                         .glassView()
-                        .padding([.top, .bottom])
+                        .padding([.top, .bottom], 100)
                         .transition(.move(edge: .top))
                 }
             case .stalemate:
@@ -96,7 +101,7 @@ extension GameView {
                     .padding()
                     .frame(height: 40)
                     .glassView()
-                    .padding([.top, .bottom])
+                    .padding([.top, .bottom], 100)
                     .transition(.move(edge: .top))
             default:
                 EmptyView()
@@ -134,6 +139,23 @@ extension GameView {
                 whiteTimerView
             }
         }
+    }
+
+    private var switchRotateView: some View {
+//        HStack {
+//            Spacer()
+            HStack {
+                Text("Rotating")
+                    .foregroundColor(.primary)
+                    .font(.title3)
+                Toggle("", isOn: $shouldRotate)
+                    .labelsHidden()
+            }
+            .padding([.leading, .trailing], 8)
+            .frame(height: 40)
+            .glassView()
+            .tint(.primary.opacity(0.5))
+//        }
     }
 }
 

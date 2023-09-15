@@ -115,33 +115,33 @@ class ClassicGame: Game {
         if isEnPassantAllowed(fromPosition: from, toPosition: to) {
             return true
         }
+        let deltaX = to.x - from.x
+        let deltaY = to.y - from.y
         switch piece.color {
         case .white:
             if 8..<16 ~= from.rawValue {
-                return (to.x - from.x == 1 && to.y - from.y == 0 && board[to] == nil) ||
-                       (to.x - from.x == 2 && to.y - from.y == 0 && board[to] == nil &&
+                return (deltaX == 1 && deltaY == 0 && board[to] == nil) ||
+                       (deltaX == 2 && deltaY == 0 && board[to] == nil &&
                        !piecesExistBetween(fromPosition: from, toPosition: to)) ||
-                       ([-1, 1].contains(to.x - from.x) && to.x - from.x == 1 &&
-                       board[to]?.color == .black)
+                       ([-1, 1].contains(deltaY) && deltaX == 1 && board[to]?.color == .black)
             } else {
-                if to.y - from.y == 0 {
-                    return board[to] == nil && to.x - from.x == 1
+                if deltaY == 0 {
+                    return board[to] == nil && deltaX == 1
                 } else {
-                    return board[to]?.color == .black && to.x - from.x == 1
+                    return board[to]?.color == .black && deltaX == 1
                 }
             }
         case .black:
             if 48..<56 ~= from.rawValue {
-                return (to.x - from.x == -1 && to.y - from.y == 0 && board[to] == nil) ||
-                       (to.x - from.x == -2 && to.y - from.y == 0 && board[to] == nil &&
+                return (deltaX == -1 && deltaY == 0 && board[to] == nil) ||
+                       (deltaX == -2 && deltaY == 0 && board[to] == nil &&
                        !piecesExistBetween(fromPosition: from, toPosition: to)) ||
-                       ([-1, 1].contains(to.x - from.x) && to.x - from.x == -1 &&
-                       board[to]?.color == .white)
+                       ([-1, 1].contains(deltaY) && deltaX == -1 && board[to]?.color == .white)
             } else {
-                if to.y - from.y == 0 {
-                    return board[to] == nil && to.x - from.x == -1
+                if deltaY == 0 {
+                    return board[to] == nil && deltaX == -1
                 } else {
-                    return board[to]?.color == .white && to.x - from.x == -1
+                    return board[to]?.color == .white && deltaX == -1
                 }
             }
         }

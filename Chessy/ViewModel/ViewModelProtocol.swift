@@ -28,6 +28,7 @@ protocol ViewModelProtocol: ObservableObject {
     var value: CurrentValueSubject<Int, Never> { get }
     var didUpdateGame: CurrentValueSubject<Bool, Never> { get }
     var undidMove: CurrentValueSubject<Move?, Never> { get }
+    var pieceFrames: [CGRect] { get set } // should be 64 elements on init
 
     func updateGame(with newGame: any Game)
     func undoLastMove()
@@ -37,7 +38,7 @@ protocol ViewModelProtocol: ObservableObject {
     func promotePawn(to type: PieceType)
     func getPiece(atPosition position: Position) -> Piece?
     func canSelectPiece(atPosition position: Position) -> Bool
-    func computeDraggedPosition(location: CGPoint, size: CGSize)
+    func computeDraggedPosition(location: CGPoint)
     func endedGesture()
     func setTime(seconds: Int, for color: PieceColor)
 }

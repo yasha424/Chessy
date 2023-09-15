@@ -94,9 +94,11 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
             )
             .onChange(of: proxy.size) { _ in
                 gestureLocation = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
+                vm.pieceFrames[position.rawValue] = proxy.frame(in: .global)
             }
             .onAppear {
                 gestureLocation = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
+                vm.pieceFrames[position.rawValue] = proxy.frame(in: .global)
             }
             .accessibilityElement()
             .accessibilityLabel(Text("" + "\(position)"))
@@ -193,12 +195,9 @@ struct SquareView<ViewModel: ViewModelProtocol>: View {
                 }
             }
 
-            DispatchQueue.global(qos: .default).async {
+            DispatchQueue.global(qos: .userInteractive).async {
                 if changes % refreshRate == 0 {
-                    vm.computeDraggedPosition(
-                        location: gesture.location,
-                        size: size
-                    )
+                    vm.computeDraggedPosition(location: gesture.location)
                 }
                 changes += 1
             }

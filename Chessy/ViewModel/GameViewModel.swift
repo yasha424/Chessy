@@ -25,6 +25,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     internal var lastMove: CurrentValueSubject<Move?, Never>
     internal var undidMove: CurrentValueSubject<Move?, Never> = .init(nil)
     internal var animatedMoves = [Move]()
+    internal var pieceFrames = [CGRect](repeating: .zero, count: 64)
 
     internal var turn: CurrentValueSubject<PieceColor, Never>
     internal var kingInCheckForColor: CurrentValueSubject<PieceColor?, Never>
@@ -79,9 +80,7 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
     }
 
     private func updateStates() {
-//        DispatchQueue.main.async {
-            self.state.send(self.game.state)
-//        }
+        self.state.send(self.game.state)
         self.turn.send(self.game.turn)
         let isInCheck = self.game.isKingInCheck(forColor: self.turn.value) ? self.turn.value : nil
         if isInCheck != nil {
@@ -221,35 +220,49 @@ class GameViewModel<ChessGame: Game>: ViewModelProtocol {
         }
     }
 
-    func computeDraggedPosition(location: CGPoint, size: CGSize) {
-        let deltaX = Int(((location.y - size.height / 2) / size.height).rounded())
-        let deltaY = Int(((location.x - size.width / 2) / size.width).rounded())
-
-        if let position = self.selectedPosition.value {
-            let draggedPositionX = position.x - deltaX
-            let draggedPositionY = position.y + deltaY
-
-            guard draggedPositionX >= 0, draggedPositionX < 8,
-                  draggedPositionY >= 0, draggedPositionY < 8 else {
-                if self.draggedTo.value != nil {
-                    DispatchQueue.main.async {
-                        self.draggedTo.send(nil)
-                    }
+    private func findDraggedToPosition(in frames: [CGRect], with point: CGPoint,
+                                       start: Int = 0, end: Int = 64) -> Position? {
+        let mid = (end + start) / 2
+        if end - start <= 8 {
+            if end - start == 1 {
+                guard point.y > frames[end].minY, point.y < frames[end].maxY,
+                      end < 64 else { return nil }
+                if point.x > frames[start].maxX {
+                    return Position(rawValue: end)
+                } else if point.x > frames[start].minX {
+                    return Position(rawValue: start)
                 }
-                return
             }
-
-            let to = Position(rawValue: (position.x - deltaX) * 8 + position.y + deltaY)
-            if self.draggedTo.value != to {
-                DispatchQueue.main.async {
-                    self.draggedTo.send(to)
+            if end - start > 1 {
+                if point.x > frames[mid].maxX {
+                    return findDraggedToPosition(in: frames, with: point, start: mid, end: end)
+                } else {
+                    return findDraggedToPosition(in: frames, with: point, start: start, end: mid)
                 }
             }
         } else {
-            if self.draggedTo.value != nil {
-                DispatchQueue.main.async {
-                    self.draggedTo.send(nil)
-                }
+            if point.y > frames[mid].maxY {
+                return findDraggedToPosition(in: frames, with: point, start: start, end: mid)
+            } else {
+                return findDraggedToPosition(in: frames, with: point, start: mid, end: end)
+            }
+        }
+        return nil
+    }
+
+    func computeDraggedPosition(location: CGPoint) {
+        if let selectedPosition = selectedPosition.value {
+            let selectedFrame = pieceFrames[selectedPosition.rawValue]
+            let gestureLocation = CGPoint(
+                x: selectedFrame.minX + location.x,
+                y: selectedFrame.minY + location.y
+            )
+            if let draggedToValue = draggedTo.value?.rawValue {
+                guard !pieceFrames[draggedToValue].contains(gestureLocation) else { return }
+            }
+            let position = findDraggedToPosition(in: pieceFrames, with: gestureLocation)
+            DispatchQueue.main.async { [weak self] in
+                self?.draggedTo.send(position)
             }
         }
     }

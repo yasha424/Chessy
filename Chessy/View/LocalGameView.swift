@@ -12,7 +12,6 @@ struct LocalGameView<ViewModel: ViewModelProtocol>: View {
     @EnvironmentObject private var vm: ViewModel
 
     @State private var isAlertPresented = false
-    @AppStorage("shouldRotate") private var shouldRotate = false
     @AppStorage("shouldUndoMove") private var shouldUndoMove: Bool = false
     @AppStorage("shouldUpdateGame") private var shouldUpdateGame: Bool = false
     @Environment(\.verticalSizeClass) private var sizeClass
@@ -24,12 +23,6 @@ struct LocalGameView<ViewModel: ViewModelProtocol>: View {
         VStack(spacing: 0) {
             gameView
                 .onShake { isAlertPresented.toggle() }
-
-            if sizeClass == .regular {
-                Spacer()
-                switchRotateView
-                fenInputView.padding(8)
-            }
         }
         .customBackground()
         .alert("Reset game?", isPresented: $isAlertPresented, actions: {
@@ -63,25 +56,11 @@ struct LocalGameView<ViewModel: ViewModelProtocol>: View {
                 isAlertPresented.toggle()
             }
         }
-    }
-}
-
-extension LocalGameView {
-    private var switchRotateView: some View {
-        HStack {
-            Spacer()
-            HStack {
-                Text("Rotating")
-                    .foregroundColor(.primary)
-                    .font(.title3)
-                Toggle("", isOn: $shouldRotate)
-                    .labelsHidden()
+        .onDisappear {
+            if let userDefaults = UserDefaults(suiteName: "group.com.yasha424.Chessy.default") {
+                userDefaults.set(vm.fen.value, forKey: "fen")
+                print(1)
             }
-            .padding([.leading, .trailing], 8)
-            .frame(height: 40)
-            .glassView()
-            .tint(.primary.opacity(0.5))
         }
-        .padding(8)
     }
 }

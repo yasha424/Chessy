@@ -14,9 +14,12 @@
 "Reset" = "Оновити";
 "Rotating" = "Обертати";
 "Rating:" = "Рейтинг:";
+"Local game" = "Локальна гра";
 "Puzzles" = "Пазли";
 "Delete" = "Видалити";
 "Puzzle solved. Great job!" = "Пазл вирішено. Чудова робота!";
 "Game preview" = "Передогляд гри";
 "Preview your current game" = "Переглядайте вашу поточну гру";
 "View solution" = "Переглянути рішення";
+"Resume game" = "Продовжити гру";
+"New game" = "Нова гра";
