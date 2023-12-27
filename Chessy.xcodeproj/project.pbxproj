@@ -58,6 +58,9 @@
 		D39EC6CC2AF0EF8000A56421 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3141EE82A55E43C00D9D95A /* Piece.swift */; };
 		D39EC6CD2AF0EF9300A56421 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EE189D2A5D8DD90096C9D4 /* View+Extension.swift */; };
 		D3A9BB282A8D01C30075F532 /* BoardPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A9BB272A8D01C30075F532 /* BoardPreview.swift */; };
+		D3AF4E9B2B3C31960013D142 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D3AF4E9A2B3C31960013D142 /* Config.xcconfig */; };
+		D3AF4E9C2B3C31960013D142 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D3AF4E9A2B3C31960013D142 /* Config.xcconfig */; };
+		D3AF4E9D2B3C31960013D142 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D3AF4E9A2B3C31960013D142 /* Config.xcconfig */; };
 		D3CFF6462AA8AF5E00C74AC0 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CFF6452AA8AF5E00C74AC0 /* NSRegularExpression+Extension.swift */; };
 		D3CFF6482AA8D5DE00C74AC0 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CFF6472AA8D5DE00C74AC0 /* String+Extension.swift */; };
 		D3D235C32AB8649900E12933 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D235C22AB8649900E12933 /* RangeSlider.swift */; };
@@ -175,6 +178,7 @@
 		D39EC6C02AF0ECC000A56421 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chessy.entitlements; sourceTree = "<group>"; };
 		D3A9BB272A8D01C30075F532 /* BoardPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardPreview.swift; sourceTree = "<group>"; };
+		D3AF4E9A2B3C31960013D142 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D3CFF6452AA8AF5E00C74AC0 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		D3CFF6472AA8D5DE00C74AC0 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		D3D235C22AB8649900E12933 /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
@@ -273,6 +277,7 @@
 				D3D7C9F72A86EA1300D39644 /* Shape */,
 				D3EE189C2A5D8DA70096C9D4 /* Extension */,
 				D3610A7E2A5AB2F00046A585 /* Constants */,
+				D3AF4E992B3C317A0013D142 /* Config */,
 				D35DA9AB2A8B7A5A00CBC5B4 /* Resource */,
 				D35DA9B72A8BB09B00CBC5B4 /* Localization */,
 				D3A0A8EF2A56002E00862E79 /* Chessy.entitlements */,
@@ -431,6 +436,14 @@
 				D39EC6C02AF0ECC000A56421 /* Info.plist */,
 			);
 			path = ChessyWidget;
+			sourceTree = "<group>";
+		};
+		D3AF4E992B3C317A0013D142 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				D3AF4E9A2B3C31960013D142 /* Config.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		D3D235C12AB8646300E12933 /* RangeSlider */ = {
@@ -626,6 +639,7 @@
 				D3141EC62A55DFB300D9D95A /* Preview Assets.xcassets in Resources */,
 				D35DA9B42A8B7F1C00CBC5B4 /* capture.mp3 in Resources */,
 				D35DA9AF2A8B7BBF00CBC5B4 /* move.mp3 in Resources */,
+				D3AF4E9B2B3C31960013D142 /* Config.xcconfig in Resources */,
 				D3141EC32A55DFB300D9D95A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,6 +648,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3AF4E9C2B3C31960013D142 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,6 +656,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3AF4E9D2B3C31960013D142 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -799,6 +815,7 @@
 /* Begin XCBuildConfiguration section */
 		D3141EDD2A55DFB400D9D95A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D3AF4E9A2B3C31960013D142 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
@@ -865,6 +882,7 @@
 		};
 		D3141EDE2A55DFB400D9D95A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D3AF4E9A2B3C31960013D142 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";

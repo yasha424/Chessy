@@ -76,7 +76,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "baseUrl"
-            value = "http://{youripaddress}/"
+            value = "https://8665-176-37-215-13.ngrok-free.app/"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

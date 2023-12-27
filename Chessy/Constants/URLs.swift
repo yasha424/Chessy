@@ -9,7 +9,10 @@ import Foundation
 
 struct URLs {
     static var baseUrl: String {
-        return ProcessInfo.processInfo.environment["baseUrl"] ?? "http://localhost:3000/"
+        if let apiUrl = Bundle.main.object(forInfoDictionaryKey: "BASE_API_URL") as? String {
+            return apiUrl.replacingOccurrences(of: "%", with: "//")
+        }
+        return "http://localhost:3000/"
     }
     static var login: URL? {
         return URL(string: "\(URLs.baseUrl)api/login")

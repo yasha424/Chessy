@@ -1,0 +1,11 @@
+//
+//  Config.xcconfig
+//  Chessy
+//
+//  Created by yasha on 27.12.2023.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+BASE_API_URL = https:%8665-176-37-215-13.ngrok-free.app/
