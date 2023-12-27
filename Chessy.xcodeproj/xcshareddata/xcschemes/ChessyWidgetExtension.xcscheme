@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D3879F1E2A90C314004F30B5"
+               BlueprintIdentifier = "D39EC6A52AF0EB2600A56421"
                BuildableName = "ChessyWidgetExtension.appex"
                BlueprintName = "ChessyWidgetExtension"
                ReferencedContainer = "container:Chessy.xcodeproj">
@@ -61,7 +61,7 @@
          BundleIdentifier = "com.apple.springboard">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D3879F1E2A90C314004F30B5"
+            BlueprintIdentifier = "D39EC6A52AF0EB2600A56421"
             BuildableName = "ChessyWidgetExtension.appex"
             BlueprintName = "ChessyWidgetExtension"
             ReferencedContainer = "container:Chessy.xcodeproj">

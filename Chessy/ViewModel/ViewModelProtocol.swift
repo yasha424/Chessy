@@ -41,6 +41,7 @@ protocol ViewModelProtocol: ObservableObject {
     func computeDraggedPosition(location: CGPoint)
     func endedGesture()
     func setTime(seconds: Int, for color: PieceColor)
+    func addTime(for color: PieceColor)
 }
 
 extension ViewModelProtocol {

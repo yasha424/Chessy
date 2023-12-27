@@ -10,13 +10,16 @@ import WidgetKit
 
 struct ContentView: View {
 
+    private let menuGameView = MenuGameView<GameViewModel<ClassicGame>>()
     private let localGameView = LocalGameView<GameViewModel<ClassicGame>>()
     private let puzzleListView = PuzzleListView()
+    private let profileView = ProfileView()
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var userObject: UserObject = UserObject()
 
     var body: some View {
         TabView {
-            MenuGameView<GameViewModel<ClassicGame>>()
+            menuGameView
                 .tabItem {
                     Label {
                         Text("Local game")
@@ -33,6 +36,17 @@ struct ContentView: View {
                         Image(systemName: "brain.head.profile")
                     }
                 }
+                .environmentObject(userObject)
+            
+            profileView
+                .tabItem {
+                    Label {
+                        Text("Profile")
+                    } icon: {
+                        Image(systemName: "person.crop.circle")
+                    }
+                }
+                .environmentObject(userObject)
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .background {

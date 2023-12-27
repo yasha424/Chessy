@@ -12,9 +12,9 @@ protocol GameDelegate: AnyObject {
 }
 
 protocol Game: Equatable, GameTimerDelegate {
-    var board: Board { get }
+    var board: Board { get set }
     var history: [Move] { get }
-    var turn: PieceColor { get }
+    var turn: PieceColor { get set }
     var state: GameState { get }
     var canPromotePawnAtPosition: Position? { get }
 
@@ -32,6 +32,7 @@ protocol Game: Equatable, GameTimerDelegate {
     func addTime(for color: PieceColor)
     func undoLastMove()
     func promotePawn(to type: PieceType)
+    func getState() -> GameState
 }
 
 enum GameState: Equatable {
@@ -59,10 +60,16 @@ struct Move: Equatable {
 
 extension Move {
     init(fromString value: String) {
-        let index = value.index(value.startIndex, offsetBy: 2)
+        var index = value.index(value.startIndex, offsetBy: 2)
 
         self.from = Position.fromString("\(value.prefix(upTo: index))") ?? .a1
-        self.to = Position.fromString("\(value.suffix(from: index))") ?? .a1
+        var newValue = value.dropFirst().dropFirst()
+        index = newValue.index(newValue.startIndex, offsetBy: 2)
+        self.to = Position.fromString("\(newValue.prefix(upTo: index))") ?? .a1
+        newValue = newValue.dropFirst().dropFirst()
+        if !newValue.isEmpty {
+            pawnPromotedTo = PieceType(rawValue: String(newValue.first?.uppercased() ?? "Q"))
+        }
         self.piece = nil
     }
 }

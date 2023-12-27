@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct UndoButtonView<ChessGame: Game>: View {
-    @EnvironmentObject private var vm: GameViewModel<ChessGame>
+struct UndoButtonView<ViewModel: ViewModelProtocol>: View {
+    @EnvironmentObject private var vm: ViewModel
     @State private var rotations = 0.0
     @GestureState private var press = false
     @State private var timer: Timer?

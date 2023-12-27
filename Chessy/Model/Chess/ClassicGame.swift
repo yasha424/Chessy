@@ -9,7 +9,7 @@ class ClassicGame: Game {
 
     internal var board: Board
     private(set) var history = [Move]()
-    private(set) var turn: PieceColor = .white
+    internal var turn: PieceColor = .white
     weak var delegate: GameDelegate?
 
     internal var timer: GameTimer?
@@ -62,7 +62,7 @@ class ClassicGame: Game {
         timer?.delegate = self
     }
 
-    private func getState() -> GameState {
+    func getState() -> GameState {
         if !allMoves(for: turn).isEmpty {
             return .inProgress
         } else {
@@ -80,7 +80,6 @@ class ClassicGame: Game {
 
     internal func canMove(fromPosition from: Position, toPosition to: Position) -> Bool {
         guard let piece = board[from],
-//              piece.color == turn,
               canPromotePawnAtPosition == nil else { return false }
 
         if let otherPiece = board[to] {

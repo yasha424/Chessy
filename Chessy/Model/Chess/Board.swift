@@ -195,6 +195,10 @@ struct Board: Equatable {
         guard pieces[position.rawValue] == nil else { return }
         pieces[position.rawValue] = piece
     }
+    
+    mutating func addPieceForcing(_ piece: Piece, atPosition position: Position) {
+        pieces[position.rawValue] = piece
+    }
 
     mutating func promotePawn(atPosition position: Position, promoteTo type: PieceType) {
         guard let piece = pieces[position.rawValue],
@@ -216,5 +220,13 @@ struct Board: Equatable {
             }
         }
         return positions
+    }
+    
+    func getCountOfKings(for color: PieceColor) -> Int {
+        return pieces.reduce(into: 0) {
+            if $1?.type == .king && $1?.color == color {
+                $0 += 1
+            }
+        }
     }
 }

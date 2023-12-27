@@ -57,9 +57,8 @@ struct LocalGameView<ViewModel: ViewModelProtocol>: View {
             }
         }
         .onDisappear {
-            if let userDefaults = UserDefaults(suiteName: "group.com.yasha424.Chessy.default") {
+            if let userDefaults = UserDefaults(suiteName: "group.com.yasha424.ChessyChess") {
                 userDefaults.set(vm.fen.value, forKey: "fen")
-                print(1)
             }
         }
     }

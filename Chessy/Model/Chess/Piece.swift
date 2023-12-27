@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PieceType: String, Identifiable {
+enum PieceType: String, Identifiable, CaseIterable {
     case pawn = "P"
     case bishop = "B"
     case knight = "N"

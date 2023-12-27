@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct TimerView<ChessGame: Game>: View {
+struct TimerView<ViewModel: ViewModelProtocol>: View {
 
-    @EnvironmentObject private var vm: GameViewModel<ChessGame>
+    @EnvironmentObject private var vm: ViewModel
     let color: PieceColor
     @State private var time: Int = 0
     @State private var turn: PieceColor = .white

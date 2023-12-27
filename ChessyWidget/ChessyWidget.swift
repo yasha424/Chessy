@@ -22,7 +22,7 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [Entry] = []
 
-        let userDefaults = UserDefaults(suiteName: "group.com.yasha424.Chessy.default")!
+        let userDefaults = UserDefaults(suiteName: "group.com.yasha424.ChessyChess")!
         let fenString = userDefaults.string(forKey: "fen") ?? ""
         entries.append(Entry(date: .now, fen: fenString))
 

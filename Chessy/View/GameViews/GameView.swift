@@ -12,9 +12,9 @@ struct GameView<ViewModel: ViewModelProtocol>: View {
     @EnvironmentObject private var vm: ViewModel
 
     @State private var boardView: BoardView<ViewModel>!
-    private let blackTimerView = TimerView<ClassicGame>(color: .black)
-    private let whiteTimerView = TimerView<ClassicGame>(color: .white)
-    private let undoButtonView = UndoButtonView<ClassicGame>()
+    private let blackTimerView = TimerView<ViewModel>(color: .black)
+    private let whiteTimerView = TimerView<ViewModel>(color: .white)
+    private let undoButtonView = UndoButtonView<ViewModel>()
     private let whiteCapturedPiecesView = CapturedPiecesView<ViewModel>(color: .white)
     private let blackCapturedPiecesView = CapturedPiecesView<ViewModel>(color: .black)
     @State private var gameState: GameState = .inProgress
@@ -142,8 +142,6 @@ extension GameView {
     }
 
     private var switchRotateView: some View {
-//        HStack {
-//            Spacer()
             HStack {
                 Text("Rotating")
                     .foregroundColor(.primary)
@@ -155,7 +153,6 @@ extension GameView {
             .frame(height: 40)
             .glassView()
             .tint(.primary.opacity(0.5))
-//        }
     }
 }
 
