@@ -8,4 +8,4 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-BASE_API_URL = https:%8665-176-37-215-13.ngrok-free.app/
+BASE_API_URL = http:%44.204.48.51/

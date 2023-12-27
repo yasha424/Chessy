@@ -67,7 +67,7 @@ struct ProfileView: View {
                     .clipShape(Circle())
                     .padding(16)
                 VStack(spacing: 16) {
-                    TextField(user.username, text: $username)
+                    TextField("Username", text: $username)
                         .disabled(buttonText == "Edit")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .frame(height: 40)
@@ -85,6 +85,7 @@ struct ProfileView: View {
                     self.user = nil
                     email = ""
                     password = ""
+                    username = ""
                     userDefaults.setValue(email, forKey: "email")
                     userDefaults.setValue(password, forKey: "password")
                     userObject.user = nil
@@ -140,6 +141,7 @@ struct ProfileView: View {
                             do {
                                 user = try await loginService.login(email: email, password: password)
                                 bio = user?.bio ?? ""
+                                username = user?.username ?? ""
                                 userDefaults.setValue(password, forKey: "password")
                                 userDefaults.setValue(email, forKey: "email")
                                 userObject.user = user
@@ -172,6 +174,7 @@ struct ProfileView: View {
                                         do {
                                             user = try await loginService.login(email: email, password: password)
                                             bio = user?.bio ?? ""
+                                            username = user?.username ?? ""
                                             userDefaults.setValue(password, forKey: "password")
                                             userDefaults.setValue(email, forKey: "email")
                                             userObject.user = user
@@ -200,6 +203,7 @@ struct ProfileView: View {
                         do {
                             user = try await loginService.login(email: email, password: password)
                             bio = user?.bio ?? ""
+                            username = user?.username ?? ""
                             userObject.user = user
                         } catch {
                             print(error)
